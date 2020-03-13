@@ -64,7 +64,18 @@ public class UserService {
 
         String baseErrorMessage = "The %s provided %s not unique. Therefore, the user could not be created!";
         if (userByUsername != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(baseErrorMessage, "username", "is"));
+            throw new ResponseStatusException(HttpStatus.CONFLICT, String.format(baseErrorMessage, "username", "is"));
         }
     }
+
+    public User getUserFromToken(String token) {
+        User userByUsername = userRepository.findByToken(token);
+
+        String baseErrorMessage = "There is no User with requested Token";
+        if (userByUsername == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, baseErrorMessage);
+        }
+        return userByUsername;
+    }
+
 }

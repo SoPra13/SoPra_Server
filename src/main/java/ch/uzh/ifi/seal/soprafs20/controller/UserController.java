@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs20.controller;
 
 import ch.uzh.ifi.seal.soprafs20.entity.User;
+import ch.uzh.ifi.seal.soprafs20.repository.UserRepository;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.UserGetDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.UserPostDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.mapper.DTOMapper;
@@ -25,6 +26,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    //Get All Users
     @GetMapping("/users")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -40,6 +42,19 @@ public class UserController {
         return userGetDTOs;
     }
 
+    //Get user from ID
+    @GetMapping("/user")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public UserGetDTO getUserID(@RequestParam String token) {
+        // fetch users in the internal representation
+        User user = userService.getUserFromToken(token);
+
+        // convert each user to the API representation
+        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
+    }
+
+    //Create new User
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
