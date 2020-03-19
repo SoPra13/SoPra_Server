@@ -42,7 +42,7 @@ public class UserController {
         return userGetDTOs;
     }
 
-    //Get user from ID
+    //Get user from Token
     @GetMapping("/user")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -54,8 +54,8 @@ public class UserController {
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
     }
 
-    //Create new User
-    @PostMapping("/users")
+    //register new User
+    @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public UserGetDTO createUser(@RequestBody UserPostDTO userPostDTO) {
@@ -67,5 +67,29 @@ public class UserController {
 
         // convert internal representation of user back to API
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
+    }
+
+    //login new user
+    @PostMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public String loginUser(@RequestBody UserPostDTO userPostDTO) {
+        // convert API user to internal representation
+        User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
+
+        // create user
+        String token = userService.LoginUser(userInput);
+
+        return token;
+    }
+    //login new user
+    @PutMapping("/logout")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void loginUser(@RequestParam String token) {
+
+        // logout
+        userService.LogoutUser(token);
+
     }
 }

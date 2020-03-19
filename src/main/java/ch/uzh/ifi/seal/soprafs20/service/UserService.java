@@ -69,13 +69,37 @@ public class UserService {
     }
 
     public User getUserFromToken(String token) {
-        User userByUsername = userRepository.findByToken(token);
+        User userByToken = userRepository.findByToken(token);
 
         String baseErrorMessage = "There is no User with requested Token";
-        if (userByUsername == null) {
+        if (userByToken == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, baseErrorMessage);
         }
-        return userByUsername;
+        return userByToken;
+    }
+
+    public String LoginUser(User user) {
+
+        User repoUser = userRepository.findByUsername(user.getUsername());
+
+        String baseErrorMessage = "Login unsuccessful.";
+        if ((repoUser.getUsername().equals(user.getUsername())) && (repoUser.getPassword().equals(user.getPassword()))){
+            repoUser.setStatus(UserStatus.ONLINE);
+            return repoUser.getToken();
+        }else {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, baseErrorMessage);
+        }
+    }
+
+    public void LogoutUser(String token) {
+
+        User repoUser = userRepository.findByToken(token);
+
+        String baseErrorMessage = "Logout unsuccessful.";
+        if (repoUser == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, baseErrorMessage);
+        }
+        repoUser.setStatus(UserStatus.OFFLINE);
     }
 
 }
