@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs20.controller;
 
 import ch.uzh.ifi.seal.soprafs20.entity.User;
+import ch.uzh.ifi.seal.soprafs20.repository.UserRepository;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.UserGetDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.UserPostDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.mapper.DTOMapper;
@@ -25,6 +26,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    //Get All Users
     @GetMapping("/users")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -40,7 +42,20 @@ public class UserController {
         return userGetDTOs;
     }
 
-    @PostMapping("/users")
+    //Get user from Token
+    @GetMapping("/user")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public UserGetDTO getUserID(@RequestParam String token) {
+        // fetch users in the internal representation
+        User user = userService.getUserFromToken(token);
+
+        // convert each user to the API representation
+        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
+    }
+
+    //register new User
+    @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public UserGetDTO createUser(@RequestBody UserPostDTO userPostDTO) {
@@ -52,5 +67,29 @@ public class UserController {
 
         // convert internal representation of user back to API
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
+    }
+
+    //login new user
+    @PostMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public String loginUser(@RequestBody UserPostDTO userPostDTO) {
+        // convert API user to internal representation
+        User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
+
+        // create user
+        String token = userService.LoginUser(userInput);
+
+        return token;
+    }
+    //login new user
+    @PutMapping("/logout")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void loginUser(@RequestParam String token) {
+
+        // logout
+        userService.LogoutUser(token);
+
     }
 }
