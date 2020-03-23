@@ -7,6 +7,7 @@ import ch.uzh.ifi.seal.soprafs20.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -25,8 +26,8 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * UserControllerTest
@@ -41,6 +42,146 @@ public class UserControllerTest {
 
     @MockBean
     private UserService userService;
+
+    @Test
+    public void post_register_correct() throws Exception {
+        User user = new User();
+        user.setUsername("test");
+        user.setPasseord("test");
+
+        UserPostDTO userPostDTO = new UserPostDTO();
+        userPostDTO.setUsername("test");
+        userPostDTO.setPassword("test");
+
+        //Userservice need to be implemented
+
+
+        MockHttpServletRequestBuilder postRequest = post("/register").contentType(MediaType.APPLICATION_JSON).content(asJsonString(userPostDTO));
+        mockMvc.perform(postRequest).andExpect(status().isCreated());
+    }
+
+    @Test
+    public void post_register_failed() throws Exception {
+        User user = new User();
+        user.setUsername("test");
+        user.setPasseord("test");
+
+        UserPostDTO userPostDTO = new UserPostDTO();
+        userPostDTO.setUsername("test");
+        userPostDTO.setPassword("test");
+
+        //Userservice need to be implemented
+
+
+        MockHttpServletRequestBuilder postRequest = post("/register").contentType(MediaType.APPLICATION_JSON).content(asJsonString(userPostDTO));
+        mockMvc.perform(postRequest).andExpect(status().isConflict()).andExpect(content().string("Error"));
+    }
+
+    @Test
+    public void get_user_correct() throws Exception {
+        User user = new User();
+        user.setUsername("test");
+        user.setWord("testWord");
+
+
+        //Userservice need to be implemented
+
+
+        MockHttpServletRequestBuilder getRequest = get("/user?token=testtoken").contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(getRequest).andExpect(status().isOk()).andExpect(jsonPath("$.username", is(user.getUsername())))
+        .andExpect(jsonPath("$.word", user.getWord()));
+    }
+
+    @Test
+    public void get_user_failed() throws Exception {
+
+        //Userservice need to be implemented
+        MockHttpServletRequestBuilder getRequest = get("/user?token=testtoken").contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(getRequest).andExpect(status().isNotFound()).andExpect(content().string("Error"));
+    }
+
+    @Test
+    public void put_user_correct() throws Exception {
+        UserPutDTO userPutDTO = new UserPutDTO();
+        userPutDTO.setUsername("testChange");
+        userPutDTO.setPassword("testChange");
+
+        //Userservice need to be implemented
+
+        MockHttpServletRequestBuilder postRequest = put("/user/1").contentType(MediaType.APPLICATION_JSON).content(asJsonString(userPutDTO));
+        mockMvc.perform(postRequest).andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void put_user_failed() throws Exception {
+        UserPutDTO userPutDTO = new UserPutDTO();
+        userPutDTO.setUsername("testChange");
+        userPutDTO.setPassword("testChange");
+
+        //Userservice need to be implemented
+
+        MockHttpServletRequestBuilder postRequest = put("/user/1").contentType(MediaType.APPLICATION_JSON).content(asJsonString(userPutDTO));
+        mockMvc.perform(postRequest).andExpect(status().isNotFound()).andExpect(content().string("Error"));
+    }
+
+    @Test
+    public void post_login_correct() throws Exception {
+        User user = new User();
+        user.setToken("testToken");
+
+        UserPostDTO userPostDTO = new UserPostDTO();
+        userPostDTO.setUsername("test");
+        userPostDTO.setPassword("test");
+
+        //Userservice need to be implemented
+
+
+        MockHttpServletRequestBuilder postRequest = post("/login").contentType(MediaType.APPLICATION_JSON).content(asJsonString(userPostDTO));
+        mockMvc.perform(postRequest).andExpect(status().isOk()).andExpect(jsonPath("$.token", is(user.getToken())));
+    }
+
+    @Test
+    public void post_register_failed() throws Exception {
+        User user = new User();
+        user.setUsername("test");
+        user.setPasseord("test");
+
+        UserPostDTO userPostDTO = new UserPostDTO();
+        userPostDTO.setUsername("test");
+        userPostDTO.setPassword("test");
+
+        //Userservice need to be implemented
+
+
+        MockHttpServletRequestBuilder postRequest = post("/login").contentType(MediaType.APPLICATION_JSON).content(asJsonString(userPostDTO));
+        mockMvc.perform(postRequest).andExpect(status().isUnauthorized()).andExpect(content().string("Error"));
+    }
+
+    @Test
+    public void put_logout_correct() throws Exception {
+        //Userservice need to be implemented
+
+
+        MockHttpServletRequestBuilder getRequest = put("/user?token=testtoken").contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(getRequest).andExpect(status().isOk());
+    }
+
+    @Test
+    public void put_logout_failed() throws Exception {
+
+        //Userservice need to be implemented
+        MockHttpServletRequestBuilder getRequest = put("/user?token=testtoken").contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(getRequest).andExpect(status().isNotFound()).andExpect(content().string("Error"));
+    }
+
+
+
+
+
+
+
+
+
 
     @Test
     public void givenUsers_whenGetUsers_thenReturnJsonArray() throws Exception {
@@ -65,6 +206,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$[0].username", is(user.getUsername())))
                 .andExpect(jsonPath("$[0].status", is(user.getStatus().toString())));
     }
+
 
     @Test
     public void createUser_validInput_userCreated() throws Exception {
@@ -99,6 +241,7 @@ public class UserControllerTest {
     /**
      * Helper Method to convert userPostDTO into a JSON string such that the input can be processed
      * Input will look like this: {"name": "Test User", "username": "testUsername"}
+     *
      * @param object
      * @return string
      */
