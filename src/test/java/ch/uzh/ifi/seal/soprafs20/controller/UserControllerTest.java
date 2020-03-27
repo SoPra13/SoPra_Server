@@ -7,6 +7,7 @@ import ch.uzh.ifi.seal.soprafs20.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -25,8 +26,8 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * UserControllerTest
@@ -43,8 +44,6 @@ public class UserControllerTest {
     private UserService userService;
 
     @Test
-<<<<<<< Updated upstream
-=======
     public void post_register_correct() throws Exception {
         User user = new User();
         user.setUsername("test");
@@ -91,6 +90,7 @@ public class UserControllerTest {
         MockHttpServletRequestBuilder getRequest = get("/user?token=testtoken").contentType(MediaType.APPLICATION_JSON);
         mockMvc.perform(getRequest).andExpect(status().isOk()).andExpect(jsonPath("$.username", is(user.getUsername())))
                 .andExpect(jsonPath("$.word", user.getWord()));
+        .andExpect(jsonPath("$.word", user.getWord()));
     }
 
     @Test
@@ -175,9 +175,7 @@ public class UserControllerTest {
         mockMvc.perform(getRequest).andExpect(status().isNotFound()).andExpect(content().string("Error"));
     }
 
-
     @Test
->>>>>>> Stashed changes
     public void givenUsers_whenGetUsers_thenReturnJsonArray() throws Exception {
         // given
         User user = new User();
@@ -200,6 +198,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$[0].username", is(user.getUsername())))
                 .andExpect(jsonPath("$[0].status", is(user.getStatus().toString())));
     }
+
 
     @Test
     public void createUser_validInput_userCreated() throws Exception {
@@ -234,6 +233,7 @@ public class UserControllerTest {
     /**
      * Helper Method to convert userPostDTO into a JSON string such that the input can be processed
      * Input will look like this: {"name": "Test User", "username": "testUsername"}
+     *
      * @param object
      * @return string
      */
