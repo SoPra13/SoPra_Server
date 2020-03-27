@@ -17,7 +17,6 @@ public class UserRepositoryIntegrationTest {
     @Autowired
     private TestEntityManager entityManager;
 
-    @Qualifier("userRepository")
     @Autowired
     private UserRepository userRepository;
 
@@ -25,7 +24,7 @@ public class UserRepositoryIntegrationTest {
     public void findByName_success() {
         // given
         User user = new User();
-        user.setPassword("Firstname Lastname");
+        user.setPassword("password");
         user.setUsername("firstname@lastname");
         user.setStatus(UserStatus.OFFLINE);
         user.setToken("1");
