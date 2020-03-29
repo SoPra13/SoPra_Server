@@ -31,11 +31,10 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<UserGetDTO> getAllUsers() {
-        // fetch all users in the internal representation
         List<User> users = userService.getUsers();
         List<UserGetDTO> userGetDTOs = new ArrayList<>();
 
-        // convert each user to the API representation
+
         for (User user : users) {
             userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
         }
@@ -47,10 +46,8 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public UserGetDTO getUserID(@RequestParam String token) {
-        // fetch users in the internal representation
         User user = userService.getUserFromToken(token);
 
-        // convert each user to the API representation
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
     }
 
@@ -59,13 +56,10 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public UserGetDTO createUser(@RequestBody UserPostDTO userPostDTO) {
-        // convert API user to internal representation
         User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
 
-        // create user
         User createdUser = userService.createUser(userInput);
 
-        // convert internal representation of user back to API
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
     }
 
@@ -74,21 +68,16 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public String loginUser(@RequestBody UserPostDTO userPostDTO) {
-        // convert API user to internal representation
         User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
 
-        // create user
-        String token = userService.LoginUser(userInput);
-
-        return token;
+        return userService.LoginUser(userInput);
     }
-    //login new user
+    //logout new user
     @PutMapping("/logout")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void loginUser(@RequestParam String token) {
+    public void logoutUser(@RequestParam String token) {
 
-        // logout
         userService.LogoutUser(token);
 
     }
