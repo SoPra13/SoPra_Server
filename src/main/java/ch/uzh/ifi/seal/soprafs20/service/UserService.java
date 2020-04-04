@@ -102,4 +102,11 @@ public class UserService {
         repoUser.setStatus(UserStatus.OFFLINE);
     }
 
+    public void updateUser(User updatedUser) {
+        User repoUser = userRepository.findByToken(updatedUser.getToken());
+        if (repoUser == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        if (updatedUser.getUsername() != null) repoUser.setUsername(updatedUser.getUsername());
+        if (updatedUser.getPassword() != null) repoUser.setPassword(updatedUser.getPassword());
+    }
+
 }

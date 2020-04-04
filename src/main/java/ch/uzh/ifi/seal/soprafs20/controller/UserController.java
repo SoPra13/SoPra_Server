@@ -4,6 +4,7 @@ import ch.uzh.ifi.seal.soprafs20.entity.User;
 import ch.uzh.ifi.seal.soprafs20.repository.UserRepository;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.UserGetDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.UserPostDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.UserPutDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.mapper.DTOMapper;
 import ch.uzh.ifi.seal.soprafs20.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -81,4 +82,14 @@ public class UserController {
         userService.LogoutUser(token);
 
     }
+
+    //Update user
+    @PutMapping("/user")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateUser(@RequestParam String token, @RequestBody UserPutDTO userPutDTO) {
+       User newUser =  DTOMapper.INSTANCE.convertUserPutDTOtoEntity(userPutDTO);
+       newUser.setToken(token);
+       userService.updateUser(newUser);
+    }
+
 }
