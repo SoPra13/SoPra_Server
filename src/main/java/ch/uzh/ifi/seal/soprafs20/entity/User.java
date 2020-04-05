@@ -35,10 +35,10 @@ public class User implements Serializable {
     @Column(nullable = false)
     private UserStatus status;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private boolean darkMode;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Color color;
 
     public void setColor(Color color) {
