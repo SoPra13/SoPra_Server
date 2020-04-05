@@ -1,10 +1,32 @@
 package ch.uzh.ifi.seal.soprafs20.rest.dto;
 
+import java.awt.*;
+
 public class UserPutDTO {
 
     private String password;
 
     private String username;
+
+    private Color color;
+
+    private boolean darkMode;
+
+    public boolean isDarkMode() {
+        return darkMode;
+    }
+
+    public void setDarkMode(boolean darkMode) {
+        this.darkMode = darkMode;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
 
     public String getPassword() {
         return password;

@@ -107,6 +107,7 @@ public class UserService {
         if (repoUser == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         if (updatedUser.getUsername() != null) repoUser.setUsername(updatedUser.getUsername());
         if (updatedUser.getPassword() != null) repoUser.setPassword(updatedUser.getPassword());
+        if (updatedUser.getColor() != null) repoUser.setColor(updatedUser.getColor());
     }
 
 }

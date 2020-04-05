@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs20.entity;
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 
 import javax.persistence.*;
+import java.awt.*;
 import java.io.Serializable;
 
 /**
@@ -25,7 +26,7 @@ public class User implements Serializable {
     @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(nullable = false, unique = false)
+    @Column(nullable = false)
     private String password;
 
     @Column(nullable = false, unique = true)
@@ -33,6 +34,29 @@ public class User implements Serializable {
 
     @Column(nullable = false)
     private UserStatus status;
+
+    @Column(nullable = false)
+    private boolean darkMode;
+
+    @Column(nullable = false)
+    private Color color;
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setDarkMode(boolean darkMode) {
+        this.darkMode = darkMode;
+    }
+
+    public boolean isDarkMode() {
+        return darkMode;
+    }
+
 
     public Long getId() {
         return id;
