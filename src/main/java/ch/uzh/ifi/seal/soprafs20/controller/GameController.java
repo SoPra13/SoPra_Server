@@ -46,7 +46,7 @@ public class GameController {
     @PutMapping("/game/ready")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public GameGetDTO getGame(@RequestParam String userToken, @RequestParam String gameToken) {
+    public GameGetDTO setPlayerUnityReady(@RequestParam String userToken, @RequestParam String gameToken) {
 
         gameService.setPlayerReady(gameToken,userToken);
 

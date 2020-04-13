@@ -5,6 +5,7 @@ import ch.uzh.ifi.seal.soprafs20.constant.LobbyType;
 import ch.uzh.ifi.seal.soprafs20.entity.Lobby;
 import ch.uzh.ifi.seal.soprafs20.entity.User;
 import ch.uzh.ifi.seal.soprafs20.repository.LobbyRepository;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.GameGetDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.LobbyGetDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.LobbyPostDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.UserGetDTO;
@@ -115,5 +116,18 @@ public class LobbyController {
 
         // convert internal representation of lobby back to API
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby);
+    }
+
+
+
+    //Set player in Lobby ready, called when he pressed ready button
+    @PutMapping("/lobby/ready")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public LobbyGetDTO setPlayerLobbyReady(@RequestParam String userToken, @RequestParam String lobbyToken) {
+
+        gameService.setPlayerReady(lobbyToken,userToken);
+
+        return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobbyService.getLobbyFromToken(lobbyToken));
     }
 }

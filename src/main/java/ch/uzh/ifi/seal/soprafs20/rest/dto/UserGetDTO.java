@@ -12,6 +12,7 @@ public class UserGetDTO {
     private UserStatus status;
     private Lobby lobby;
     private Boolean unityReady;
+    private Boolean lobbyReady;
 
     public Long getId() {
         return id;
@@ -67,5 +68,13 @@ public class UserGetDTO {
 
     public Boolean isUnityReady() {
         return unityReady;
+    }
+
+    public void setLobbyReady(boolean lobbyReady) {
+        this.lobbyReady = lobbyReady;
+    }
+
+    public Boolean isLobbyReady() {
+        return lobbyReady;
     }
 }

@@ -156,6 +156,21 @@ public class LobbyService {
         }
     }
 
+
+    //set player as ready
+    public void setPlayerReady(String lobbyToken, String userToken){
+
+        String baseErrorMessage = "Could not set player ready";
+        User user = userService.getUserFromToken(userToken);
+
+        if(user.getLobby().getToken().equals(lobbyToken)){
+            user.setLobbyReady(true);
+        }else{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, baseErrorMessage);
+        }
+
+    }
+
     /**
      * This is a helper method that will check the uniqueness criteria of the ???? and the ????
      * defined in the Lobby entity. The method will do nothing if the input is unique and throw an error otherwise.

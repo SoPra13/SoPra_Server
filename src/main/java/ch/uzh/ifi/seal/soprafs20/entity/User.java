@@ -43,6 +43,9 @@ public class User implements Serializable{
     @Column
     private Boolean unityReady;
 
+    @Column
+    private Boolean lobbyReady;
+
     @Column(nullable = true)
     private Boolean darkMode;
 
@@ -73,6 +76,14 @@ public class User implements Serializable{
 
     public Boolean isUnityReady() {
         return unityReady;
+    }
+
+    public void setLobbyReady(boolean lobbyReady) {
+        this.lobbyReady = lobbyReady;
+    }
+
+    public Boolean isLobbyReady() {
+        return lobbyReady;
     }
 
     public void setDarkMode(boolean darkMode) {

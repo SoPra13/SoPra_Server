@@ -43,7 +43,7 @@ public class GameGetDTO {
     public void setGuessList(ArrayList guessList) { this.guessList = guessList; }
 
     public List getMysteryWords() { return mysteryWords; }
-    public void setClueList(ArrayList mysteryWords) { this.mysteryWords = mysteryWords; }
+    public void setMysteryWords(ArrayList mysteryWords) { this.mysteryWords = mysteryWords; }
 
     public List getPlayerList() {
         return playerList;
