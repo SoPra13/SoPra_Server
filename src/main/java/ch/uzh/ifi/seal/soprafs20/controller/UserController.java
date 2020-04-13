@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs20.controller;
 
 import ch.uzh.ifi.seal.soprafs20.entity.User;
+import ch.uzh.ifi.seal.soprafs20.helpers.WordFileHandler;
 import ch.uzh.ifi.seal.soprafs20.repository.UserRepository;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.UserGetDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.UserPostDTO;
@@ -33,7 +34,6 @@ public class UserController {
     public List<UserGetDTO> getAllUsers() {
         List<User> users = userService.getUsers();
         List<UserGetDTO> userGetDTOs = new ArrayList<>();
-
 
         for (User user : users) {
             userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
@@ -72,6 +72,7 @@ public class UserController {
 
         return userService.LoginUser(userInput);
     }
+
     //logout new user
     @PutMapping("/logout")
     @ResponseStatus(HttpStatus.OK)
@@ -79,7 +80,6 @@ public class UserController {
     public void logoutUser(@RequestParam String token) {
 
         userService.LogoutUser(token);
-
     }
 
     //Update user
@@ -90,5 +90,4 @@ public class UserController {
        newUser.setToken(token);
        userService.updateUser(newUser);
     }
-
 }

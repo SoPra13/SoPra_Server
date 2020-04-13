@@ -13,10 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Set;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * User Service
@@ -53,12 +50,14 @@ public class LobbyService {
         if (lobbyByToken == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, baseErrorMessage);
         }
+
         return lobbyByToken;
     }
 
+    //creates new Lobby
     public Lobby createLobby(Lobby newLobby, String token) {
-        //add values to lobby
-        Set<User> userList = new HashSet<User>();
+
+        ArrayList<User> userList = new ArrayList<User>();
         User user = userService.getUserFromToken(token);
         userList.add(user);
         newLobby.setToken(UUID.randomUUID().toString());
@@ -69,6 +68,7 @@ public class LobbyService {
 
         // saves the given entity but data is only persisted in the database once flush() is called
         newLobby = lobbyRepository.save(newLobby);
+        user.setLobby(newLobby);
         lobbyRepository.flush();
 
         log.debug("Created Information for Lobby: {}", newLobby);
@@ -89,9 +89,10 @@ public class LobbyService {
         Lobby lobbyToAdd = lobbyRepository.findByToken(lToken);
 
         // add user to lobby
-        Set list = lobbyToAdd.getPlayerList();
+        List list = lobbyToAdd.getPlayerList();
         list.add(userToAdd);
         lobbyToAdd.setNumberOfPlayers(list.size());
+        userToAdd.setLobby(lobbyToAdd);
         return lobbyToAdd;
     }
 
@@ -110,7 +111,7 @@ public class LobbyService {
         }
 
         // add user to lobby
-        Set list = lobbyToRemove.getPlayerList();
+        List list = lobbyToRemove.getPlayerList();
         list.remove(userToRemove);
         lobbyToRemove.setNumberOfPlayers(list.size());
         return lobbyToRemove;
@@ -122,7 +123,7 @@ public class LobbyService {
 
         Lobby lobbyToAdd = lobbyRepository.findByToken(lToken);
 
-        Set<User> users = lobbyToAdd.getPlayerList();
+        List<User> users = lobbyToAdd.getPlayerList();
 
         for(User user : users){
             if(user.getToken().equals(uToken)){

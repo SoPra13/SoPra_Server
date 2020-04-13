@@ -40,7 +40,7 @@ public class UserService {
     public User createUser(User newUser) {
         newUser.setToken(UUID.randomUUID().toString());
         newUser.setStatus(UserStatus.OFFLINE);
-
+        newUser.setUnityReady(false);
         checkIfUserExists(newUser);
 
         // saves the given entity but data is only persisted in the database once flush() is called
@@ -59,6 +59,8 @@ public class UserService {
      * @throws org.springframework.web.server.ResponseStatusException
      * @see User
      */
+
+    //checks if user exists
     private void checkIfUserExists(User userToBeCreated) {
         User userByUsername = userRepository.findByUsername(userToBeCreated.getUsername());
 
@@ -68,6 +70,8 @@ public class UserService {
         }
     }
 
+
+    //get user from token
     public User getUserFromToken(String token) {
         User userByToken = userRepository.findByToken(token);
 
@@ -78,6 +82,8 @@ public class UserService {
         return userByToken;
     }
 
+
+    //log in a user
     public String LoginUser(User user) {
 
         User repoUser = userRepository.findByUsername(user.getUsername());
@@ -91,6 +97,8 @@ public class UserService {
         }
     }
 
+
+    //logut a user
     public void LogoutUser(String token) {
 
         User repoUser = userRepository.findByToken(token);
@@ -102,6 +110,7 @@ public class UserService {
         repoUser.setStatus(UserStatus.OFFLINE);
     }
 
+    //update attributes of user
     public void updateUser(User updatedUser) {
         User repoUser = userRepository.findByToken(updatedUser.getToken());
         if (repoUser == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");

@@ -1,14 +1,16 @@
 package ch.uzh.ifi.seal.soprafs20.entity;
 
-
 import ch.uzh.ifi.seal.soprafs20.constant.LobbyStatus;
 import ch.uzh.ifi.seal.soprafs20.constant.LobbyType;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 
 @Entity
@@ -16,7 +18,6 @@ import java.util.Set;
 public class Lobby implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
     @Id
     @GeneratedValue
     private Long id;
@@ -42,9 +43,9 @@ public class Lobby implements Serializable {
     @Column(nullable = false)
     private LobbyType lobbyType;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    private Set<User> playerList = new HashSet<User>();
-
+    @OneToMany(mappedBy = "lobby")
+    @JsonBackReference
+    private List<User> playerList = new ArrayList<User>();
 
     public Long getId() {
         return id;
@@ -110,11 +111,10 @@ public class Lobby implements Serializable {
         this.numberOfPlayers = numberOfPlayers;
     }
 
-    public Set getPlayerList() {
-        return playerList;
-    }
+    public List getPlayerList() { return playerList; }
 
-    public void setPlayerList(Set playerList) {
+    public void setPlayerList(List playerList) {
         this.playerList = playerList;
     }
+
 }

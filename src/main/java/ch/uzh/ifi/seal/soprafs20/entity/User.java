@@ -1,6 +1,8 @@
 package ch.uzh.ifi.seal.soprafs20.entity;
 
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.awt.*;
@@ -15,8 +17,8 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "USER")
-public class User implements Serializable {
 
+public class User implements Serializable{
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -35,11 +37,27 @@ public class User implements Serializable {
     @Column(nullable = false)
     private UserStatus status;
 
+    @Column
+    private Integer currentPosition;
+
+    @Column
+    private Boolean unityReady;
+
     @Column(nullable = true)
-    private boolean darkMode;
+    private Boolean darkMode;
 
     @Column(nullable = true)
     private Color color;
+
+    @ManyToOne
+    @JsonManagedReference
+    @JsonIgnore
+    private Lobby lobby;
+
+    @ManyToOne
+    @JsonManagedReference
+    @JsonIgnore
+    private Game game;
 
     public void setColor(Color color) {
         this.color = color;
@@ -49,14 +67,21 @@ public class User implements Serializable {
         return color;
     }
 
+    public void setUnityReady(boolean unityReady) {
+        this.unityReady = unityReady;
+    }
+
+    public Boolean isUnityReady() {
+        return unityReady;
+    }
+
     public void setDarkMode(boolean darkMode) {
         this.darkMode = darkMode;
     }
 
-    public boolean isDarkMode() {
+    public Boolean isDarkMode() {
         return darkMode;
     }
-
 
     public Long getId() {
         return id;
@@ -65,6 +90,10 @@ public class User implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public Integer getCurrentPosition() {return  currentPosition;}
+
+    public void setCurrentPosition(Integer position){ this.currentPosition = position;}
 
     public String getPassword() {
         return password;
@@ -97,4 +126,23 @@ public class User implements Serializable {
     public void setStatus(UserStatus status) {
         this.status = status;
     }
+
+    @JsonIgnore
+    public Lobby getLobby() {
+        return lobby;
+    }
+
+    public void setLobby(Lobby lobby) {
+        this.lobby = lobby;
+    }
+
+    @JsonIgnore
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
 }

@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs20.rest.dto;
 
 import ch.uzh.ifi.seal.soprafs20.constant.LobbyStatus;
 import ch.uzh.ifi.seal.soprafs20.constant.LobbyType;
+import ch.uzh.ifi.seal.soprafs20.entity.Lobby;
 import org.hibernate.mapping.Array;
 import java.util.Set;
 
@@ -89,4 +90,5 @@ public class LobbyGetDTO {
     public void setPlayerList(Set playerList) {
         this.playerList = playerList;
     }
+
 }

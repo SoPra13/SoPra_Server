@@ -9,6 +9,7 @@ import ch.uzh.ifi.seal.soprafs20.rest.dto.LobbyGetDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.LobbyPostDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.UserGetDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.mapper.DTOMapper;
+import ch.uzh.ifi.seal.soprafs20.service.GameService;
 import ch.uzh.ifi.seal.soprafs20.service.LobbyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +21,10 @@ import java.util.List;
 public class LobbyController {
 
     private final LobbyService lobbyService;
-    LobbyController(LobbyService lobbyService) {
+    private final GameService gameService;
+    LobbyController(LobbyService lobbyService, GameService gameService) {
         this.lobbyService = lobbyService;
+        this.gameService = gameService;
     }
 
 
@@ -44,7 +47,7 @@ public class LobbyController {
         return lobbyGetDTOS;
     }
 
-    //Get All Public Lobbies
+    //Get Lobby with token
     @GetMapping("/lobby")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -58,6 +61,7 @@ public class LobbyController {
     }
 
 
+    //create new Lobby
     @PostMapping("/lobby")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -74,6 +78,20 @@ public class LobbyController {
 
 
 
+    //start game
+    @PutMapping("/lobby/{token}/game")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public void startGame(@PathVariable String token) {
+
+       Lobby lobby = lobbyService.getLobbyFromToken(token);
+       gameService.createGame(lobby, token);
+
+
+    }
+
+
+    //add user to Lobby
     @PutMapping("/lobby")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -86,6 +104,7 @@ public class LobbyController {
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby);
     }
 
+    //remove user from Lobby
     @DeleteMapping("/lobby")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
