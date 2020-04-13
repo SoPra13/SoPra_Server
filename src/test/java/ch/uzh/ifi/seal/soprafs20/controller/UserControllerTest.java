@@ -90,7 +90,8 @@ public class UserControllerTest {
         given(userService.getUserFromToken("testtoken")).willReturn(user);
 
 
-        MockHttpServletRequestBuilder getRequest = get("/user?token=testtoken").contentType(MediaType.APPLICATION_JSON);
+        MockHttpServletRequestBuilder getRequest = get("/user?token=testtoken")
+                .contentType(MediaType.APPLICATION_JSON);
         mockMvc.perform(getRequest).andExpect(status().isOk())
                 .andExpect(jsonPath("$.username", is(user.getUsername())))
                 .andExpect(jsonPath("$.id", is(user.getId().intValue())))

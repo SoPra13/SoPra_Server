@@ -61,11 +61,11 @@ public class Lobby implements Serializable {
         this.adminToken = adminToken;
     }
 
-    public String getLobbyname() {
+    public String getLobbyName() {
         return lobbyname;
     }
 
-    public void setLobbyname(String lobbyname) {
+    public void setLobbyName(String lobbyname) {
         this.lobbyname = lobbyname;
     }
 

@@ -15,8 +15,8 @@ public class LobbyPostDTO {
         return lobbyname;
     }
 
-    public void setLobbyname(String lobbyname) {
-        this.lobbyname = lobbyname;
+    public void setLobbyname(String lobbyName) {
+        this.lobbyname = lobbyName;
     }
 
     public String getAdminToken() {
