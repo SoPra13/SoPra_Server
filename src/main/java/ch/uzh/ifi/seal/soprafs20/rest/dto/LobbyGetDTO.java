@@ -2,8 +2,13 @@ package ch.uzh.ifi.seal.soprafs20.rest.dto;
 
 import ch.uzh.ifi.seal.soprafs20.constant.LobbyStatus;
 import ch.uzh.ifi.seal.soprafs20.constant.LobbyType;
+import ch.uzh.ifi.seal.soprafs20.entity.Bot;
 import ch.uzh.ifi.seal.soprafs20.entity.Lobby;
+import ch.uzh.ifi.seal.soprafs20.entity.User;
 import org.hibernate.mapping.Array;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class LobbyGetDTO {
@@ -16,7 +21,8 @@ public class LobbyGetDTO {
     private LobbyType lobbyType;
     private Integer numberOfPlayers;
     private String adminToken;
-    private Set playerList;
+    private List<User> playerList = new ArrayList<User>();
+    private List<Bot> botList = new ArrayList<>();
 
 
     public Long getId() {
@@ -83,12 +89,20 @@ public class LobbyGetDTO {
         this.numberOfPlayers = numberOfPlayers;
     }
 
-    public Set getPlayerList() {
+    public List<User> getPlayerList() {
         return playerList;
     }
 
-    public void setPlayerList(Set playerList) {
+    public void setPlayerList(List playerList) {
         this.playerList = playerList;
+    }
+
+    public List getBotList() {
+        return botList;
+    }
+
+    public void setBotList(List botList) {
+        this.botList = botList;
     }
 
 }

@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs20.service;
 
 import ch.uzh.ifi.seal.soprafs20.constant.LobbyStatus;
+import ch.uzh.ifi.seal.soprafs20.entity.Bot;
 import ch.uzh.ifi.seal.soprafs20.repository.LobbyRepository;
 import ch.uzh.ifi.seal.soprafs20.entity.Lobby;
 import ch.uzh.ifi.seal.soprafs20.entity.User;
@@ -25,14 +26,15 @@ import java.util.*;
 public class LobbyService {
 
     private final UserService userService;
-
+    private  final BotService botService;
     private final Logger log = LoggerFactory.getLogger(LobbyService.class);
     private final LobbyRepository lobbyRepository;
 
 
     @Autowired
-    public LobbyService(UserService userService, @Qualifier("lobbyRepository") LobbyRepository lobbyRepository) {
+    public LobbyService(UserService userService, BotService botService, @Qualifier("lobbyRepository") LobbyRepository lobbyRepository) {
         this.userService = userService;
+        this.botService = botService;
         this.lobbyRepository = lobbyRepository;
     }
 
@@ -91,7 +93,7 @@ public class LobbyService {
         // add user to lobby
         List list = lobbyToAdd.getPlayerList();
         list.add(userToAdd);
-        lobbyToAdd.setNumberOfPlayers(list.size());
+        lobbyToAdd.setNumberOfPlayers(list.size()+lobbyToAdd.getBotList().size());
         userToAdd.setLobby(lobbyToAdd);
         return lobbyToAdd;
     }
@@ -110,10 +112,53 @@ public class LobbyService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, baseErrorMessage);
         }
 
-        // add user to lobby
+        // remove user from lobby
         List list = lobbyToRemove.getPlayerList();
         list.remove(userToRemove);
-        lobbyToRemove.setNumberOfPlayers(list.size());
+        lobbyToRemove.setPlayerList(list);
+        lobbyToRemove.setNumberOfPlayers(list.size()+lobbyToRemove.getBotList().size());
+        userToRemove.setLobby(null);
+        userToRemove.setLobbyReady(false);
+        return lobbyToRemove;
+    }
+
+
+    //add bot to Lobby
+    public Lobby addBot(String lToken, String difficulty){
+
+        //checks
+        checkLobbyExists(lToken);
+        checkLobbyFull(lToken);
+
+        //get lobby & user
+        Lobby lobbyToAdd = lobbyRepository.findByToken(lToken);
+
+        // add bot to lobby
+        List list = lobbyToAdd.getBotList();
+        Bot bot = botService.createBot(difficulty);
+        list.add(bot);
+        lobbyToAdd.setNumberOfPlayers(list.size()+lobbyToAdd.getPlayerList().size());
+        bot.setLobby(lobbyToAdd);
+        return lobbyToAdd;
+    }
+
+
+    //remove bot from Lobby
+    public Lobby removeBot(String lToken, String bToken){
+
+        //checks
+        checkLobbyExists(lToken);
+
+        //get lobby & bot
+        Bot botToRemove = botService.getBotFromToken(bToken);
+        Lobby lobbyToRemove = lobbyRepository.findByToken(lToken);
+
+        // remove bot from lobby
+        List list = lobbyToRemove.getBotList();
+        list.remove(botToRemove);
+        lobbyToRemove.setBotList(list);
+        lobbyToRemove.setNumberOfPlayers(list.size()+lobbyToRemove.getPlayerList().size());
+        botToRemove.setLobby(null);
         return lobbyToRemove;
     }
 

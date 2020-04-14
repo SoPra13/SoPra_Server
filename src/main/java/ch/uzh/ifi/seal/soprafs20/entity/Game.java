@@ -41,6 +41,10 @@ public class Game implements Serializable {
     @JsonBackReference
     private List<User> playerList = new ArrayList<User>();
 
+    @OneToMany(mappedBy = "game")
+    @JsonBackReference
+    private List<Bot> botList = new ArrayList<Bot>();
+
 
     public Long getId() { return id; }
 
@@ -84,6 +88,14 @@ public class Game implements Serializable {
 
     public void setPlayerList(List playerList) {
         this.playerList = playerList;
+    }
+
+    public List getBotList() {
+        return botList;
+    }
+
+    public void setBotList(List botList) {
+        this.botList = botList;
     }
 
 

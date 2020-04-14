@@ -1,5 +1,4 @@
 package ch.uzh.ifi.seal.soprafs20.controller;
-
 import ch.uzh.ifi.seal.soprafs20.constant.LobbyStatus;
 import ch.uzh.ifi.seal.soprafs20.constant.LobbyType;
 import ch.uzh.ifi.seal.soprafs20.entity.Lobby;
@@ -30,7 +29,7 @@ public class LobbyController {
 
 
     //Get All Public Lobbies
-    @GetMapping("/lobbies")
+    @GetMapping(value = "/lobbies")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<LobbyGetDTO> getAllLobbies() {
@@ -49,7 +48,7 @@ public class LobbyController {
     }
 
     //Get Lobby with token
-    @GetMapping("/lobby")
+    @GetMapping(value = "/lobby",params = "lobbyToken")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public LobbyGetDTO getLobby(@RequestParam String lobbyToken) {
@@ -105,6 +104,19 @@ public class LobbyController {
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby);
     }
 
+    //add bot to Lobby
+    @PutMapping(value = "/lobby", params = {"lobbyToken", "difficulty"})
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public LobbyGetDTO addBot(@RequestParam String lobbyToken, @RequestParam String difficulty) {
+
+        //add bot to lobby
+        Lobby lobby = lobbyService.addBot(lobbyToken,difficulty);
+
+        // convert internal representation of lobby back to API
+        return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby);
+    }
+
     //remove user from Lobby
     @DeleteMapping("/lobby")
     @ResponseStatus(HttpStatus.OK)
@@ -118,6 +130,18 @@ public class LobbyController {
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby);
     }
 
+    //remove bot from Lobby
+    @DeleteMapping(value = "/lobby", params = {"lobbyToken", "botToken"})
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public LobbyGetDTO removeBot(@RequestParam String lobbyToken, @RequestParam String botToken) {
+
+        //add user to lobby
+        Lobby lobby = lobbyService.removeBot(lobbyToken,botToken);
+
+        // convert internal representation of lobby back to API
+        return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby);
+    }
 
 
     //Set player in Lobby ready, called when he pressed ready button
