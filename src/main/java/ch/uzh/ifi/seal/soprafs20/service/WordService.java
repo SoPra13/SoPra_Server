@@ -111,7 +111,7 @@ public class WordService {
         while (isSimilar(goodWord, word)) {
             goodWord = wordList.get(new Random().nextInt(wordList.size())).get("word");
         }
-        return wordList.get(new Random().nextInt(wordList.size())).get("word");
+        return goodWord;
     }
 
     public static String getBadWord(String word) {
@@ -122,7 +122,7 @@ public class WordService {
         while (isSimilar(badWord, word)) {
             badWord = wordList.get(new Random().nextInt(wordList.size())).get("word");
         }
-        return wordList.get(new Random().nextInt(wordList.size())).get("word");
+        return badWord;
 
     }
     public static boolean isValidWord(String word) {
