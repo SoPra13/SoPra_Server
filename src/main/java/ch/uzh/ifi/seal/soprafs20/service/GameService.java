@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs20.service;
 
 import ch.uzh.ifi.seal.soprafs20.constant.LobbyStatus;
+import ch.uzh.ifi.seal.soprafs20.entity.Bot;
 import ch.uzh.ifi.seal.soprafs20.entity.Lobby;
 import ch.uzh.ifi.seal.soprafs20.helpers.WordFileHandler;
 import ch.uzh.ifi.seal.soprafs20.repository.GameRepository;
@@ -79,7 +80,11 @@ public class GameService {
 
         List<User> userList = new ArrayList<>();
         userList.addAll(lobby.getPlayerList());
+        List<Bot> botList = new ArrayList<>();
+        botList.addAll(lobby.getBotList());
 
+        newGame.setBotList(botList);
+        newGame.setPlayerList(userList);
         newGame.setToken(lobby.getToken());
         newGame.setRound(1);
         newGame.setVersion(1);
@@ -95,6 +100,10 @@ public class GameService {
             user.setGame(newGame);
             user.setCurrentPosition(position);
             position +=1;
+        }
+
+        for(Bot bot : botList){
+            bot.setGame(newGame);
         }
 
         gameRepository.flush();
