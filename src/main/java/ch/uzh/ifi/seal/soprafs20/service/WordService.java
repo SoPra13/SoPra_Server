@@ -126,9 +126,9 @@ public class WordService<Booelan> {
         return wordList.get(new Random().nextInt(wordList.size())).get("word");
 
     }
-
-    public static void test() {
-
+    public static boolean isValidWord(String word) {
+        ArrayList<LinkedTreeMap<String, String>> compareWord = getRequest("https://api.datamuse.com/max=1&words?sp=" + word);
+        return !compareWord.isEmpty() && compareWord.get(0).get("word").equals(word);
     }
 
 }
