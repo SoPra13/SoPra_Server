@@ -9,10 +9,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
-public class WordService<Booelan> {
+public class WordService {
     private static ArrayList<LinkedTreeMap<String, String>> getRequest(String url) {
         try {
             HttpClient client = HttpClient.newHttpClient();
@@ -67,7 +66,7 @@ public class WordService<Booelan> {
     }
 
     private static boolean isSameFamily(String word1,String word2) {
-        return (word1.length() >= 5 && word2.length() >= 5 && word1.substring(0, 4).equals(word2.substring(0, 4)));
+        return (word1.length() >= 5 && word2.length() >= 5 && word1.substring(0, 5).equals(word2.substring(0, 5)));
     }
     private static boolean isPlural(String word1, String word2) {
         ArrayList<LinkedTreeMap<String, String>> word1request = getRequest(("https://api.datamuse.com/words?md=d&max=1&sp=" + word1));
