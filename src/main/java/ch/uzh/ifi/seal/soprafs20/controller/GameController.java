@@ -53,4 +53,16 @@ public class GameController {
         return DTOMapper.INSTANCE.convertEntityToGameGetDTO(gameService.getGameFromToken(gameToken));
     }
 
+
+    //vote for topic
+    @PutMapping("/game/vote")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public GameGetDTO voteForTopic(@RequestParam String gameToken, @RequestParam Integer topic) {
+
+        Game game = gameService.addVote(gameToken,topic);
+
+        return DTOMapper.INSTANCE.convertEntityToGameGetDTO(game);
+    }
+
 }

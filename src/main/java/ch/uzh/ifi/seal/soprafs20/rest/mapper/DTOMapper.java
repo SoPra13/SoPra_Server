@@ -62,6 +62,7 @@ public interface DTOMapper {
     @Mapping(source = "token", target = "token")
     @Mapping(source = "round", target = "round")
     @Mapping(source = "guesser", target = "guesser")
+    @Mapping(source = "voteList", target = "voteList")
     GameGetDTO convertEntityToGameGetDTO(Game game);
 
 

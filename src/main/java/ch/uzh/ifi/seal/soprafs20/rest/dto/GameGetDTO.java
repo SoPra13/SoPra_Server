@@ -20,6 +20,7 @@ public class GameGetDTO {
     private Integer guesser;
     private List<String> guessList = new ArrayList<String>();
     private List<String> mysteryWords = new ArrayList<String>();
+    private List<Integer> voteList = new ArrayList<>();
     private List<User> playerList = new ArrayList<User>();
     private List<Bot> botList = new ArrayList<>();
 
@@ -44,6 +45,9 @@ public class GameGetDTO {
 
     public List getGuessList() { return guessList; }
     public void setGuessList(ArrayList guessList) { this.guessList = guessList; }
+
+    public List getVoteList() { return voteList; }
+    public void setVoteList(ArrayList voteList) { this.voteList = voteList; }
 
     public List getMysteryWords() { return mysteryWords; }
     public void setMysteryWords(ArrayList mysteryWords) { this.mysteryWords = mysteryWords; }

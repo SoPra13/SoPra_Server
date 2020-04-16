@@ -82,13 +82,18 @@ public class GameService {
         userList.addAll(lobby.getPlayerList());
         List<Bot> botList = new ArrayList<>();
         botList.addAll(lobby.getBotList());
+        List<Integer> voteList = new ArrayList<>();
+        for(int a = 0; a<5; a++){
+            voteList.add(0);
+        }
 
         newGame.setBotList(botList);
         newGame.setPlayerList(userList);
         newGame.setToken(lobby.getToken());
         newGame.setRound(1);
         newGame.setVersion(1);
-        newGame.setGuesser(0);
+        newGame.setVoteList(voteList);
+        newGame.setGuesser(new Random().nextInt(userList.size()));
         newGame.setMysteryWords(WordFileHandler.getMysteryWords());
 
         // saves the given entity but data is only persisted in the database once flush() is called
@@ -110,6 +115,20 @@ public class GameService {
 
         log.debug("Created Information for Lobby: {}", newGame);
         return newGame;
+    }
+
+
+    public Game addVote(String gameToken, Integer vote){
+
+        if (vote > 5)throw new ResponseStatusException(HttpStatus.NOT_FOUND, "int has to be <5");
+
+        Game game = gameRepository.findByToken(gameToken);
+        List voteList = game.getVoteList();
+        Integer votes = (Integer) voteList.get(vote);
+        voteList.set(vote,votes+=1);
+        game.setVoteList(voteList);
+        return game;
+
     }
 
 }

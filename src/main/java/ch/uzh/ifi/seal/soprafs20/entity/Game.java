@@ -37,6 +37,9 @@ public class Game implements Serializable {
     @ElementCollection
     private List<String> mysteryWords = new ArrayList<String>();
 
+    @ElementCollection
+    private List<Integer> voteList = new ArrayList<>();
+
     @OneToMany(mappedBy = "game")
     @JsonBackReference
     private List<User> playerList = new ArrayList<User>();
@@ -70,11 +73,17 @@ public class Game implements Serializable {
 
     public void setRound(Integer round) {this.round = round;}
 
-   // public List getGuessList() { return guessList; }
+    public List getGuessList() { return guessList; }
 
-   // public void setGuessList(ArrayList guessList) {
-      //  this.guessList = guessList;
-   // }
+    public void setGuessList(ArrayList guessList) {
+       this.guessList = guessList;
+    }
+
+    public List getVoteList() { return voteList;}
+
+    public void setVoteList(List voteList) {
+        this.voteList = voteList;
+    }
 
      public List getMysteryWords() { return mysteryWords; }
 
@@ -82,21 +91,21 @@ public class Game implements Serializable {
      this.mysteryWords = mysteryWords;
      }
 
-    public List getPlayerList() {
+     public List getPlayerList() {
         return playerList;
-    }
+     }
 
-    public void setPlayerList(List playerList) {
-        this.playerList = playerList;
-    }
+     public void setPlayerList(List playerList) {
+         this.playerList = playerList;
+     }
 
-    public List getBotList() {
+     public List getBotList() {
         return botList;
-    }
+     }
 
-    public void setBotList(List botList) {
+     public void setBotList(List botList) {
         this.botList = botList;
-    }
+     }
 
 
 }
