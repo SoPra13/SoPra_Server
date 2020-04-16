@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs20.entity;
 
+import ch.uzh.ifi.seal.soprafs20.constant.Difficulty;
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -16,38 +17,25 @@ import java.io.Serializable;
  * - unique = true -> this value must be unqiue across the database -> composes the primary key
  */
 @Entity
-@Table(name = "USER")
+@Table(name = "BOT")
 
-public class User implements Serializable{
+public class Bot implements Serializable{
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String username;
-
     @Column(nullable = false)
-    private String password;
+    private String botname;
+
 
     @Column(nullable = false, unique = true)
     private String token;
 
     @Column(nullable = false)
-    private UserStatus status;
+    private Difficulty difficulty;
 
-    @Column
-    private Integer currentPosition;
-
-    @Column
-    private Boolean unityReady;
-
-    @Column
-    private Boolean lobbyReady;
-
-    @Column(nullable = true)
-    private Boolean darkMode;
 
     @Column(nullable = true)
     private Color color;
@@ -70,30 +58,6 @@ public class User implements Serializable{
         return color;
     }
 
-    public void setUnityReady(boolean unityReady) {
-        this.unityReady = unityReady;
-    }
-
-    public Boolean isUnityReady() {
-        return unityReady;
-    }
-
-    public void setLobbyReady(boolean lobbyReady) {
-        this.lobbyReady = lobbyReady;
-    }
-
-    public Boolean isLobbyReady() {
-        return lobbyReady;
-    }
-
-    public void setDarkMode(boolean darkMode) {
-        this.darkMode = darkMode;
-    }
-
-    public Boolean isDarkMode() {
-        return darkMode;
-    }
-
     public Long getId() {
         return id;
     }
@@ -102,24 +66,12 @@ public class User implements Serializable{
         this.id = id;
     }
 
-    public Integer getCurrentPosition() {return  currentPosition;}
-
-    public void setCurrentPosition(Integer position){ this.currentPosition = position;}
-
-    public String getPassword() {
-        return password;
+    public String getBotname() {
+        return botname;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public void setBotname(String botname) {
+        this.botname = botname;
     }
 
     public String getToken() {
@@ -130,12 +82,12 @@ public class User implements Serializable{
         this.token = token;
     }
 
-    public UserStatus getStatus() {
-        return status;
+    public Difficulty getDifficulty() {
+        return difficulty;
     }
 
-    public void setStatus(UserStatus status) {
-        this.status = status;
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
     }
 
     @JsonIgnore

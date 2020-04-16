@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs20.service;
 
 import ch.uzh.ifi.seal.soprafs20.constant.LobbyStatus;
+import ch.uzh.ifi.seal.soprafs20.entity.Bot;
 import ch.uzh.ifi.seal.soprafs20.repository.LobbyRepository;
 import ch.uzh.ifi.seal.soprafs20.entity.Lobby;
 import ch.uzh.ifi.seal.soprafs20.entity.User;
@@ -13,10 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Set;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * User Service
@@ -28,14 +26,15 @@ import java.util.UUID;
 public class LobbyService {
 
     private final UserService userService;
-
+    private  final BotService botService;
     private final Logger log = LoggerFactory.getLogger(LobbyService.class);
     private final LobbyRepository lobbyRepository;
 
 
     @Autowired
-    public LobbyService(UserService userService, @Qualifier("lobbyRepository") LobbyRepository lobbyRepository) {
+    public LobbyService(UserService userService, BotService botService, @Qualifier("lobbyRepository") LobbyRepository lobbyRepository) {
         this.userService = userService;
+        this.botService = botService;
         this.lobbyRepository = lobbyRepository;
     }
 
@@ -53,12 +52,14 @@ public class LobbyService {
         if (lobbyByToken == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, baseErrorMessage);
         }
+
         return lobbyByToken;
     }
 
+    //creates new Lobby
     public Lobby createLobby(Lobby newLobby, String token) {
-        //add values to lobby
-        Set<User> userList = new HashSet<User>();
+
+        ArrayList<User> userList = new ArrayList<User>();
         User user = userService.getUserFromToken(token);
         userList.add(user);
         newLobby.setToken(UUID.randomUUID().toString());
@@ -69,6 +70,7 @@ public class LobbyService {
 
         // saves the given entity but data is only persisted in the database once flush() is called
         newLobby = lobbyRepository.save(newLobby);
+        user.setLobby(newLobby);
         lobbyRepository.flush();
 
         log.debug("Created Information for Lobby: {}", newLobby);
@@ -89,9 +91,10 @@ public class LobbyService {
         Lobby lobbyToAdd = lobbyRepository.findByToken(lToken);
 
         // add user to lobby
-        Set list = lobbyToAdd.getPlayerList();
+        List list = lobbyToAdd.getPlayerList();
         list.add(userToAdd);
-        lobbyToAdd.setNumberOfPlayers(list.size());
+        lobbyToAdd.setNumberOfPlayers(list.size()+lobbyToAdd.getBotList().size());
+        userToAdd.setLobby(lobbyToAdd);
         return lobbyToAdd;
     }
 
@@ -109,10 +112,53 @@ public class LobbyService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, baseErrorMessage);
         }
 
-        // add user to lobby
-        Set list = lobbyToRemove.getPlayerList();
+        // remove user from lobby
+        List list = lobbyToRemove.getPlayerList();
         list.remove(userToRemove);
-        lobbyToRemove.setNumberOfPlayers(list.size());
+        lobbyToRemove.setPlayerList(list);
+        lobbyToRemove.setNumberOfPlayers(list.size()+lobbyToRemove.getBotList().size());
+        userToRemove.setLobby(null);
+        userToRemove.setLobbyReady(false);
+        return lobbyToRemove;
+    }
+
+
+    //add bot to Lobby
+    public Lobby addBot(String lToken, String difficulty){
+
+        //checks
+        checkLobbyExists(lToken);
+        checkLobbyFull(lToken);
+
+        //get lobby & user
+        Lobby lobbyToAdd = lobbyRepository.findByToken(lToken);
+
+        // add bot to lobby
+        List list = lobbyToAdd.getBotList();
+        Bot bot = botService.createBot(difficulty);
+        list.add(bot);
+        lobbyToAdd.setNumberOfPlayers(list.size()+lobbyToAdd.getPlayerList().size());
+        bot.setLobby(lobbyToAdd);
+        return lobbyToAdd;
+    }
+
+
+    //remove bot from Lobby
+    public Lobby removeBot(String lToken, String bToken){
+
+        //checks
+        checkLobbyExists(lToken);
+
+        //get lobby & bot
+        Bot botToRemove = botService.getBotFromToken(bToken);
+        Lobby lobbyToRemove = lobbyRepository.findByToken(lToken);
+
+        // remove bot from lobby
+        List list = lobbyToRemove.getBotList();
+        list.remove(botToRemove);
+        lobbyToRemove.setBotList(list);
+        lobbyToRemove.setNumberOfPlayers(list.size()+lobbyToRemove.getPlayerList().size());
+        botToRemove.setLobby(null);
         return lobbyToRemove;
     }
 
@@ -122,7 +168,7 @@ public class LobbyService {
 
         Lobby lobbyToAdd = lobbyRepository.findByToken(lToken);
 
-        Set<User> users = lobbyToAdd.getPlayerList();
+        List<User> users = lobbyToAdd.getPlayerList();
 
         for(User user : users){
             if(user.getToken().equals(uToken)){
@@ -153,6 +199,21 @@ public class LobbyService {
         if (lobby == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, baseErrorMessage);
         }
+    }
+
+
+    //set player as ready
+    public void setPlayerReady(String lobbyToken, String userToken){
+
+        String baseErrorMessage = "Could not set player ready";
+        User user = userService.getUserFromToken(userToken);
+
+        if(user.getLobby().getToken().equals(lobbyToken)){
+            user.setLobbyReady(true);
+        }else{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, baseErrorMessage);
+        }
+
     }
 
     /**

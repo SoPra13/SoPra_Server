@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs20.rest.dto;
 
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
+import ch.uzh.ifi.seal.soprafs20.entity.Lobby;
 
 public class UserGetDTO {
 
@@ -9,6 +10,9 @@ public class UserGetDTO {
     private String username;
     private String token;
     private UserStatus status;
+    private Lobby lobby;
+    private Boolean unityReady;
+    private Boolean lobbyReady;
 
     public Long getId() {
         return id;
@@ -48,5 +52,29 @@ public class UserGetDTO {
 
     public void setStatus(UserStatus status) {
         this.status = status;
+    }
+
+    public Lobby getLobby() {
+        return lobby;
+    }
+
+    public void setLobby(Lobby lobby) {
+        this.lobby = lobby;
+    }
+
+    public void setUnityReady(boolean unityReady) {
+        this.unityReady = unityReady;
+    }
+
+    public Boolean isUnityReady() {
+        return unityReady;
+    }
+
+    public void setLobbyReady(boolean lobbyReady) {
+        this.lobbyReady = lobbyReady;
+    }
+
+    public Boolean isLobbyReady() {
+        return lobbyReady;
     }
 }
