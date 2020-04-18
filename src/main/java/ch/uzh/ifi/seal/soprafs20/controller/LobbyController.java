@@ -1,13 +1,8 @@
 package ch.uzh.ifi.seal.soprafs20.controller;
-import ch.uzh.ifi.seal.soprafs20.constant.LobbyStatus;
 import ch.uzh.ifi.seal.soprafs20.constant.LobbyType;
 import ch.uzh.ifi.seal.soprafs20.entity.Lobby;
-import ch.uzh.ifi.seal.soprafs20.entity.User;
-import ch.uzh.ifi.seal.soprafs20.repository.LobbyRepository;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.GameGetDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.LobbyGetDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.LobbyPostDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.UserGetDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.mapper.DTOMapper;
 import ch.uzh.ifi.seal.soprafs20.service.GameService;
 import ch.uzh.ifi.seal.soprafs20.service.LobbyService;
@@ -82,10 +77,12 @@ public class LobbyController {
     @PutMapping("/lobby/{token}/game")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public void startGame(@PathVariable String token) {
+    public String startGame(@PathVariable String token) {
 
        Lobby lobby = lobbyService.getLobbyFromToken(token);
        gameService.createGame(lobby, token);
+
+       return token;
 
 
     }
