@@ -7,7 +7,6 @@ import ch.uzh.ifi.seal.soprafs20.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -18,15 +17,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Collections;
-import java.util.List;
-
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
@@ -117,7 +111,7 @@ public class UserControllerTest {
 
 
     @Test
-    public void post_login_correct() throws Exception {
+    public void put_login_correct() throws Exception {
         UserPostDTO userPostDTO = new UserPostDTO();
         userPostDTO.setUsername("testusername");
         userPostDTO.setPassword("testpassword");
@@ -126,8 +120,8 @@ public class UserControllerTest {
         given(userService.LoginUser(Mockito.any())).willReturn("testtoken");
 
 
-        MockHttpServletRequestBuilder postRequest = post("/login").contentType(MediaType.APPLICATION_JSON).content(asJsonString(userPostDTO));
-        mockMvc.perform(postRequest).andExpect(status().isOk()).andExpect(content().string("testtoken"));
+        MockHttpServletRequestBuilder putRequest = put("/login").contentType(MediaType.APPLICATION_JSON).content(asJsonString(userPostDTO));
+        mockMvc.perform(putRequest).andExpect(status().isOk()).andExpect(content().string("testtoken"));
     }
 
     @Test
@@ -139,8 +133,8 @@ public class UserControllerTest {
         given(userService.LoginUser(Mockito.any())).willThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Login unsuccessful."));
 
 
-        MockHttpServletRequestBuilder postRequest = post("/login").contentType(MediaType.APPLICATION_JSON).content(asJsonString(userPostDTO));
-        mockMvc.perform(postRequest).andExpect(status().isUnauthorized()).andExpect(status().reason("Login unsuccessful."));
+        MockHttpServletRequestBuilder putRequest = put("/login").contentType(MediaType.APPLICATION_JSON).content(asJsonString(userPostDTO));
+        mockMvc.perform(putRequest).andExpect(status().isUnauthorized()).andExpect(status().reason("Login unsuccessful."));
     }
 
 
