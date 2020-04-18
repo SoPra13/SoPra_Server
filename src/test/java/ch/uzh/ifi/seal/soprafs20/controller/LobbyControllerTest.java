@@ -52,7 +52,7 @@ public class LobbyControllerTest {
 
     private Lobby dummyLobby() {
         Lobby lobby = new Lobby();
-        lobby.setLobbyName("testlobbyname");
+        lobby.setLobbyname("testlobbyname");
         lobby.setPassword("testpassword");
         lobby.setLobbyState(LobbyStatus.OPEN);
         lobby.setToken("testtoken");
@@ -88,7 +88,7 @@ public class LobbyControllerTest {
         MockHttpServletRequestBuilder postRequest = post("/lobby").contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(lobbyPostDTO));
         mockMvc.perform(postRequest).andExpect(status().isCreated())
-                .andExpect(jsonPath("$.lobbyname", is(lobby.getLobbyName())))
+                .andExpect(jsonPath("$.lobbyname", is(lobby.getLobbyname())))
                 .andExpect(jsonPath("$.id", is(lobby.getId().intValue())))
                 .andExpect(jsonPath("$.password", is(lobby.getPassword())))
                 .andExpect(jsonPath("$.token", is(lobby.getToken())))
@@ -124,7 +124,7 @@ public class LobbyControllerTest {
         lobbies.add(lobby1);
         lobbies.add(lobby2);
 
-        List<LobbyGetDTO> result = new ArrayList<LobbyGetDTO>();
+        List<LobbyGetDTO> result = new ArrayList<>();
         result.add(DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby2));
 
         given(lobbyService.getLobbies()).willReturn(lobbies);
@@ -174,7 +174,7 @@ public class LobbyControllerTest {
         MockHttpServletRequestBuilder getRequest = get("/lobby?token=testtoken")
                 .contentType(MediaType.APPLICATION_JSON);
         mockMvc.perform(getRequest).andExpect(status().isOk())
-                .andExpect(jsonPath("$.lobbyName", is(lobby.getLobbyName())))
+                .andExpect(jsonPath("$.lobbyName", is(lobby.getLobbyname())))
                 .andExpect(jsonPath("$.id", is(lobby.getId().intValue())))
                 .andExpect(jsonPath("$.password", is(lobby.getPassword())))
                 .andExpect(jsonPath("$.token", is(lobby.getToken())))
@@ -205,7 +205,7 @@ public class LobbyControllerTest {
 
         MockHttpServletRequestBuilder putRequest = put("/lobby?lobbyToken=testtoken&userToken=testtokenUser").contentType(MediaType.APPLICATION_JSON);
         mockMvc.perform(putRequest).andExpect(status().isCreated())
-                .andExpect(jsonPath("$.lobbyname", is(lobby.getLobbyName())))
+                .andExpect(jsonPath("$.lobbyname", is(lobby.getLobbyname())))
                 .andExpect(jsonPath("$.numberOfPlayers", is(1)))
                 .andExpect(jsonPath("$.id", is(lobby.getId().intValue())));
     }
