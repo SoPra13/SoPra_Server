@@ -48,7 +48,7 @@ public class LobbyService {
 
         String baseErrorMessage = "No matching Lobby found";
         //check if exists
-        Lobby lobbyByToken = this.lobbyRepository.findByToken(token);
+        Lobby lobbyByToken = this.lobbyRepository.findByLobbyToken(token);
         if (lobbyByToken == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, baseErrorMessage);
         }
@@ -62,7 +62,7 @@ public class LobbyService {
         ArrayList<User> userList = new ArrayList<User>();
         User user = userService.getUserFromToken(token);
         userList.add(user);
-        newLobby.setToken(UUID.randomUUID().toString());
+        newLobby.setLobbyToken(UUID.randomUUID().toString());
         newLobby.setNumberOfPlayers(1);
         newLobby.setAdminToken(user.getToken());
         newLobby.setLobbyState(LobbyStatus.OPEN);
@@ -88,7 +88,7 @@ public class LobbyService {
 
         //get lobby & user
         User userToAdd = userService.getUserFromToken(uToken);
-        Lobby lobbyToAdd = lobbyRepository.findByToken(lToken);
+        Lobby lobbyToAdd = lobbyRepository.findByLobbyToken(lToken);
 
         // add user to lobby
         List list = lobbyToAdd.getPlayerList();
@@ -106,7 +106,7 @@ public class LobbyService {
 
         //get lobby & user
         User userToRemove = userService.getUserFromToken(uToken);
-        Lobby lobbyToRemove = lobbyRepository.findByToken(lToken);
+        Lobby lobbyToRemove = lobbyRepository.findByLobbyToken(lToken);
         if(userToRemove.getToken().equals(lobbyToRemove.getAdminToken())){
             String baseErrorMessage = "Cant remove admin from lobby";
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, baseErrorMessage);
@@ -131,7 +131,7 @@ public class LobbyService {
         checkLobbyFull(lToken);
 
         //get lobby & user
-        Lobby lobbyToAdd = lobbyRepository.findByToken(lToken);
+        Lobby lobbyToAdd = lobbyRepository.findByLobbyToken(lToken);
 
         // add bot to lobby
         List list = lobbyToAdd.getBotList();
@@ -151,7 +151,7 @@ public class LobbyService {
 
         //get lobby & bot
         Bot botToRemove = botService.getBotFromToken(bToken);
-        Lobby lobbyToRemove = lobbyRepository.findByToken(lToken);
+        Lobby lobbyToRemove = lobbyRepository.findByLobbyToken(lToken);
 
         // remove bot from lobby
         List list = lobbyToRemove.getBotList();
@@ -166,7 +166,7 @@ public class LobbyService {
     private void checkLobbyTokens(String lToken, String uToken){
         String baseErrorMessage = "User is already in Lobby";
 
-        Lobby lobbyToAdd = lobbyRepository.findByToken(lToken);
+        Lobby lobbyToAdd = lobbyRepository.findByLobbyToken(lToken);
 
         List<User> users = lobbyToAdd.getPlayerList();
 
@@ -182,7 +182,7 @@ public class LobbyService {
     private void checkLobbyFull(String lToken){
 
         String baseErrorMessage = "Lobby is full";
-        Lobby lobbyToAdd = lobbyRepository.findByToken(lToken);
+        Lobby lobbyToAdd = lobbyRepository.findByLobbyToken(lToken);
 
             if(lobbyToAdd.getNumberOfPlayers()>=7){
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, baseErrorMessage);
@@ -194,7 +194,7 @@ public class LobbyService {
     private void checkLobbyExists(String token){
         String baseErrorMessage = "Lobby not found";
 
-        Lobby lobby = lobbyRepository.findByToken(token);
+        Lobby lobby = lobbyRepository.findByLobbyToken(token);
 
         if (lobby == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, baseErrorMessage);
@@ -208,7 +208,7 @@ public class LobbyService {
         String baseErrorMessage = "Could not set player ready";
         User user = userService.getUserFromToken(userToken);
 
-        if(user.getLobby().getToken().equals(lobbyToken)){
+        if(user.getLobby().getLobbyToken().equals(lobbyToken)){
             user.setLobbyReady(true);
         }else{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, baseErrorMessage);

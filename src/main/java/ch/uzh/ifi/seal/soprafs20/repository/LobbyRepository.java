@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository("lobbyRepository")
 public interface LobbyRepository extends JpaRepository<Lobby, Long> {
-    Lobby findByToken(String token);
+    Lobby findByLobbyToken(String lobbyToken);
 }

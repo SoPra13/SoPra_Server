@@ -47,7 +47,7 @@ public interface DTOMapper {
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "lobbyname", target = "lobbyname")
-    @Mapping(source = "token", target = "token")
+    @Mapping(source = "lobbyToken", target = "lobbyToken")
     @Mapping(source = "lobbyState", target = "lobbyState")
     @Mapping(source = "lobbyType", target = "lobbyType")
     @Mapping(source = "numberOfPlayers", target = "numberOfPlayers")

@@ -12,7 +12,7 @@ public class LobbyGetDTO {
 
     private Long id;
     private String lobbyname;
-    private String token;
+    private String lobbyToken;
     private LobbyStatus lobbyState;
     private LobbyType lobbyType;
     private Integer numberOfPlayers;
@@ -45,12 +45,12 @@ public class LobbyGetDTO {
         this.lobbyname = lobbyname;
     }
 
-    public String getToken() {
-        return token;
+    public String getLobbyToken() {
+        return lobbyToken;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setLobbyToken(String lobbyToken) {
+        this.lobbyToken = lobbyToken;
     }
 
     public LobbyStatus getLobbyState() {
