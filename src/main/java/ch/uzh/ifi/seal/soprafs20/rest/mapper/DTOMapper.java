@@ -1,11 +1,11 @@
 package ch.uzh.ifi.seal.soprafs20.rest.mapper;
 
-import ch.uzh.ifi.seal.soprafs20.constant.LobbyStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.Game;
-import ch.uzh.ifi.seal.soprafs20.entity.User;
 import ch.uzh.ifi.seal.soprafs20.entity.Lobby;
+import ch.uzh.ifi.seal.soprafs20.entity.User;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.*;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -42,12 +42,10 @@ public interface DTOMapper {
     @Mapping(source = "lobby", target = "lobby")
     UserGetDTO convertEntityToUserGetDTO(User user);
 
-    @Mapping(source = "password", target = "password")
     @Mapping(source = "lobbyname", target = "lobbyname")
     Lobby convertLobbyPostDTOtoEntity(LobbyPostDTO lobbyPostDTO);
 
     @Mapping(source = "id", target = "id")
-    @Mapping(source = "password", target = "password")
     @Mapping(source = "lobbyname", target = "lobbyname")
     @Mapping(source = "token", target = "token")
     @Mapping(source = "lobbyState", target = "lobbyState")

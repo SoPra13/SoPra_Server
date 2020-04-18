@@ -3,18 +3,14 @@ package ch.uzh.ifi.seal.soprafs20.rest.dto;
 import ch.uzh.ifi.seal.soprafs20.constant.LobbyStatus;
 import ch.uzh.ifi.seal.soprafs20.constant.LobbyType;
 import ch.uzh.ifi.seal.soprafs20.entity.Bot;
-import ch.uzh.ifi.seal.soprafs20.entity.Lobby;
 import ch.uzh.ifi.seal.soprafs20.entity.User;
-import org.hibernate.mapping.Array;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class LobbyGetDTO {
 
     private Long id;
-    private String password;
     private String lobbyname;
     private String token;
     private LobbyStatus lobbyState;
@@ -31,14 +27,6 @@ public class LobbyGetDTO {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getAdminToken() {

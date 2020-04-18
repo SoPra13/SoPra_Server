@@ -1,11 +1,8 @@
 package ch.uzh.ifi.seal.soprafs20.rest.dto;
 
 import ch.uzh.ifi.seal.soprafs20.constant.LobbyType;
-import ch.uzh.ifi.seal.soprafs20.entity.Lobby;
 
 public class LobbyPostDTO {
-
-    private String password;
 
     private String lobbyname;
 
@@ -13,14 +10,6 @@ public class LobbyPostDTO {
 
     private LobbyType lobbyType;
 
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public String getLobbyname() {
         return lobbyname;

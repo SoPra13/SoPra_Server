@@ -4,12 +4,9 @@ import ch.uzh.ifi.seal.soprafs20.constant.LobbyStatus;
 import ch.uzh.ifi.seal.soprafs20.constant.LobbyType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 
@@ -24,9 +21,6 @@ public class Lobby implements Serializable {
 
     @Column(nullable = false, unique = true)
     private String lobbyname;
-
-    @Column(nullable = false)
-    private String password;
 
     @Column(nullable = false, unique = true)
     private String token;
@@ -57,14 +51,6 @@ public class Lobby implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getAdminToken() {
