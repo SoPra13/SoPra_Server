@@ -41,6 +41,8 @@ public class UserService {
         newUser.setToken(UUID.randomUUID().toString());
         newUser.setStatus(UserStatus.OFFLINE);
         newUser.setUnityReady(false);
+        newUser.setLobbyReady(false);
+        newUser.setDarkMode(false);
         checkIfUserExists(newUser);
 
         // saves the given entity but data is only persisted in the database once flush() is called
