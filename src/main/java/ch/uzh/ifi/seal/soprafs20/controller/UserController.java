@@ -62,7 +62,7 @@ public class UserController {
     }
 
     //login new user
-    @PostMapping("/login")
+    @PutMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public String loginUser(@RequestBody UserPostDTO userPostDTO) {
