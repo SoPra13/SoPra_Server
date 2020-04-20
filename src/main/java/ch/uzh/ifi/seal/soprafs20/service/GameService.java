@@ -59,7 +59,7 @@ public class GameService {
     }
 
 
-    //set player as ready
+    //set player as ready, called when unity loaded
     public void setPlayerReady(String gameToken, String userToken){
 
         String baseErrorMessage = "Could not set player ready";
@@ -107,6 +107,7 @@ public class GameService {
             position +=1;
         }
 
+        //update game of bot
         for(Bot bot : botList){
             bot.setGame(newGame);
         }
@@ -118,6 +119,7 @@ public class GameService {
     }
 
 
+    //vote for topic, adds one to index of topic voted for
     public Game addVote(String gameToken, Integer vote){
 
         if (vote > 5)throw new ResponseStatusException(HttpStatus.NOT_FOUND, "int has to be <5");
