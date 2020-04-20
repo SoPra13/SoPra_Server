@@ -22,4 +22,12 @@ public class Chat {
     public List<Message> getMessages() {
         return messages;
     }
+
+    public void setLobbyToken(String lobbyToken) {
+        this.lobbyToken = lobbyToken;
+    }
+
+    public String getLobbyToken() {
+        return lobbyToken;
+    }
 }
