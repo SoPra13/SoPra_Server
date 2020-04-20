@@ -86,9 +86,7 @@ public class UserControllerTest {
     public void get_user_correct() throws Exception {
         User user = dummyUser();
 
-
         given(userService.getUserFromToken("testtoken")).willReturn(user);
-
 
         MockHttpServletRequestBuilder getRequest = get("/user?token=testtoken")
                 .contentType(MediaType.APPLICATION_JSON);
@@ -126,7 +124,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void post_login_failed() throws Exception {
+    public void put_login_failed() throws Exception {
         UserPostDTO userPostDTO = new UserPostDTO();
         userPostDTO.setUsername("test");
         userPostDTO.setPassword("test");

@@ -9,6 +9,7 @@ import ch.uzh.ifi.seal.soprafs20.rest.dto.LobbyGetDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.LobbyPostDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.mapper.DTOMapper;
 import ch.uzh.ifi.seal.soprafs20.service.LobbyService;
+import ch.uzh.ifi.seal.soprafs20.service.GameService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.validator.constraints.br.TituloEleitoral;
@@ -53,9 +54,9 @@ public class LobbyControllerTest {
     private Lobby dummyLobby() {
         Lobby lobby = new Lobby();
         lobby.setLobbyname("testlobbyname");
-        lobby.setPassword("testpassword");
+//        lobby.setPassword("testpassword");
         lobby.setLobbyState(LobbyStatus.OPEN);
-        lobby.setToken("testtoken");
+//        lobby.setToken("testtoken");
         lobby.setAdminToken("admin");
         lobby.setId(1L);
         return lobby;
@@ -81,7 +82,7 @@ public class LobbyControllerTest {
 
         LobbyPostDTO lobbyPostDTO = new LobbyPostDTO();
         lobbyPostDTO.setAdminToken(user.getToken());
-        lobbyPostDTO.setPassword("password");
+//        lobbyPostDTO.setPassword("password");
         lobbyPostDTO.setLobbyname("lobbyname");
         lobbyPostDTO.setLobbyType(LobbyType.PUBLIC);
 
@@ -90,8 +91,8 @@ public class LobbyControllerTest {
         mockMvc.perform(postRequest).andExpect(status().isCreated())
                 .andExpect(jsonPath("$.lobbyname", is(lobby.getLobbyname())))
                 .andExpect(jsonPath("$.id", is(lobby.getId().intValue())))
-                .andExpect(jsonPath("$.password", is(lobby.getPassword())))
-                .andExpect(jsonPath("$.token", is(lobby.getToken())))
+//                .andExpect(jsonPath("$.password", is(lobby.getPassword())))
+//                .andExpect(jsonPath("$.token", is(lobby.getToken())))
                 .andExpect(jsonPath("$.adminToken", is(user.getToken())));
     }
 
@@ -176,8 +177,8 @@ public class LobbyControllerTest {
         mockMvc.perform(getRequest).andExpect(status().isOk())
                 .andExpect(jsonPath("$.lobbyName", is(lobby.getLobbyname())))
                 .andExpect(jsonPath("$.id", is(lobby.getId().intValue())))
-                .andExpect(jsonPath("$.password", is(lobby.getPassword())))
-                .andExpect(jsonPath("$.token", is(lobby.getToken())))
+//                .andExpect(jsonPath("$.password", is(lobby.getPassword())))
+//                .andExpect(jsonPath("$.token", is(lobby.getToken())))
                 .andExpect(jsonPath("$.status", is(lobby.getLobbyState().toString())));
     }
 

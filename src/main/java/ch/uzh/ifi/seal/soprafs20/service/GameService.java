@@ -35,8 +35,8 @@ public class GameService {
 
 
     @Autowired
-    public GameService(UserService userService, @Qualifier("gameRepository") GameRepository gameRespository) {
-        this.gameRepository = gameRespository;
+    public GameService(UserService userService, @Qualifier("gameRepository") GameRepository gameRepository) {
+        this.gameRepository = gameRepository;
         this.userService = userService;
     }
 
@@ -120,7 +120,7 @@ public class GameService {
 
     public Game addVote(String gameToken, Integer vote){
 
-        if (vote > 5)throw new ResponseStatusException(HttpStatus.NOT_FOUND, "int has to be <5");
+        if (vote < 1 || vote > 5)throw new ResponseStatusException(HttpStatus.NOT_FOUND, "int has to be [1:5]");
 
         Game game = gameRepository.findByToken(gameToken);
         List voteList = game.getVoteList();
