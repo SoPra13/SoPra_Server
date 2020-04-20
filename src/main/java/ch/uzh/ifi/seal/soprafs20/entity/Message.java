@@ -1,4 +1,4 @@
-package ch.uzh.ifi.seal.soprafs20.chat;
+package ch.uzh.ifi.seal.soprafs20.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
