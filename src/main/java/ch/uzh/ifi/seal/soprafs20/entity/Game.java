@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.List;
 
 
@@ -30,6 +29,9 @@ public class Game implements Serializable {
 
     @Column(nullable = false)
     private Integer guesser;
+
+    @Column
+    private String topic;
 
     @ElementCollection
     private List<String> guessList = new ArrayList<String>();
@@ -67,6 +69,14 @@ public class Game implements Serializable {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
     }
 
     public Integer getRound() {return round;}

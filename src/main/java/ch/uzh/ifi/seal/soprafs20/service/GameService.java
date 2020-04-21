@@ -29,15 +29,17 @@ import java.util.Random;
 public class GameService {
 
     private final UserService userService;
+    private final LobbyService lobbyService;
 
     private final Logger log = LoggerFactory.getLogger(GameService.class);
     private final GameRepository gameRepository;
 
 
     @Autowired
-    public GameService(UserService userService, @Qualifier("gameRepository") GameRepository gameRespository) {
+    public GameService(UserService userService, LobbyService lobbyService, @Qualifier("gameRepository") GameRepository gameRespository) {
         this.gameRepository = gameRespository;
         this.userService = userService;
+        this.lobbyService = lobbyService;
     }
 
 
@@ -120,16 +122,45 @@ public class GameService {
 
 
     //vote for topic, adds one to index of topic voted for
-    public Game addVote(String gameToken, Integer vote){
+    public Game addVote(String gameToken, String userToken, Integer vote){
 
         if (vote > 5)throw new ResponseStatusException(HttpStatus.NOT_FOUND, "int has to be <5");
 
         Game game = gameRepository.findByToken(gameToken);
+        User user = userService.getUserFromToken(userToken);
+
         List voteList = game.getVoteList();
         Integer votes = (Integer) voteList.get(vote);
         voteList.set(vote,votes+=1);
         game.setVoteList(voteList);
+        user.setVoted(true);
         return game;
+
+    }
+
+    public Game setTopic(String gameToken, String topic){
+        Game game = gameRepository.findByToken(gameToken);
+        game.setTopic(topic);
+        return game;
+    }
+
+    public void removeUser(String userToken, String gameToken){
+
+        Game game = gameRepository.findByToken(gameToken);
+        User user = userService.getUserFromToken(userToken);
+        Lobby lobby = lobbyService.getLobbyFromToken(gameToken);
+
+        List oldUser = game.getPlayerList();
+        oldUser.remove(user);
+        if(oldUser.size()==0){
+            gameRepository.delete(game);
+            lobbyService.deleteLobby(lobby);
+            //todo: delete all bots
+            return;
+        }
+        user.setLobby(null);
+        user.setGame(null);
+        game.setPlayerList(oldUser);
 
     }
 

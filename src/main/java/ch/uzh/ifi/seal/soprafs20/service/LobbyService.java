@@ -201,6 +201,10 @@ public class LobbyService {
         }
     }
 
+    public void deleteLobby(Lobby lobby){
+        lobbyRepository.delete(lobby);
+    }
+
 
     //set player as ready
     public void setPlayerReady(String lobbyToken, String userToken){

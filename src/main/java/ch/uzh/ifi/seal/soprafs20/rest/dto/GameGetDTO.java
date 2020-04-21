@@ -3,13 +3,8 @@ package ch.uzh.ifi.seal.soprafs20.rest.dto;
 import ch.uzh.ifi.seal.soprafs20.entity.Bot;
 import ch.uzh.ifi.seal.soprafs20.entity.User;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.ManyToMany;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class GameGetDTO {
 
@@ -18,6 +13,7 @@ public class GameGetDTO {
     private String token;
     private Integer round;
     private Integer guesser;
+    private String topic;
     private List<String> guessList = new ArrayList<String>();
     private List<String> mysteryWords = new ArrayList<String>();
     private List<Integer> voteList = new ArrayList<>();
@@ -38,6 +34,14 @@ public class GameGetDTO {
     }
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
     }
 
     public Integer getRound() {return round;}

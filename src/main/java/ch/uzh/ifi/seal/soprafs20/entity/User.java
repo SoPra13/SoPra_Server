@@ -46,10 +46,13 @@ public class User implements Serializable{
     @Column
     private Boolean lobbyReady;
 
-    @Column(nullable = true)
+    @Column
+    private Boolean voted;
+
+    @Column
     private Boolean darkMode;
 
-    @Column(nullable = true)
+    @Column
     private Color color;
 
     @ManyToOne
@@ -84,6 +87,14 @@ public class User implements Serializable{
 
     public Boolean isLobbyReady() {
         return lobbyReady;
+    }
+
+    public void setVoted(boolean voted) {
+        this.voted = voted;
+    }
+
+    public Boolean getVoted() {
+        return voted;
     }
 
     public void setDarkMode(boolean darkMode) {

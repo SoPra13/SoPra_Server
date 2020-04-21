@@ -1,23 +1,11 @@
 package ch.uzh.ifi.seal.soprafs20.controller;
 
-import ch.uzh.ifi.seal.soprafs20.constant.LobbyStatus;
-import ch.uzh.ifi.seal.soprafs20.constant.LobbyType;
 import ch.uzh.ifi.seal.soprafs20.entity.Game;
-import ch.uzh.ifi.seal.soprafs20.entity.Lobby;
-import ch.uzh.ifi.seal.soprafs20.entity.User;
-import ch.uzh.ifi.seal.soprafs20.repository.LobbyRepository;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.GameGetDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.LobbyGetDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.LobbyPostDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.UserGetDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.mapper.DTOMapper;
 import ch.uzh.ifi.seal.soprafs20.service.GameService;
-import ch.uzh.ifi.seal.soprafs20.service.LobbyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 public class GameController {
@@ -58,11 +46,33 @@ public class GameController {
     @PutMapping("/game/vote")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public GameGetDTO voteForTopic(@RequestParam String gameToken, @RequestParam Integer topic) {
+    public GameGetDTO voteForTopic(@RequestParam String gameToken,@RequestParam String userToken, @RequestParam Integer topic) {
 
-        Game game = gameService.addVote(gameToken,topic);
+        Game game = gameService.addVote(gameToken,userToken,topic);
 
         return DTOMapper.INSTANCE.convertEntityToGameGetDTO(game);
+    }
+
+    //Set voted Topic as word
+    @PutMapping(value="/game/topic", params = {"gameToken", "topic"})
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public GameGetDTO setTopic(@RequestParam String gameToken, @RequestParam String topic) {
+
+        //set Topic chosen from voting in unity
+        Game game = gameService.setTopic(gameToken,topic);
+
+        return DTOMapper.INSTANCE.convertEntityToGameGetDTO(game);
+    }
+
+    //Set player in Game ready, called when unity is loaded
+    @DeleteMapping("/game")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void removePlayer(@RequestParam String userToken, @RequestParam String gameToken) {
+
+        gameService.removeUser(userToken,gameToken);
+
     }
 
 }
