@@ -31,11 +31,13 @@ public class ChatService {
 
     private final ChatRepository chatRepository;
     private final MessageRepository messageRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public ChatService(@Qualifier("chatRepository") ChatRepository chatRepository, @Qualifier("messageRepository") MessageRepository messageRepository) {
+    public ChatService(@Qualifier("chatRepository") ChatRepository chatRepository, @Qualifier("messageRepository") MessageRepository messageRepository, @Qualifier("userRepository") UserRepository userRepository) {
         this.chatRepository = chatRepository;
         this.messageRepository = messageRepository;
+        this.userRepository = userRepository;
     }
 
     public void createChat(String lobbyToken) {
@@ -46,6 +48,7 @@ public class ChatService {
     }
 
     public void addMessageToChat(String lobbyToken, Message message) {
+        message.setUsername(userRepository.findByToken(message.getUserToken()).getUsername());
         messageRepository.save(message);
         messageRepository.flush();
         chatRepository.findByLobbyToken(lobbyToken).addMessage(message);

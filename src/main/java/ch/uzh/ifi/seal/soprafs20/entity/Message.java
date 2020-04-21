@@ -17,6 +17,16 @@ public class Message implements Serializable {
     @Column(nullable = false)
     private String message;
 
+    private String userToken;
+
+    public void setUserToken(String userToken) {
+        this.userToken = userToken;
+    }
+
+    public String getUserToken() {
+        return userToken;
+    }
+
     public void setMessage(String message) {
         this.message = message;
     }

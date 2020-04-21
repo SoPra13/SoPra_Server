@@ -2,15 +2,15 @@ package ch.uzh.ifi.seal.soprafs20.rest.dto;
 
 public class ChatPostDTO {
 
-    private String username;
+    private String userToken;
     private String message;
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserToken(String userToken) {
+        this.userToken = userToken;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserToken() {
+        return userToken;
     }
 
     public void setMessage(String message) {
