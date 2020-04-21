@@ -25,7 +25,7 @@ public class Game implements Serializable {
     private String token;
 
     @Column(nullable = false)
-    private Integer round;
+    private Integer currentRound;
 
     @Column(nullable = false)
     private Integer guesser;
@@ -79,9 +79,9 @@ public class Game implements Serializable {
         this.topic = topic;
     }
 
-    public Integer getRound() {return round;}
+    public Integer getCurrentRound() {return currentRound;}
 
-    public void setRound(Integer round) {this.round = round;}
+    public void setCurrentRound(Integer currentRound) {this.currentRound = currentRound;}
 
     public List getGuessList() { return guessList; }
 

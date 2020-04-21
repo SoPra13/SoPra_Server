@@ -92,7 +92,7 @@ public class GameService {
         newGame.setBotList(botList);
         newGame.setPlayerList(userList);
         newGame.setToken(lobby.getLobbyToken());
-        newGame.setRound(1);
+        newGame.setCurrentRound(0);
         newGame.setVersion(1);
         newGame.setVoteList(voteList);
         newGame.setGuesser(new Random().nextInt(userList.size()));

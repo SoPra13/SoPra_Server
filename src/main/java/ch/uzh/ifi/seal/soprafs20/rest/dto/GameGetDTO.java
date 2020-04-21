@@ -11,7 +11,7 @@ public class GameGetDTO {
     private Long id;
     private Integer version;
     private String token;
-    private Integer round;
+    private Integer currentRound;
     private Integer guesser;
     private String topic;
     private List<String> guessList = new ArrayList<String>();
@@ -44,8 +44,8 @@ public class GameGetDTO {
         this.topic = topic;
     }
 
-    public Integer getRound() {return round;}
-    public void setRound(Integer round) {this.round = round;}
+    public Integer getCurrentRound() {return currentRound;}
+    public void setCurrentRound(Integer currentRound) {this.currentRound = currentRound;}
 
     public List getGuessList() { return guessList; }
     public void setGuessList(ArrayList guessList) { this.guessList = guessList; }
