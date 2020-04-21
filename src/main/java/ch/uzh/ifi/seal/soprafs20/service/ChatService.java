@@ -43,12 +43,25 @@ public class ChatService {
     public void createChat(String lobbyToken) {
         Chat chat = new Chat();
         chat.setLobbyToken(lobbyToken);
+        chat.setActive(true);
         chatRepository.save(chat);
         chatRepository.flush();
     }
 
     public void addMessageToChat(String lobbyToken, Message message) {
-        message.setUsername(userRepository.findByToken(message.getUserToken()).getUsername());
+        Chat chat = chatRepository.findByLobbyToken(lobbyToken);
+        if (chat.isActive()) {
+            chat.addMessage(message);
+            message.setUsername(userRepository.findByToken(message.getUserToken()).getUsername());
+            messageRepository.save(message);
+            messageRepository.flush();
+        }
+    }
+
+    public void userJoined(String lobbyToken, String userToken) {
+        Message message = new Message();
+        message.setUsername("EVENTEVENTEVENT");
+        message.setMessage(userRepository.findByToken(userToken).getUsername() + " joined Chat.");
         messageRepository.save(message);
         messageRepository.flush();
         chatRepository.findByLobbyToken(lobbyToken).addMessage(message);
@@ -56,6 +69,14 @@ public class ChatService {
 
     public List<Message> getAllMessagesFromChat(String lobbyToken) {
         return chatRepository.findByLobbyToken(lobbyToken).getMessages();
+    }
+
+    public void setChatActivity(String lobbyToken, Boolean active) {
+        chatRepository.findByLobbyToken(lobbyToken).setActive(active);
+    }
+
+    public boolean isChatActive(String lobbyToken) {
+        return chatRepository.findByLobbyToken(lobbyToken).isActive();
     }
 
 }

@@ -16,6 +16,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.PostConstruct;
+import java.util.Scanner;
 
 @RestController
 @SpringBootApplication
@@ -51,7 +52,5 @@ class init{
     private ChatService chatService;
 
     @PostConstruct
-    private void postConstruct() {
-        chatService.createChat("hihi");
-    }
+    private void postConstruct() { chatService.createChat("hihi"); }
 }

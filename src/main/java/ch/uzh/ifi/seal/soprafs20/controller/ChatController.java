@@ -36,10 +36,33 @@ public class ChatController {
         return chatGetDTOs;
     }
 
+    @GetMapping("/chat/active")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public boolean isChatActive(@RequestParam String lobbytoken) {
+        return chatService.isChatActive(lobbytoken);
+    }
+
     @PostMapping("/chat")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @ResponseBody
     public void addMessage(@RequestParam String lobbytoken, @RequestBody ChatPostDTO chatPostDTO) {
         chatService.addMessageToChat(lobbytoken, DTOMapper.INSTANCE.convertChatPostDTOtoEntity(chatPostDTO));
+    }
+
+    @PostMapping("/chat/join")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseBody
+    public void userJoined(@RequestParam String lobbytoken, @RequestParam String userToken) {
+        chatService.userJoined(lobbytoken, userToken);
+    }
+
+
+
+    @PostMapping("/chat/toggle")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseBody
+    public void toggleChat(@RequestParam String lobbytoken) {
+        chatService.setChatActivity(lobbytoken, !chatService.isChatActive(lobbytoken));
     }
 }

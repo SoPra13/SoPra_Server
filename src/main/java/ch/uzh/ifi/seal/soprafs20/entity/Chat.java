@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs20.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -12,6 +13,9 @@ public class Chat {
     @Id
     private String lobbyToken;
 
+    @Column
+    private boolean active;
+
     @OneToMany()
     private List<Message> messages = new LinkedList<Message>();
 
@@ -21,6 +25,14 @@ public class Chat {
 
     public List<Message> getMessages() {
         return messages;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public void setLobbyToken(String lobbyToken) {
