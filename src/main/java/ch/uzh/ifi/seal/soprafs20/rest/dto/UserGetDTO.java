@@ -15,6 +15,7 @@ public class UserGetDTO {
     private Boolean unityReady;
     private Boolean lobbyReady;
     private Boolean voted;
+    private Boolean gaveClue;
 
     public Long getId() {
         return id;
@@ -86,5 +87,13 @@ public class UserGetDTO {
 
     public Boolean getVoted() {
         return voted;
+    }
+
+    public void setGaveClue(boolean gaveClue) {
+        this.gaveClue = gaveClue;
+    }
+
+    public Boolean getGaveClue() {
+        return gaveClue;
     }
 }

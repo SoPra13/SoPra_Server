@@ -151,8 +151,14 @@ public class GameService {
         Game game = gameRepository.findByToken(gameToken);
         User user = userService.getUserFromToken(userToken);
         Lobby lobby = lobbyService.getLobbyFromToken(gameToken);
-
         List oldUser = game.getPlayerList();
+
+        user.setLobby(null);
+        user.setGame(null);
+        lobby.setPlayerList(oldUser);
+        game.setPlayerList(oldUser);
+
+
         oldUser.remove(user);
         if(oldUser.size()==0){
             gameRepository.delete(game);
@@ -160,9 +166,7 @@ public class GameService {
             //todo: delete all bots
             return;
         }
-        user.setLobby(null);
-        user.setGame(null);
-        game.setPlayerList(oldUser);
+
 
     }
 

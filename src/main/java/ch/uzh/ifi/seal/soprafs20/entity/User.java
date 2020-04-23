@@ -128,6 +128,7 @@ public class User implements Serializable{
 
     public void setCurrentPosition(Integer position){ this.currentPosition = position;}
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
