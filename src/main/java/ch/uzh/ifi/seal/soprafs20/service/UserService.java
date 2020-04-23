@@ -33,6 +33,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    //gigj
+
     public List<User> getUsers() {
         return this.userRepository.findAll();
     }
