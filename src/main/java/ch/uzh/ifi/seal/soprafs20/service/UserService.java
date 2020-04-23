@@ -32,8 +32,7 @@ public class UserService {
     public UserService(@Qualifier("userRepository") UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
-    //gigj
+    
 
     public List<User> getUsers() {
         return this.userRepository.findAll();
