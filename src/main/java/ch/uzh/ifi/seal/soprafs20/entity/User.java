@@ -50,6 +50,9 @@ public class User implements Serializable{
     private Boolean voted;
 
     @Column
+    private Boolean gaveClue;
+
+    @Column
     private Boolean darkMode;
 
     @Column
@@ -87,6 +90,14 @@ public class User implements Serializable{
 
     public Boolean isLobbyReady() {
         return lobbyReady;
+    }
+
+    public void setGaveClue(boolean gaveClue) {
+        this.gaveClue = gaveClue;
+    }
+
+    public Boolean getGaveClue() {
+        return gaveClue;
     }
 
     public void setVoted(boolean voted) {

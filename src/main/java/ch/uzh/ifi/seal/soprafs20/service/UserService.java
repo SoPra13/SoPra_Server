@@ -44,6 +44,7 @@ public class UserService {
         newUser.setLobbyReady(false);
         newUser.setDarkMode(false);
         newUser.setVoted(false);
+        newUser.setGaveClue(false);
         checkIfUserExists(newUser);
 
         // saves the given entity but data is only persisted in the database once flush() is called

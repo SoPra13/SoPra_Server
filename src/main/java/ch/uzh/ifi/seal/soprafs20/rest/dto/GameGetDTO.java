@@ -14,7 +14,8 @@ public class GameGetDTO {
     private Integer currentRound;
     private Integer guesser;
     private String topic;
-    private List<String> guessList = new ArrayList<String>();
+    private Boolean guessCorrect;
+    private List<String> clueList = new ArrayList<String>();
     private List<String> mysteryWords = new ArrayList<String>();
     private List<Integer> voteList = new ArrayList<>();
     private List<User> playerList = new ArrayList<User>();
@@ -47,8 +48,8 @@ public class GameGetDTO {
     public Integer getCurrentRound() {return currentRound;}
     public void setCurrentRound(Integer currentRound) {this.currentRound = currentRound;}
 
-    public List getGuessList() { return guessList; }
-    public void setGuessList(ArrayList guessList) { this.guessList = guessList; }
+    public List getClueList() { return clueList; }
+    public void setClueList(ArrayList clueList) { this.clueList = clueList; }
 
     public List getVoteList() { return voteList; }
     public void setVoteList(ArrayList voteList) { this.voteList = voteList; }
@@ -71,5 +72,9 @@ public class GameGetDTO {
     public void setBotList(List botList) {
         this.botList = botList;
     }
+
+    public Boolean getGuessCorrect() {return guessCorrect;}
+
+    public void setGuessCorrect(Boolean guessCorrect) {this.guessCorrect = guessCorrect;}
 
 }

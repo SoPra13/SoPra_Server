@@ -75,4 +75,28 @@ public class GameController {
 
     }
 
+    //Set voted Topic as word
+    @PutMapping(value="/game/clue", params = {"gameToken", "userToken", "clue"})
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public GameGetDTO addClue(@RequestParam String gameToken,@RequestParam String userToken, @RequestParam String clue) {
+
+        //set Topic chosen from voting in unity
+        Game game = gameService.addClue(userToken,gameToken,clue);
+
+        return DTOMapper.INSTANCE.convertEntityToGameGetDTO(game);
+    }
+
+    //Set voted Topic as word
+    @PutMapping(value="/game/guess", params = {"gameToken", "guess"})
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public GameGetDTO makeGuess(@RequestParam String gameToken, @RequestParam String guess) {
+
+        //set Topic chosen from voting in unity
+        Game game = gameService.makeGuess(gameToken,guess);
+
+        return DTOMapper.INSTANCE.convertEntityToGameGetDTO(game);
+    }
+
 }

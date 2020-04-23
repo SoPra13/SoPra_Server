@@ -83,6 +83,7 @@ public class GameService {
         List<User> userList = new ArrayList<>();
         userList.addAll(lobby.getPlayerList());
         List<Bot> botList = new ArrayList<>();
+        List<String> clueList = new ArrayList<>();
         botList.addAll(lobby.getBotList());
         List<Integer> voteList = new ArrayList<>();
         for(int a = 0; a<5; a++){
@@ -94,6 +95,7 @@ public class GameService {
         newGame.setToken(lobby.getLobbyToken());
         newGame.setCurrentRound(0);
         newGame.setVersion(1);
+        newGame.setClueList(clueList);
         newGame.setVoteList(voteList);
         newGame.setGuesser(new Random().nextInt(userList.size()));
         newGame.setMysteryWords(WordFileHandler.getMysteryWords());
@@ -164,4 +166,34 @@ public class GameService {
 
     }
 
+    public Game addClue(String userToken, String gameToken, String clue){
+
+        Game game = gameRepository.findByToken(gameToken);
+        User user = userService.getUserFromToken(userToken);
+        List clueList = game.getClueList();
+        //TODO: test clue with API
+        if(user.getGaveClue()==false) {
+            clueList.add(clue);
+            user.setGaveClue(true);
+        }else{
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "user already gave clue");
+        }
+        game.setClueList(clueList);
+        return game;
+    }
+
+    public Game makeGuess(String gameToken, String guess){
+
+        Game game = gameRepository.findByToken(gameToken);
+
+        if(game.getTopic().equals(guess)){
+            game.setGuessCorrect(true);
+            //TODO:other checks API
+        }else{
+            game.setGuessCorrect(false);
+        }
+
+        return game;
+
+    }
 }
