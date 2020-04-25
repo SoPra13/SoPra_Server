@@ -45,7 +45,6 @@ public class UserController {
     @ResponseBody
     public UserGetDTO getUserID(@RequestParam String token) {
         User user = userService.getUserFromToken(token);
-
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
     }
 

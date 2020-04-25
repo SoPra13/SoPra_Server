@@ -1,5 +1,7 @@
 package ch.uzh.ifi.seal.soprafs20.controller;
+
 import ch.uzh.ifi.seal.soprafs20.constant.LobbyType;
+import ch.uzh.ifi.seal.soprafs20.entity.Game;
 import ch.uzh.ifi.seal.soprafs20.entity.Lobby;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.LobbyGetDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.LobbyPostDTO;
@@ -80,11 +82,9 @@ public class LobbyController {
     public String startGame(@PathVariable String token) {
 
        Lobby lobby = lobbyService.getLobbyFromToken(token);
-       gameService.createGame(lobby, token);
+       Game game = gameService.createGame(lobby, token);
 
-       return token;
-
-
+       return game.getToken();
     }
 
 

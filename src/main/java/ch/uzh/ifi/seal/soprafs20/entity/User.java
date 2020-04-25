@@ -46,10 +46,16 @@ public class User implements Serializable{
     @Column
     private Boolean lobbyReady;
 
-    @Column(nullable = true)
+    @Column
+    private Boolean voted;
+
+    @Column
+    private Boolean gaveClue;
+
+    @Column
     private Boolean darkMode;
 
-    @Column(nullable = true)
+    @Column
     private Color color;
 
     @ManyToOne
@@ -86,6 +92,22 @@ public class User implements Serializable{
         return lobbyReady;
     }
 
+    public void setGaveClue(boolean gaveClue) {
+        this.gaveClue = gaveClue;
+    }
+
+    public Boolean getGaveClue() {
+        return gaveClue;
+    }
+
+    public void setVoted(boolean voted) {
+        this.voted = voted;
+    }
+
+    public Boolean getVoted() {
+        return voted;
+    }
+
     public void setDarkMode(boolean darkMode) {
         this.darkMode = darkMode;
     }
@@ -106,6 +128,7 @@ public class User implements Serializable{
 
     public void setCurrentPosition(Integer position){ this.currentPosition = position;}
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }

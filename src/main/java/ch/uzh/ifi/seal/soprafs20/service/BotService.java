@@ -1,9 +1,7 @@
 package ch.uzh.ifi.seal.soprafs20.service;
 
 import ch.uzh.ifi.seal.soprafs20.constant.Difficulty;
-import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.Bot;
-import ch.uzh.ifi.seal.soprafs20.entity.User;
 import ch.uzh.ifi.seal.soprafs20.repository.BotRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -63,6 +60,11 @@ public class BotService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, baseErrorMessage);
         }
         return botByToken;
+    }
+
+    public void deleteBot(String token){
+        Bot botByToken = botRepository.findByToken(token);
+        botRepository.delete(botByToken);
     }
 
 }

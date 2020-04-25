@@ -1,18 +1,21 @@
 package ch.uzh.ifi.seal.soprafs20.rest.dto;
 
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
+import ch.uzh.ifi.seal.soprafs20.entity.Game;
 import ch.uzh.ifi.seal.soprafs20.entity.Lobby;
 
 public class UserGetDTO {
 
     private Long id;
-    private String password;
     private String username;
     private String token;
     private UserStatus status;
     private Lobby lobby;
+    private Game game;
     private Boolean unityReady;
     private Boolean lobbyReady;
+    private Boolean voted;
+    private Boolean gaveClue;
 
     public Long getId() {
         return id;
@@ -20,14 +23,6 @@ public class UserGetDTO {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getUsername() {
@@ -62,6 +57,14 @@ public class UserGetDTO {
         this.lobby = lobby;
     }
 
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
     public void setUnityReady(boolean unityReady) {
         this.unityReady = unityReady;
     }
@@ -76,5 +79,21 @@ public class UserGetDTO {
 
     public Boolean isLobbyReady() {
         return lobbyReady;
+    }
+
+    public void setVoted(boolean voted) {
+        this.voted = voted;
+    }
+
+    public Boolean getVoted() {
+        return voted;
+    }
+
+    public void setGaveClue(boolean gaveClue) {
+        this.gaveClue = gaveClue;
+    }
+
+    public Boolean getGaveClue() {
+        return gaveClue;
     }
 }

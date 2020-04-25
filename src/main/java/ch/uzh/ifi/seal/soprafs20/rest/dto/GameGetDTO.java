@@ -1,24 +1,20 @@
 package ch.uzh.ifi.seal.soprafs20.rest.dto;
-
 import ch.uzh.ifi.seal.soprafs20.entity.Bot;
 import ch.uzh.ifi.seal.soprafs20.entity.User;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.ManyToMany;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class GameGetDTO {
 
     private Long id;
     private Integer version;
     private String token;
-    private Integer round;
+    private Integer currentRound;
     private Integer guesser;
-    private List<String> guessList = new ArrayList<String>();
+    private String topic;
+    private Boolean guessCorrect;
+    private List<String> clueList = new ArrayList<String>();
     private List<String> mysteryWords = new ArrayList<String>();
     private List<Integer> voteList = new ArrayList<>();
     private List<User> playerList = new ArrayList<User>();
@@ -40,11 +36,19 @@ public class GameGetDTO {
         this.token = token;
     }
 
-    public Integer getRound() {return round;}
-    public void setRound(Integer round) {this.round = round;}
+    public String getTopic() {
+        return topic;
+    }
 
-    public List getGuessList() { return guessList; }
-    public void setGuessList(ArrayList guessList) { this.guessList = guessList; }
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+
+    public Integer getCurrentRound() {return currentRound;}
+    public void setCurrentRound(Integer currentRound) {this.currentRound = currentRound;}
+
+    public List getClueList() { return clueList; }
+    public void setClueList(ArrayList clueList) { this.clueList = clueList; }
 
     public List getVoteList() { return voteList; }
     public void setVoteList(ArrayList voteList) { this.voteList = voteList; }
@@ -67,5 +71,9 @@ public class GameGetDTO {
     public void setBotList(List botList) {
         this.botList = botList;
     }
+
+    public Boolean getGuessCorrect() {return guessCorrect;}
+
+    public void setGuessCorrect(Boolean guessCorrect) {this.guessCorrect = guessCorrect;}
 
 }

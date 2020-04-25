@@ -25,19 +25,28 @@ public class Game implements Serializable {
     private String token;
 
     @Column(nullable = false)
-    private Integer round;
+    private Integer currentRound;
 
     @Column(nullable = false)
     private Integer guesser;
 
-    @ElementCollection
-    private List<String> guessList = new ArrayList<>();
+    @Column
+    private String topic;
+
+    @Column
+    private Boolean guessCorrect;
 
     @ElementCollection
     private List<String> mysteryWords = new ArrayList<>();
 
     @ElementCollection
     private List<Integer> voteList = new ArrayList<>();
+
+    @ElementCollection
+    private List<String> clueList = new ArrayList<String>();
+
+    @ElementCollection
+    private List<String> checkList = new ArrayList<String>();
 
     @OneToMany(mappedBy = "game")
     @JsonBackReference
@@ -68,17 +77,31 @@ public class Game implements Serializable {
         this.token = token;
     }
 
-    public Integer getRound() {return round;}
-
-    public void setRound(Integer round) {this.round = round;}
-
-    public List<String> getGuessList() { return guessList; }
-
-    public void setGuessList(ArrayList<String> guessList) {
-       this.guessList = guessList;
+    public String getTopic() {
+        return topic;
     }
 
-    public List<Integer> getVoteList() { return voteList;}
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+
+    public Integer getCurrentRound() {return currentRound;}
+
+    public void setCurrentRound(Integer currentRound) {this.currentRound = currentRound;}
+
+    public List getClueList() { return clueList; }
+
+    public void setClueList(List clueList) {
+       this.clueList = clueList;
+    }
+
+    public List getChecklist() { return checkList; }
+
+    public void setCheckList(List checkList) {
+        this.checkList = checkList;
+    }
+
+    public List getVoteList() { return voteList;}
 
     public void setVoteList(List<Integer> voteList) {
         this.voteList = voteList;
@@ -105,6 +128,10 @@ public class Game implements Serializable {
      public void setBotList(List<Bot> botList) {
         this.botList = botList;
      }
+
+    public Boolean getGuessCorrect() {return guessCorrect;}
+
+    public void setGuessCorrect(Boolean guessCorrect) {this.guessCorrect = guessCorrect;}
 
 
 }

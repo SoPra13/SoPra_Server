@@ -32,6 +32,7 @@ public class UserService {
     public UserService(@Qualifier("userRepository") UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+    
 
     public List<User> getUsers() {
         return this.userRepository.findAll();
@@ -43,6 +44,8 @@ public class UserService {
         newUser.setUnityReady(false);
         newUser.setLobbyReady(false);
         newUser.setDarkMode(false);
+        newUser.setVoted(false);
+        newUser.setGaveClue(false);
         checkIfUserExists(newUser);
 
         // saves the given entity but data is only persisted in the database once flush() is called
@@ -119,6 +122,12 @@ public class UserService {
         if (updatedUser.getUsername() != null) repoUser.setUsername(updatedUser.getUsername());
         if (updatedUser.getPassword() != null) repoUser.setPassword(updatedUser.getPassword());
         if (updatedUser.getColor() != null) repoUser.setColor(updatedUser.getColor());
+    }
+
+    public void resetUser(User user){
+        user.setGaveClue(false);
+        user.setVoted(false);
+
     }
 
 }

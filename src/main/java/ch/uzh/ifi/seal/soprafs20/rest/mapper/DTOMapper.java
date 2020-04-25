@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs20.rest.mapper;
 
 import ch.uzh.ifi.seal.soprafs20.entity.Game;
 import ch.uzh.ifi.seal.soprafs20.entity.Lobby;
+import ch.uzh.ifi.seal.soprafs20.entity.Message;
 import ch.uzh.ifi.seal.soprafs20.entity.User;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.*;
 import org.mapstruct.Mapper;
@@ -21,8 +22,13 @@ public interface DTOMapper {
 
     DTOMapper INSTANCE = Mappers.getMapper(DTOMapper.class);
 
+    @Mapping(source = "username", target = "username")
+    @Mapping(source = "message", target = "message")
+    @Mapping(source = "messageType", target = "messageType")
+    ChatGetDTO convertEntitytoChatGetDTO(Message message);
 
-
+    @Mapping(source = "message", target = "message")
+    Message convertChatPostDTOtoEntity(ChatPostDTO chatPostDTO);
 
     @Mapping(source = "password", target = "password")
     @Mapping(source = "username", target = "username")
@@ -35,7 +41,6 @@ public interface DTOMapper {
     User convertUserPutDTOtoEntity(UserPutDTO userPutDTO);
 
     @Mapping(source = "id", target = "id")
-    @Mapping(source = "password", target = "password")
     @Mapping(source = "username", target = "username")
     @Mapping(source = "token", target = "token")
     @Mapping(source = "status", target = "status")
@@ -58,7 +63,7 @@ public interface DTOMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "version", target = "version")
     @Mapping(source = "token", target = "token")
-    @Mapping(source = "round", target = "round")
+    @Mapping(source = "currentRound", target = "currentRound")
     @Mapping(source = "guesser", target = "guesser")
     @Mapping(source = "voteList", target = "voteList")
     GameGetDTO convertEntityToGameGetDTO(Game game);
