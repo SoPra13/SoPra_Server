@@ -1,8 +1,6 @@
 package ch.uzh.ifi.seal.soprafs20.controller;
 
-import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.Game;
-import ch.uzh.ifi.seal.soprafs20.entity.User;
 import ch.uzh.ifi.seal.soprafs20.service.GameService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,17 +41,6 @@ class GameControllerTest {
         game.setGuesser(0);
         return game;
     }
-
-    private User newTestUser() {
-        User user = new User();
-        user.setUsername("UserName");
-        user.setPassword("PassWord");
-        user.setStatus(UserStatus.OFFLINE);
-        user.setToken("UserToken");
-        user.setId(1L);
-        return user;
-    }
-
 
     @Test
     public void get_getGame_correct() throws Exception {
@@ -104,8 +91,6 @@ class GameControllerTest {
 
     @Test
     public void put_ready_invalid_UserToken() throws Exception {
-        Game game = newTestGame();
-        User user = newTestUser();
 
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no User with requested Token"))
                 .when(gameService).setPlayerReady("Token_Aa0Bb1","INVALID_UserToken");

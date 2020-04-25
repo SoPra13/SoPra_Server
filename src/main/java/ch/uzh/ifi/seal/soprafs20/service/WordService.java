@@ -21,7 +21,8 @@ public class WordService {
 
             HttpResponse<String> response =
                     client.send(request, HttpResponse.BodyHandlers.ofString());
-            return new Gson().fromJson(response.body(), new TypeToken<ArrayList<LinkedTreeMap<String, Object>>>() {}.getType());
+            return new Gson().fromJson(response.body(), new TypeToken<ArrayList<LinkedTreeMap<String, Object>>>() {
+            }.getType());
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
@@ -65,9 +66,10 @@ public class WordService {
         return (word1.startsWith(word2) || word2.startsWith(word1) || isPlural(word1, word2) || isSameFamily(word1, word2));
     }
 
-    private static boolean isSameFamily(String word1,String word2) {
+    private static boolean isSameFamily(String word1, String word2) {
         return (word1.length() >= 5 && word2.length() >= 5 && word1.substring(0, 5).equals(word2.substring(0, 5)));
     }
+
     private static boolean isPlural(String word1, String word2) {
         ArrayList<LinkedTreeMap<String, String>> word1request = getRequest(("https://api.datamuse.com/words?md=d&max=1&sp=" + word1));
         ArrayList<LinkedTreeMap<String, String>> word2request = getRequest("https://api.datamuse.com/words?md=d&max=1&sp=" + word2);
@@ -90,7 +92,8 @@ public class WordService {
                 for (int j = i + 1; j < words.length; j++) {
                     if (!result[j]) {
                         if (isSimilar(words[i], words[j])) {
-                            result[i] = true; result[j] = true;
+                            result[i] = true;
+                            result[j] = true;
                         }
                     }
                 }
@@ -125,6 +128,7 @@ public class WordService {
         return badWord;
 
     }
+
     public static boolean isValidWord(String word) {
         ArrayList<LinkedTreeMap<String, String>> compareWord = getRequest("https://api.datamuse.com/max=1&words?sp=" + word);
         return !compareWord.isEmpty() && compareWord.get(0).get("word").equals(word);

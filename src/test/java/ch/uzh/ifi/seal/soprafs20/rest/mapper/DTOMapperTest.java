@@ -9,10 +9,8 @@ import ch.uzh.ifi.seal.soprafs20.entity.User;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.*;
 import org.junit.jupiter.api.Test;
 
-import javax.persistence.Lob;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -100,7 +98,7 @@ public class DTOMapperTest {
         lobby.setLobbyState(LobbyStatus.OPEN);
         lobby.setLobbyType(LobbyType.PRIVATE);
         lobby.setNumberOfPlayers(1);
-        lobby.setPlayerList(Arrays.asList(testAdmin));
+        lobby.setPlayerList(Collections.singletonList(testAdmin));
         lobby.setAdminToken(testAdmin.getToken());
 
         // MAP -> Create LobbyGetDTO
@@ -126,7 +124,7 @@ public class DTOMapperTest {
         game.setToken("token");
         game.setRound(0);
         game.setGuesser(0);
-        game.setVoteList(new ArrayList<Integer>(Collections.nCopies(5, 0)));
+        game.setVoteList(new ArrayList<>(Collections.nCopies(5, 0)));
 
         // MAP -> Create GameGetDTO
         GameGetDTO gameGetDTO = DTOMapper.INSTANCE.convertEntityToGameGetDTO(game);
