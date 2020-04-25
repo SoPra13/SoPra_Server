@@ -61,6 +61,10 @@ public class WordService {
     }
 
 
+    public static boolean isSimilar(String word1, String word2, ArrayList<LinkedTreeMap<String, String>> word1request, ArrayList<LinkedTreeMap<String, String>> word2request) {
+        return (word1.startsWith(word2) || word2.startsWith(word1) || isPlural(word1, word2, word1request, word2request) || isSameFamily(word1, word2));
+    }
+
     public static boolean isSimilar(String word1, String word2) {
         return (word1.startsWith(word2) || word2.startsWith(word1) || isPlural(word1, word2) || isSameFamily(word1, word2));
     }
@@ -68,9 +72,18 @@ public class WordService {
     private static boolean isSameFamily(String word1,String word2) {
         return (word1.length() >= 5 && word2.length() >= 5 && word1.substring(0, 5).equals(word2.substring(0, 5)));
     }
+
     private static boolean isPlural(String word1, String word2) {
         ArrayList<LinkedTreeMap<String, String>> word1request = getRequest(("https://api.datamuse.com/words?md=d&max=1&sp=" + word1));
-        ArrayList<LinkedTreeMap<String, String>> word2request = getRequest("https://api.datamuse.com/words?md=d&max=1&sp=" + word2);
+        ArrayList<LinkedTreeMap<String, String>> word2request = getRequest(("https://api.datamuse.com/words?md=d&max=1&sp=" + word2));
+        return isPluralTest(word1, word2, word1request, word2request);
+    }
+
+    private static boolean isPlural(String word1, String word2, ArrayList<LinkedTreeMap<String, String>> word1request, ArrayList<LinkedTreeMap<String, String>> word2request) {
+        return isPluralTest(word1, word2, word1request, word2request);
+    }
+
+    private static boolean isPluralTest(String word1, String word2, ArrayList<LinkedTreeMap<String, String>> word1request, ArrayList<LinkedTreeMap<String, String>> word2request) {
         if (word1request.get(0).containsKey("defHeadword") && word1request.get(0).get("defHeadword").equals(word2)) {
             return true;
         }
@@ -85,11 +98,15 @@ public class WordService {
 
     public static boolean[] checkSimilarityInArray(String[] words) {
         boolean[] result = new boolean[words.length];
+        ArrayList<ArrayList<LinkedTreeMap<String, String>>> wordDefsAsList = new ArrayList<ArrayList<LinkedTreeMap<String, String>>>();
+        for (String word :words) {
+            wordDefsAsList.add(getRequest(("https://api.datamuse.com/words?md=d&max=1&sp=" + word)));
+        }
         for (int i = 0; i < words.length; i++) {
             if (!result[i]) {
                 for (int j = i + 1; j < words.length; j++) {
                     if (!result[j]) {
-                        if (isSimilar(words[i], words[j])) {
+                        if (isSimilar(words[i], words[j], wordDefsAsList.get(i), wordDefsAsList.get(j))) {
                             result[i] = true; result[j] = true;
                         }
                     }
@@ -106,27 +123,27 @@ public class WordService {
         wordList.addAll(getRequest("http://api.datamuse.com/words?max=2&rel_gen=" + word));
         wordList.addAll(getRequest("http://api.datamuse.com/words?max=2&rel_com=" + word));
         wordList.addAll(getRequest("http://api.datamuse.com/words?max=2&rel_par=" + word));
-        wordList = removeMultiWords(wordList);
-        String goodWord = wordList.get(new Random().nextInt(wordList.size())).get("word");
-        while (isSimilar(goodWord, word)) {
-            goodWord = wordList.get(new Random().nextInt(wordList.size())).get("word");
-        }
-        return goodWord;
+        return getWord(word, wordList);
     }
 
     public static String getBadWord(String word) {
         ArrayList<LinkedTreeMap<String, String>> wordList =
                 new ArrayList<LinkedTreeMap<String, String>>(getRequest("http://api.datamuse.com/words?max=5&rel_spc=" + word));
+        return getWord(word, wordList);
+
+    }
+
+    private static String getWord(String word, ArrayList<LinkedTreeMap<String, String>> wordList) {
         wordList = removeMultiWords(wordList);
         String badWord = wordList.get(new Random().nextInt(wordList.size())).get("word");
         while (isSimilar(badWord, word)) {
             badWord = wordList.get(new Random().nextInt(wordList.size())).get("word");
         }
         return badWord;
-
     }
+
     public static boolean isValidWord(String word) {
-        ArrayList<LinkedTreeMap<String, String>> compareWord = getRequest("https://api.datamuse.com/max=1&words?sp=" + word);
+        ArrayList<LinkedTreeMap<String, String>> compareWord = getRequest("https://api.datamuse.com/words?max=1&sp=" + word);
         return !compareWord.isEmpty() && compareWord.get(0).get("word").equals(word);
     }
 

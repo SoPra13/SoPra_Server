@@ -65,4 +65,5 @@ public class ChatController {
     public void toggleChat(@RequestParam String lobbyToken) {
         chatService.setChatActivity(lobbyToken, !chatService.isChatActive(lobbyToken));
     }
+
 }
