@@ -45,6 +45,9 @@ public class Game implements Serializable {
     @ElementCollection
     private List<String> clueList = new ArrayList<String>();
 
+    @ElementCollection
+    private List<String> checkList = new ArrayList<String>();
+
     @OneToMany(mappedBy = "game")
     @JsonBackReference
     private List<User> playerList = new ArrayList<User>();
@@ -92,6 +95,12 @@ public class Game implements Serializable {
        this.clueList = clueList;
     }
 
+    public List getChecklist() { return checkList; }
+
+    public void setCheckList(List checkList) {
+        this.checkList = checkList;
+    }
+
     public List getVoteList() { return voteList;}
 
     public void setVoteList(List voteList) {
@@ -104,7 +113,7 @@ public class Game implements Serializable {
      this.mysteryWords = mysteryWords;
      }
 
-     public List getPlayerList() {
+     public List<User> getPlayerList() {
         return playerList;
      }
 
@@ -112,7 +121,7 @@ public class Game implements Serializable {
          this.playerList = playerList;
      }
 
-     public List getBotList() {
+     public List<Bot> getBotList() {
         return botList;
      }
 

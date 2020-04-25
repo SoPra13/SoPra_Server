@@ -124,4 +124,10 @@ public class UserService {
         if (updatedUser.getColor() != null) repoUser.setColor(updatedUser.getColor());
     }
 
+    public void resetUser(User user){
+        user.setGaveClue(false);
+        user.setVoted(false);
+
+    }
+
 }

@@ -99,4 +99,16 @@ public class GameController {
         return DTOMapper.INSTANCE.convertEntityToGameGetDTO(game);
     }
 
+    //Set voted Topic as word
+    @PutMapping(value="/game/round", params = {"gameToken"})
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public GameGetDTO nextRound(@RequestParam String gameToken) {
+
+        //enter next round
+        Game game = gameService.nextRound(gameToken);
+
+        return DTOMapper.INSTANCE.convertEntityToGameGetDTO(game);
+    }
+
 }
