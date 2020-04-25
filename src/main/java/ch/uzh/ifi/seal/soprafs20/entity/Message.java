@@ -1,5 +1,7 @@
 package ch.uzh.ifi.seal.soprafs20.entity;
 
+import ch.uzh.ifi.seal.soprafs20.constant.MessageType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,34 +14,34 @@ public class Message implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String username;
     @Column(nullable = false)
     private String message;
+    @Column(nullable = false)
+    private MessageType messageType;
 
-    private String userToken;
-
-    public void setUserToken(String userToken) {
-        this.userToken = userToken;
+    public MessageType getMessageType() {
+        return messageType;
     }
 
-    public String getUserToken() {
-        return userToken;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
+    public void setMessageType(MessageType messageType) {
+        this.messageType = messageType;
     }
 
     public String getMessage() {
         return message;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getUsername() {
         return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

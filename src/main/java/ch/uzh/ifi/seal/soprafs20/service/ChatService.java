@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs20.service;
 
+import ch.uzh.ifi.seal.soprafs20.constant.MessageType;
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.Chat;
 import ch.uzh.ifi.seal.soprafs20.entity.Message;
@@ -48,23 +49,27 @@ public class ChatService {
         chatRepository.flush();
     }
 
-    public void addMessageToChat(String lobbyToken, Message message) {
+    public void addMessageToChat(String lobbyToken, String userToken, Message message) {
         Chat chat = chatRepository.findByLobbyToken(lobbyToken);
         if (chat.isActive()) {
             chat.addMessage(message);
-            message.setUsername(userRepository.findByToken(message.getUserToken()).getUsername());
-            messageRepository.save(message);
-            messageRepository.flush();
+            message.setUsername(userRepository.findByToken(userToken).getUsername());
+            message.setMessageType(MessageType.NORMAL);
+            messageRepository.saveAndFlush(message);
         }
     }
 
     public void userJoined(String lobbyToken, String userToken) {
-        Message message = new Message();
-        message.setUsername("EVENTEVENTEVENT");
-        message.setMessage(userRepository.findByToken(userToken).getUsername() + " joined Chat.");
-        messageRepository.save(message);
-        messageRepository.flush();
-        chatRepository.findByLobbyToken(lobbyToken).addMessage(message);
+        Chat chat = chatRepository.findByLobbyToken(lobbyToken);
+        User user = userRepository.findByToken(userToken);
+        if (!chat.getUserLoggedIn().contains(user)) {
+            chat.addUser(user);
+            Message message = new Message();
+            message.setMessage(user.getUsername() + " joined Chat.");
+            message.setMessageType(MessageType.ACTION);
+            messageRepository.saveAndFlush(message);
+            chat.addMessage(message);
+        }
     }
 
     public List<Message> getAllMessagesFromChat(String lobbyToken) {

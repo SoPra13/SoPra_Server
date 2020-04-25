@@ -27,8 +27,8 @@ public class ChatController {
     @GetMapping("/chat")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<ChatGetDTO> getMessages(@RequestParam String lobbytoken) {
-        List<Message> messages = chatService.getAllMessagesFromChat(lobbytoken);
+    public List<ChatGetDTO> getMessages(@RequestParam String lobbyToken) {
+        List<Message> messages = chatService.getAllMessagesFromChat(lobbyToken);
         List<ChatGetDTO> chatGetDTOs = new ArrayList<ChatGetDTO>();
         for (Message message : messages) {
             chatGetDTOs.add(DTOMapper.INSTANCE.convertEntitytoChatGetDTO(message));
@@ -39,22 +39,22 @@ public class ChatController {
     @GetMapping("/chat/active")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public boolean isChatActive(@RequestParam String lobbytoken) {
-        return chatService.isChatActive(lobbytoken);
+    public boolean isChatActive(@RequestParam String lobbyToken) {
+        return chatService.isChatActive(lobbyToken);
     }
 
     @PostMapping("/chat")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @ResponseBody
-    public void addMessage(@RequestParam String lobbytoken, @RequestBody ChatPostDTO chatPostDTO) {
-        chatService.addMessageToChat(lobbytoken, DTOMapper.INSTANCE.convertChatPostDTOtoEntity(chatPostDTO));
+    public void addMessage(@RequestParam String lobbyToken,@RequestParam String userToken, @RequestBody ChatPostDTO chatPostDTO) {
+        chatService.addMessageToChat(lobbyToken, userToken, DTOMapper.INSTANCE.convertChatPostDTOtoEntity(chatPostDTO));
     }
 
     @PostMapping("/chat/join")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @ResponseBody
-    public void userJoined(@RequestParam String lobbytoken, @RequestParam String userToken) {
-        chatService.userJoined(lobbytoken, userToken);
+    public void userJoined(@RequestParam String lobbyToken, @RequestParam String userToken) {
+        chatService.userJoined(lobbyToken, userToken);
     }
 
 
@@ -62,7 +62,7 @@ public class ChatController {
     @PostMapping("/chat/toggle")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @ResponseBody
-    public void toggleChat(@RequestParam String lobbytoken) {
-        chatService.setChatActivity(lobbytoken, !chatService.isChatActive(lobbytoken));
+    public void toggleChat(@RequestParam String lobbyToken) {
+        chatService.setChatActivity(lobbyToken, !chatService.isChatActive(lobbyToken));
     }
 }

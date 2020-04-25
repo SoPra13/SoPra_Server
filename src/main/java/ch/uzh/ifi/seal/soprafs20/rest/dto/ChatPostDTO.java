@@ -1,23 +1,17 @@
 package ch.uzh.ifi.seal.soprafs20.rest.dto;
 
+import ch.uzh.ifi.seal.soprafs20.constant.MessageType;
+
 public class ChatPostDTO {
 
-    private String userToken;
     private String message;
 
-    public void setUserToken(String userToken) {
-        this.userToken = userToken;
-    }
 
-    public String getUserToken() {
-        return userToken;
+    public String getMessage() {
+        return message;
     }
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public String getMessage() {
-        return message;
     }
 }

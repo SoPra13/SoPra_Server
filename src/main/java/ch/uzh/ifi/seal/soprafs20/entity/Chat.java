@@ -19,6 +19,21 @@ public class Chat {
     @OneToMany()
     private List<Message> messages = new LinkedList<Message>();
 
+    @OneToMany()
+    private List<User> loggedInUsers = new LinkedList<User>();
+
+    public List<User> getUserLoggedIn() {
+        return loggedInUsers;
+    }
+
+    public void addUser(User user) {
+        this.loggedInUsers.add(user);
+    }
+
+    public void removeUser(User user) {
+        this.loggedInUsers.remove(user);
+    }
+
     public void addMessage(Message message){
         this.messages.add(message);
     }
