@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -77,15 +78,13 @@ public class GameService {
     //create new Game based on Lobby
     public Game createGame(Lobby lobby, String token) {
         Game newGame = new Game();
+        // for testing purposes saving the game avoids having to mock the Game constructor
+        newGame = gameRepository.save(newGame);
 
-        List<User> userList = new ArrayList<>();
-        userList.addAll(lobby.getPlayerList());
-        List<Bot> botList = new ArrayList<>();
-        botList.addAll(lobby.getBotList());
-        List<Integer> voteList = new ArrayList<>();
-        for(int a = 0; a<5; a++){
-            voteList.add(0);
-        }
+        List<User> userList = new ArrayList<>(lobby.getPlayerList());
+        List<Bot> botList = new ArrayList<>(lobby.getBotList());
+        // each card has 5 word so we need a vote list with 5 slots init with 0 votes
+        List<Integer> voteList = new ArrayList<>(Collections.nCopies(5, 0));
 
         newGame.setBotList(botList);
         newGame.setPlayerList(userList);
@@ -100,7 +99,7 @@ public class GameService {
         newGame = gameRepository.save(newGame);
 
         //update game of user and add initial position
-        Integer position = 0;
+        int position = 0;
         for(User user : userList){
             user.setGame(newGame);
             user.setCurrentPosition(position);
@@ -119,14 +118,16 @@ public class GameService {
 
 
     public Game addVote(String gameToken, Integer vote){
-
+        // make sure that indexing of votes is the same everywhere
         if (vote < 1 || vote > 5)throw new ResponseStatusException(HttpStatus.NOT_FOUND, "int has to be [1:5]");
 
         Game game = gameRepository.findByToken(gameToken);
-        List voteList = game.getVoteList();
-        Integer votes = (Integer) voteList.get(vote);
-        voteList.set(vote,votes+=1);
-        game.setVoteList(voteList);
+        if (game == null) {
+            String baseErrorMessage = "No matching Game found";
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, baseErrorMessage);
+        }
+
+        game.getVoteList().set(vote-1, game.getVoteList().get(vote-1) + 1);
         return game;
 
     }

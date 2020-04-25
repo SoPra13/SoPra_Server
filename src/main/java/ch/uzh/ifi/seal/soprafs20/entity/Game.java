@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.List;
 
 
@@ -32,21 +31,21 @@ public class Game implements Serializable {
     private Integer guesser;
 
     @ElementCollection
-    private List<String> guessList = new ArrayList<String>();
+    private List<String> guessList = new ArrayList<>();
 
     @ElementCollection
-    private List<String> mysteryWords = new ArrayList<String>();
+    private List<String> mysteryWords = new ArrayList<>();
 
     @ElementCollection
     private List<Integer> voteList = new ArrayList<>();
 
     @OneToMany(mappedBy = "game")
     @JsonBackReference
-    private List<User> playerList = new ArrayList<User>();
+    private List<User> playerList = new ArrayList<>();
 
     @OneToMany(mappedBy = "game")
     @JsonBackReference
-    private List<Bot> botList = new ArrayList<Bot>();
+    private List<Bot> botList = new ArrayList<>();
 
 
     public Long getId() { return id; }
@@ -73,37 +72,37 @@ public class Game implements Serializable {
 
     public void setRound(Integer round) {this.round = round;}
 
-    public List getGuessList() { return guessList; }
+    public List<String> getGuessList() { return guessList; }
 
-    public void setGuessList(ArrayList guessList) {
+    public void setGuessList(ArrayList<String> guessList) {
        this.guessList = guessList;
     }
 
-    public List getVoteList() { return voteList;}
+    public List<Integer> getVoteList() { return voteList;}
 
-    public void setVoteList(List voteList) {
+    public void setVoteList(List<Integer> voteList) {
         this.voteList = voteList;
     }
 
-     public List getMysteryWords() { return mysteryWords; }
+     public List<String> getMysteryWords() { return mysteryWords; }
 
-     public void setMysteryWords(List mysteryWords) {
+     public void setMysteryWords(List<String> mysteryWords) {
      this.mysteryWords = mysteryWords;
      }
 
-     public List getPlayerList() {
+     public List<User> getPlayerList() {
         return playerList;
      }
 
-     public void setPlayerList(List playerList) {
+     public void setPlayerList(List<User> playerList) {
          this.playerList = playerList;
      }
 
-     public List getBotList() {
+     public List<Bot> getBotList() {
         return botList;
      }
 
-     public void setBotList(List botList) {
+     public void setBotList(List<Bot> botList) {
         this.botList = botList;
      }
 

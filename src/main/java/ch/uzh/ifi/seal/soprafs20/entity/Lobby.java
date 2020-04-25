@@ -13,6 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "LOBBY")
 public class Lobby implements Serializable {
+    public int maxpalyer = 7;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -39,11 +40,11 @@ public class Lobby implements Serializable {
 
     @OneToMany(mappedBy = "lobby")
     @JsonBackReference
-    private List<User> playerList = new ArrayList<User>();
+    private List<User> playerList = new ArrayList<>();
 
     @OneToMany(mappedBy = "lobby")
     @JsonBackReference
-    private List<Bot> botList = new ArrayList<Bot>();
+    private List<Bot> botList = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -101,17 +102,17 @@ public class Lobby implements Serializable {
         this.numberOfPlayers = numberOfPlayers;
     }
 
-    public List getPlayerList() { return playerList; }
+    public List<User> getPlayerList() { return playerList; }
 
-    public void setPlayerList(List playerList) {
+    public void setPlayerList(List<User> playerList) {
         this.playerList = playerList;
     }
 
-    public List getBotList() {
+    public List<Bot> getBotList() {
         return botList;
     }
 
-    public void setBotList(List botList) {
+    public void setBotList(List<Bot> botList) {
         this.botList = botList;
     }
 

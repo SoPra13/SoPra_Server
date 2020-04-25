@@ -40,7 +40,7 @@ public class LobbyServiceTest {
     private LobbyService lobbyService;
 
     private Lobby testLobby;
-    private User testAdmin = new User();
+    private User testAdmin;
 
 
     @BeforeEach
@@ -48,7 +48,7 @@ public class LobbyServiceTest {
         MockitoAnnotations.initMocks(this);
 
         // given
-//        testAdmin;
+        testAdmin = new User();
         testAdmin.setUsername("ADMIN");
         testAdmin.setPassword("12345;P");
         testAdmin.setToken("ADMIN_TOKEN");
@@ -466,7 +466,7 @@ public class LobbyServiceTest {
         Mockito.when(userService.getUserFromToken(testAdmin.getToken())).thenReturn(testAdmin);
 
         Exception exception = Assertions.assertThrows(ResponseStatusException.class,
-            () -> lobbyService.setPlayerReady("INVALID_LOBBY_TOKEN", testAdmin.getToken()));
+                () -> lobbyService.setPlayerReady("INVALID_LOBBY_TOKEN", testAdmin.getToken()));
 
         assertEquals("404 NOT_FOUND \"Could not set player ready\"", exception.getMessage());
         assertFalse(testAdmin.isLobbyReady());

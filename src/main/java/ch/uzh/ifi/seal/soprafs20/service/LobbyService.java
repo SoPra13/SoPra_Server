@@ -59,7 +59,7 @@ public class LobbyService {
     //creates new Lobby
     public Lobby createLobby(Lobby newLobby, String token) {
 
-        ArrayList<User> userList = new ArrayList<User>();
+        ArrayList<User> userList = new ArrayList<>();
         User user = userService.getUserFromToken(token);
         userList.add(user);
         newLobby.setLobbyToken(UUID.randomUUID().toString());
@@ -91,7 +91,7 @@ public class LobbyService {
         Lobby lobbyToAdd = lobbyRepository.findByLobbyToken(lToken);
 
         // add user to lobby
-        List list = lobbyToAdd.getPlayerList();
+        List<User> list = lobbyToAdd.getPlayerList();
         list.add(userToAdd);
         lobbyToAdd.setNumberOfPlayers(list.size()+lobbyToAdd.getBotList().size());
         userToAdd.setLobby(lobbyToAdd);
@@ -113,7 +113,7 @@ public class LobbyService {
         }
 
         // remove user from lobby
-        List list = lobbyToRemove.getPlayerList();
+        List<User> list = lobbyToRemove.getPlayerList();
         list.remove(userToRemove);
         lobbyToRemove.setPlayerList(list);
         lobbyToRemove.setNumberOfPlayers(list.size()+lobbyToRemove.getBotList().size());
@@ -134,7 +134,7 @@ public class LobbyService {
         Lobby lobbyToAdd = lobbyRepository.findByLobbyToken(lToken);
 
         // add bot to lobby
-        List list = lobbyToAdd.getBotList();
+        List<Bot> list = lobbyToAdd.getBotList();
         Bot bot = botService.createBot(difficulty);
         list.add(bot);
         lobbyToAdd.setNumberOfPlayers(list.size()+lobbyToAdd.getPlayerList().size());
@@ -154,7 +154,7 @@ public class LobbyService {
         Lobby lobbyToRemove = lobbyRepository.findByLobbyToken(lToken);
 
         // remove bot from lobby
-        List list = lobbyToRemove.getBotList();
+        List<Bot> list = lobbyToRemove.getBotList();
         list.remove(botToRemove);
         lobbyToRemove.setBotList(list);
         lobbyToRemove.setNumberOfPlayers(list.size()+lobbyToRemove.getPlayerList().size());
@@ -216,11 +216,11 @@ public class LobbyService {
 
     }
 
-    /**
-     * This is a helper method that will check the uniqueness criteria of the ???? and the ????
-     * defined in the Lobby entity. The method will do nothing if the input is unique and throw an error otherwise.
-     *
-     * @param lobbyToBeCreated
+    /*
+      This is a helper method that will check the uniqueness criteria of the ???? and the ????
+      defined in the Lobby entity. The method will do nothing if the input is unique and throw an error otherwise.
+
+      @param lobbyToBeCreated
      * @throws org.springframework.web.server.ResponseStatusException
      * @see Lobby
      */
