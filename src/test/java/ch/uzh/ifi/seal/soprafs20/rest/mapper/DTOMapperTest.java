@@ -1,10 +1,19 @@
 package ch.uzh.ifi.seal.soprafs20.rest.mapper;
 
+import ch.uzh.ifi.seal.soprafs20.constant.LobbyStatus;
+import ch.uzh.ifi.seal.soprafs20.constant.LobbyType;
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
+import ch.uzh.ifi.seal.soprafs20.entity.Game;
+import ch.uzh.ifi.seal.soprafs20.entity.Lobby;
 import ch.uzh.ifi.seal.soprafs20.entity.User;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.UserGetDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.UserPostDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.dto.*;
 import org.junit.jupiter.api.Test;
+
+import javax.persistence.Lob;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -29,6 +38,25 @@ public class DTOMapperTest {
     }
 
     @Test
+    public void testCreateUser_fromUserPutDTO_toUser_success() {
+        // create UserPostDTO
+        UserPutDTO userPutDTO = new UserPutDTO();
+        userPutDTO.setPassword("password");
+        userPutDTO.setUsername("username");
+        userPutDTO.setColor(Color.getColor("red"));
+        userPutDTO.setDarkMode(true);
+
+        // MAP -> Create user
+        User user = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(userPutDTO);
+
+        // check content
+        assertEquals(userPutDTO.getPassword(), user.getPassword());
+        assertEquals(userPutDTO.getUsername(), user.getUsername());
+        assertEquals(userPutDTO.getColor(), user.getColor());
+        assertEquals(userPutDTO.isDarkMode(), user.isDarkMode());
+    }
+
+    @Test
     public void testGetUser_fromUser_toUserGetDTO_success() {
         // create User
         User user = new User();
@@ -45,5 +73,70 @@ public class DTOMapperTest {
         assertEquals(user.getPassword(), userGetDTO.getPassword());
         assertEquals(user.getUsername(), userGetDTO.getUsername());
         assertEquals(user.getStatus(), userGetDTO.getStatus());
+    }
+
+    @Test
+    public void testCreateLobby_fromLobbyPostDTO_toLobby_success() {
+        // create LobbyPostDTO
+        LobbyPostDTO lobbyPostDTO = new LobbyPostDTO();
+        lobbyPostDTO.setLobbyname("lobbyname");
+
+      // MAP -> Create lobby
+        Lobby lobby = DTOMapper.INSTANCE.convertLobbyPostDTOtoEntity(lobbyPostDTO);
+
+        // check content
+        assertEquals(lobbyPostDTO.getLobbyname(), lobby.getLobbyname());
+    }
+
+    @Test
+    public void testGetLobby_fromLobby_toLobbyGetDTO_success() {
+        // create Lobby and User
+        User testAdmin = new User();
+        testAdmin.setToken("ADMIN_TOKEN");
+        Lobby lobby = new Lobby();
+        lobby.setId(0L);
+        lobby.setLobbyname("lobbyname");
+        lobby.setLobbyToken("lobbyToken");
+        lobby.setLobbyState(LobbyStatus.OPEN);
+        lobby.setLobbyType(LobbyType.PRIVATE);
+        lobby.setNumberOfPlayers(1);
+        lobby.setPlayerList(Arrays.asList(testAdmin));
+        lobby.setAdminToken(testAdmin.getToken());
+
+        // MAP -> Create LobbyGetDTO
+        LobbyGetDTO lobbyGetDTO = DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby);
+
+        // check content
+        assertEquals(lobby.getId(), lobbyGetDTO.getId());
+        assertEquals(lobby.getLobbyname(), lobbyGetDTO.getLobbyname());
+        assertEquals(lobby.getLobbyToken(), lobbyGetDTO.getLobbyToken());
+        assertEquals(lobby.getLobbyState(), lobbyGetDTO.getLobbyState());
+        assertEquals(lobby.getLobbyType(), lobbyGetDTO.getLobbyType());
+        assertEquals(lobby.getNumberOfPlayers(), lobbyGetDTO.getNumberOfPlayers());
+        assertEquals(lobby.getPlayerList(), lobbyGetDTO.getPlayerList());
+        assertEquals(lobby.getAdminToken(), lobbyGetDTO.getAdminToken());
+    }
+
+    @Test
+    public void testGetGame_fromGame_toGameGetDTO_success() {
+
+        Game game = new Game();
+        game.setId(0L);
+        game.setVersion(0);
+        game.setToken("token");
+        game.setRound(0);
+        game.setGuesser(0);
+        game.setVoteList(new ArrayList<Integer>(Collections.nCopies(5, 0)));
+
+        // MAP -> Create GameGetDTO
+        GameGetDTO gameGetDTO = DTOMapper.INSTANCE.convertEntityToGameGetDTO(game);
+
+        // check content
+        assertEquals(game.getId(), gameGetDTO.getId());
+        assertEquals(game.getVersion(), gameGetDTO.getVersion());
+        assertEquals(game.getToken(), gameGetDTO.getToken());
+        assertEquals(game.getRound(), gameGetDTO.getRound());
+        assertEquals(game.getGuesser(), gameGetDTO.getGuesser());
+        assertEquals(game.getVoteList(), gameGetDTO.getVoteList());
     }
 }
