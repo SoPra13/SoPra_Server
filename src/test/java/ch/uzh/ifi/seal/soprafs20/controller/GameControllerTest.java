@@ -37,7 +37,7 @@ class GameControllerTest {
         game.setId(1L);
         game.setVersion(0);
         game.setToken("Token_Aa0Bb1");
-        game.setRound(0);
+        game.setCurrentRound(0);
         game.setGuesser(0);
         return game;
     }
@@ -54,7 +54,7 @@ class GameControllerTest {
                 .andExpect(jsonPath("$.id", is(game.getId().intValue())))
                 .andExpect(jsonPath("$.version", is(game.getVersion())))
                 .andExpect(jsonPath("$.token", is(game.getToken())))
-                .andExpect(jsonPath("$.round", is(game.getRound())))
+                .andExpect(jsonPath("$.currentRound", is(game.getCurrentRound())))
                 .andExpect(jsonPath("$.guesser", is(game.getGuesser())));
     }
 
@@ -84,7 +84,7 @@ class GameControllerTest {
                 .andExpect(jsonPath("$.id", is(game.getId().intValue())))
                 .andExpect(jsonPath("$.version", is(game.getVersion())))
                 .andExpect(jsonPath("$.token", is(game.getToken())))
-                .andExpect(jsonPath("$.round", is(game.getRound())))
+                .andExpect(jsonPath("$.currentRound", is(game.getCurrentRound())))
                 .andExpect(jsonPath("$.guesser", is(game.getGuesser())));
         verify(gameService).setPlayerReady("Token_Aa0Bb1", "UserToken");
     }
@@ -121,38 +121,41 @@ class GameControllerTest {
     public void put_vote_correct() throws Exception {
         Game game = newTestGame();
 
-        given(gameService.addVote("Token_Aa0Bb1", 1)).willReturn(game);
+        given(gameService.addVote("Token_Aa0Bb1", "Token_User", 1)).willReturn(game);
 
-        MockHttpServletRequestBuilder putRequest = put("/game/vote?gameToken=Token_Aa0Bb1&topic=1")
+        MockHttpServletRequestBuilder putRequest =
+                put("/game/vote?gameToken=Token_Aa0Bb1&userToken=Token_User&topic=1")
                 .contentType(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(putRequest).andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(game.getId().intValue())))
                 .andExpect(jsonPath("$.version", is(game.getVersion())))
                 .andExpect(jsonPath("$.token", is(game.getToken())))
-                .andExpect(jsonPath("$.round", is(game.getRound())))
+                .andExpect(jsonPath("$.currentRound", is(game.getCurrentRound())))
                 .andExpect(jsonPath("$.guesser", is(game.getGuesser())));
     }
 
     @Test
-    public void put_vote_invalid_topic() throws Exception {
+    public void put_vote_invalid_userToken() throws Exception {
 
-        given(gameService.addVote("Token_Aa0Bb1", 6))
-                .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "int has to be [1:5]"));
+        given(gameService.addVote("Token_Aa0Bb1", "INVALID_Token_User", 0))
+                .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "\"There is no User with requested Token\""));
 
-        MockHttpServletRequestBuilder putRequest = put("/game/vote?gameToken=Token_Aa0Bb1&topic=6")
+        MockHttpServletRequestBuilder putRequest =
+                put("/game/vote?gameToken=Token_Aa0Bb1&userToken=INVALID_Token_User&topic=0")
                 .contentType(MediaType.APPLICATION_JSON);
         mockMvc.perform(putRequest).andExpect(status().isNotFound())
-                .andExpect(status().reason("int has to be [1:5]"));
+                .andExpect(status().reason("\"There is no User with requested Token\""));
     }
 
     @Test
     public void put_vote_invalid_token() throws Exception {
 
-        given(gameService.addVote("INVALID_Token_Aa0Bb1", 3))
+        given(gameService.addVote("INVALID_Token_Aa0Bb1", "Token_User", 3))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "No matching Game found"));
 
-        MockHttpServletRequestBuilder putRequest = put("/game/vote?gameToken=INVALID_Token_Aa0Bb1&topic=3")
+        MockHttpServletRequestBuilder putRequest =
+                put("/game/vote?gameToken=INVALID_Token_Aa0Bb1&userToken=Token_User&topic=3")
                 .contentType(MediaType.APPLICATION_JSON);
         mockMvc.perform(putRequest).andExpect(status().isNotFound())
                 .andExpect(status().reason("No matching Game found"));

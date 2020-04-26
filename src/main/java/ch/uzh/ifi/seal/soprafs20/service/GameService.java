@@ -85,16 +85,12 @@ public class GameService {
         // for testing purposes saving the game avoids having to mock the Game constructor
         newGame = gameRepository.save(newGame);
 
-        List<User> userList = new ArrayList<>();
-        userList.addAll(lobby.getPlayerList());
-        List<Bot> botList = new ArrayList<>();
-        botList.addAll(lobby.getBotList());
+        List<User> userList = new ArrayList<>(lobby.getPlayerList());
+        List<Bot> botList = new ArrayList<>(lobby.getBotList());
         List<String> clueList = new ArrayList<>();
         List<String> checkList = new ArrayList<>();
-        List<Integer> voteList = new ArrayList<>();
-        for(int a = 0; a<5; a++){
-            voteList.add(0);
-        }
+        List<Integer> voteList = new ArrayList<>(Collections.nCopies(5, 0));
+
 
         newGame.setBotList(botList);
         newGame.setPlayerList(userList);
@@ -139,13 +135,9 @@ public class GameService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, baseErrorMessage);
         }
 
-        Game game = gameRepository.findByToken(gameToken);
         User user = userService.getUserFromToken(userToken);
 
-        List voteList = game.getVoteList();
-        Integer votes = (Integer) voteList.get(vote);
-        voteList.set(vote,votes+=1);
-        game.setVoteList(voteList);
+        game.getVoteList().set(vote, game.getVoteList().get(vote) + 1);
         user.setVoted(true);
         return game;
 
@@ -154,6 +146,11 @@ public class GameService {
     //set Topic of game after Voting
     public Game setTopic(String gameToken, String topic){
         Game game = gameRepository.findByToken(gameToken);
+        if (game == null) {
+            String baseErrorMessage = "No matching Game found";
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, baseErrorMessage);
+        }
+
         game.setTopic(topic);
         return game;
     }
@@ -164,7 +161,7 @@ public class GameService {
         Game game = gameRepository.findByToken(gameToken);
         User user = userService.getUserFromToken(userToken);
         Lobby lobby = lobbyService.getLobbyFromToken(gameToken);
-        List oldUser = game.getPlayerList();
+        List<User> oldUser = game.getPlayerList();
 
         user.setLobby(null);
         user.setGame(null);
@@ -179,10 +176,7 @@ public class GameService {
             }
             gameRepository.delete(game);
             lobbyService.deleteLobby(lobby);
-            return;
         }
-
-
     }
 
     //add clue given by player
@@ -191,16 +185,16 @@ public class GameService {
         boolean valid = WordService.isValidWord(clue);
         Game game = gameRepository.findByToken(gameToken);
         User user = userService.getUserFromToken(userToken);
-        List checklist = game.getChecklist();
+        List<String> checklist = game.getChecklist();
 
-        if(user.getGaveClue()==false) {
+        if(!user.getGaveClue()) {
             user.setGaveClue(true);
-            System.out.println("VALIS::");
+            System.out.println("VALID::");
             System.out.println(valid);
             if(valid){
                 if(!clue.equals(game.getTopic())){
                     checklist.add(clue);
-                    System.out.println("CHEKCLIST:");
+                    System.out.println("CHECKLIST:");
                     System.out.println(checklist);
                 }
             }
@@ -217,7 +211,7 @@ public class GameService {
                 }
             }
             //set ClueList to valid clues
-            List clueList = game.getClueList();
+            List<String> clueList = game.getClueList();
             clueList.clear();
             clueList.addAll(checklist);
             game.setClueList(clueList);

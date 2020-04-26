@@ -121,7 +121,7 @@ public class DTOMapperTest {
         game.setId(0L);
         game.setVersion(0);
         game.setToken("token");
-        game.setRound(0);
+        game.setCurrentRound(0);
         game.setGuesser(0);
         game.setVoteList(new ArrayList<>(Collections.nCopies(5, 0)));
 
@@ -132,7 +132,7 @@ public class DTOMapperTest {
         assertEquals(game.getId(), gameGetDTO.getId());
         assertEquals(game.getVersion(), gameGetDTO.getVersion());
         assertEquals(game.getToken(), gameGetDTO.getToken());
-        assertEquals(game.getRound(), gameGetDTO.getRound());
+        assertEquals(game.getCurrentRound(), gameGetDTO.getCurrentRound());
         assertEquals(game.getGuesser(), gameGetDTO.getGuesser());
         assertEquals(game.getVoteList(), gameGetDTO.getVoteList());
     }

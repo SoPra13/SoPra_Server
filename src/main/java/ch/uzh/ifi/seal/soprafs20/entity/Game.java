@@ -43,10 +43,10 @@ public class Game implements Serializable {
     private List<Integer> voteList = new ArrayList<>();
 
     @ElementCollection
-    private List<String> clueList = new ArrayList<String>();
+    private List<String> clueList = new ArrayList<>();
 
     @ElementCollection
-    private List<String> checkList = new ArrayList<String>();
+    private List<String> checkList = new ArrayList<>();
 
     @OneToMany(mappedBy = "game")
     @JsonBackReference
@@ -89,19 +89,19 @@ public class Game implements Serializable {
 
     public void setCurrentRound(Integer currentRound) {this.currentRound = currentRound;}
 
-    public List getClueList() { return clueList; }
+    public List<String> getClueList() { return clueList; }
 
-    public void setClueList(List clueList) {
+    public void setClueList(List<String> clueList) {
        this.clueList = clueList;
     }
 
-    public List getChecklist() { return checkList; }
+    public List<String> getChecklist() { return checkList; }
 
-    public void setCheckList(List checkList) {
+    public void setCheckList(List<String> checkList) {
         this.checkList = checkList;
     }
 
-    public List getVoteList() { return voteList;}
+    public List<Integer> getVoteList() { return voteList;}
 
     public void setVoteList(List<Integer> voteList) {
         this.voteList = voteList;

@@ -25,7 +25,7 @@ class GameRepositoryTest {
         Game game = new Game();
         game.setVersion(0);
         game.setToken("1");
-        game.setRound(0);
+        game.setCurrentRound(0);
         game.setGuesser(0);
 
         entityManager.persist(game);
@@ -38,7 +38,7 @@ class GameRepositoryTest {
         assertNotNull(found.getId());
         assertEquals(found.getVersion(), game.getVersion());
         assertEquals(found.getToken(), game.getToken());
-        assertEquals(found.getRound(), game.getRound());
+        assertEquals(found.getCurrentRound(), game.getCurrentRound());
         assertEquals(found.getGuesser(), game.getGuesser());
     }
 
@@ -48,7 +48,7 @@ class GameRepositoryTest {
         Game game = new Game();
         game.setVersion(0);
         game.setToken("1");
-        game.setRound(0);
+        game.setCurrentRound(0);
         game.setGuesser(0);
 
         entityManager.persist(game);
