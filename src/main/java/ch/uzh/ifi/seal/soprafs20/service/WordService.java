@@ -25,12 +25,12 @@ public class WordService {
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
-            return new ArrayList<LinkedTreeMap<String, String>>();
+            return new ArrayList<>();
         }
     }
 
     private static ArrayList<LinkedTreeMap<String, String>> trimArrayList(ArrayList<LinkedTreeMap<String, String>> oldList, int trimTo) {
-        ArrayList<LinkedTreeMap<String, String>> newList = new ArrayList<LinkedTreeMap<String, String>>();
+        ArrayList<LinkedTreeMap<String, String>> newList = new ArrayList<>();
         if (oldList.size() > trimTo) {
             for (int i = 0; i < trimTo; i++) {
                 newList.add(oldList.get(i));
@@ -41,7 +41,7 @@ public class WordService {
     }
 
     private static ArrayList<LinkedTreeMap<String, String>> removeAllSimilarWordsFromRequest(String similarWordToRemove, ArrayList<LinkedTreeMap<String, String>> oldList) {
-        ArrayList<LinkedTreeMap<String, String>> newList = new ArrayList<LinkedTreeMap<String, String>>();
+        ArrayList<LinkedTreeMap<String, String>> newList = new ArrayList<>();
         for (LinkedTreeMap<String, String> word : oldList) {
             if (!isSimilar(word.get("word"), similarWordToRemove)) {
                 newList.add(word);
@@ -51,7 +51,7 @@ public class WordService {
     }
 
     private static ArrayList<LinkedTreeMap<String, String>> removeMultiWords(ArrayList<LinkedTreeMap<String, String>> oldList) {
-        ArrayList<LinkedTreeMap<String, String>> newList = new ArrayList<LinkedTreeMap<String, String>>();
+        ArrayList<LinkedTreeMap<String, String>> newList = new ArrayList<>();
         for (LinkedTreeMap<String, String> word : oldList) {
             if (!word.get("word").contains(" ")) {
                 newList.add(word);
@@ -98,7 +98,7 @@ public class WordService {
 
     public static boolean[] checkSimilarityInArray(String[] words) {
         boolean[] result = new boolean[words.length];
-        ArrayList<ArrayList<LinkedTreeMap<String, String>>> wordDefsAsList = new ArrayList<ArrayList<LinkedTreeMap<String, String>>>();
+        ArrayList<ArrayList<LinkedTreeMap<String, String>>> wordDefsAsList = new ArrayList<>();
         for (String word :words) {
             wordDefsAsList.add(getRequest(("https://api.datamuse.com/words?md=d&max=1&sp=" + word)));
         }
@@ -117,7 +117,7 @@ public class WordService {
     }
 
     public static String getGoodWord(String word) {
-        ArrayList<LinkedTreeMap<String, String>> wordList = new ArrayList<LinkedTreeMap<String, String>>();
+        ArrayList<LinkedTreeMap<String, String>> wordList = new ArrayList<>();
         wordList.addAll(getRequest("http://api.datamuse.com/words?max=2&rel_spc=" + word));
         wordList.addAll(getRequest("http://api.datamuse.com/words?max=2&rel_trg=" + word));
         wordList.addAll(getRequest("http://api.datamuse.com/words?max=2&rel_gen=" + word));
@@ -128,7 +128,7 @@ public class WordService {
 
     public static String getBadWord(String word) {
         ArrayList<LinkedTreeMap<String, String>> wordList =
-                new ArrayList<LinkedTreeMap<String, String>>(getRequest("http://api.datamuse.com/words?max=5&rel_spc=" + word));
+                new ArrayList<>(getRequest("http://api.datamuse.com/words?max=5&rel_spc=" + word));
         return getWord(word, wordList);
 
     }
