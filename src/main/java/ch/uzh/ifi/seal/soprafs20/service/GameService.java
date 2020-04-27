@@ -181,39 +181,54 @@ public class GameService {
     //add clue given by player
     public Game addClue(String userToken, String gameToken, String clue){
 
+        System.out.println(clue);
+        clue.toLowerCase();
+        System.out.println("");
         boolean valid = WordService.isValidWord(clue);
         Game game = gameRepository.findByToken(gameToken);
         User user = userService.getUserFromToken(userToken);
         List checklist = game.getChecklist();
 
-        if(user.getGaveClue()==false) {
+        if(!user.getGaveClue()) {
             user.setGaveClue(true);
-            System.out.println("VALIS::");
-            System.out.println(valid);
             if(valid){
                 if(!clue.equals(game.getTopic())){
+                    System.out.println("valid");
+                    System.out.println("");
                     checklist.add(clue);
-                    System.out.println("CHEKCLIST:");
                     System.out.println(checklist);
+                    System.out.println("");
+                }else{
+                    checklist.add("CENSORED");
                 }
+            }else {
+                checklist.add("CENSORED");
             }
         }else{
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "user already gave clue");
         }
         //if all players gave clues, remove duplicates
         if(this.numberIfCluesGiven(game)==game.getPlayerList().size()-1){
+            System.out.println("ALL CLUES RECEIVED");
+            System.out.println("");
            boolean[] duplicates = WordService.checkSimilarityInArray((String[]) checklist.toArray(new String[checklist.size()]));
            //remove duplicates from end to bottom because of indexes removed would break code
             for(int i = checklist.size()-1; i>=0;i--){
                 if(duplicates[i]){
-                    checklist.remove(i);
+                    checklist.set(i,"CENSORED");
                 }
             }
+            System.out.println(checklist);
+            System.out.println("");
+
             //set ClueList to valid clues
             List clueList = game.getClueList();
             clueList.clear();
             clueList.addAll(checklist);
+            clueList.add("aditionalCLUE");
             game.setClueList(clueList);
+            System.out.println(clueList);
+            System.out.println("");
         }
 
         return game;
