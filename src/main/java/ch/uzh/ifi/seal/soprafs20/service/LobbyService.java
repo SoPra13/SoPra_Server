@@ -27,14 +27,16 @@ public class LobbyService {
 
     private final UserService userService;
     private  final BotService botService;
+    private final ChatService chatService;
     private final Logger log = LoggerFactory.getLogger(LobbyService.class);
     private final LobbyRepository lobbyRepository;
 
 
     @Autowired
-    public LobbyService(UserService userService, BotService botService, @Qualifier("lobbyRepository") LobbyRepository lobbyRepository) {
+    public LobbyService(UserService userService, BotService botService, ChatService chatService, @Qualifier("lobbyRepository") LobbyRepository lobbyRepository) {
         this.userService = userService;
         this.botService = botService;
+        this.chatService = chatService;
         this.lobbyRepository = lobbyRepository;
     }
 
@@ -72,6 +74,7 @@ public class LobbyService {
         newLobby = lobbyRepository.save(newLobby);
         user.setLobby(newLobby);
         lobbyRepository.flush();
+        chatService.createChat(newLobby.getLobbyToken());
 
         log.debug("Created Information for Lobby: {}", newLobby);
         return newLobby;
