@@ -2,9 +2,11 @@ package ch.uzh.ifi.seal.soprafs20.rest.mapper;
 
 import ch.uzh.ifi.seal.soprafs20.constant.LobbyStatus;
 import ch.uzh.ifi.seal.soprafs20.constant.LobbyType;
+import ch.uzh.ifi.seal.soprafs20.constant.MessageType;
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.Game;
 import ch.uzh.ifi.seal.soprafs20.entity.Lobby;
+import ch.uzh.ifi.seal.soprafs20.entity.Message;
 import ch.uzh.ifi.seal.soprafs20.entity.User;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.*;
 import org.junit.jupiter.api.Test;
@@ -20,6 +22,37 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Tests if the mapping between the internal and the external/API representation works.
  */
 public class DTOMapperTest {
+    @Test
+    public void testGetChat_fromMessage_toChatGetDTO() {
+        // create Message
+        Message message = new Message();
+        message.setUsername("username");
+        message.setMessage("message");
+        message.setMessageType(MessageType.NORMAL);
+
+        // MAP -> Create user
+        ChatGetDTO chat = DTOMapper.INSTANCE.convertEntitytoChatGetDTO(message);
+
+        // check content
+        assertEquals(message.getUsername(), chat.getUsername());
+        assertEquals(message.getMessage(), chat.getMessage());
+        assertEquals(message.getMessageType(), chat.getMessageType());
+    }
+
+    @Test
+    public void testMessage_fromChatPostDTO_toMessage() {
+        // create ChatPostDTO
+        ChatPostDTO chat = new ChatPostDTO();
+        chat.setMessage("message");
+
+        // MAP -> Create user
+        Message message = DTOMapper.INSTANCE.convertChatPostDTOtoEntity(chat);
+
+        // check content
+        assertEquals(chat.getMessage(), message.getMessage());
+    }
+
+
     @Test
     public void testCreateUser_fromUserPostDTO_toUser_success() {
         // create UserPostDTO
