@@ -36,6 +36,9 @@ public class Game implements Serializable {
     @Column
     private Boolean guessCorrect;
 
+    @Column
+    private Boolean guessGiven;
+
     @ElementCollection
     private List<String> mysteryWords = new ArrayList<String>();
 
@@ -133,5 +136,12 @@ public class Game implements Serializable {
 
     public void setGuessCorrect(Boolean guessCorrect) {this.guessCorrect = guessCorrect;}
 
+    public Boolean getGuessGiven() {
+        return guessGiven;
+    }
+
+    public void setGuessGiven(Boolean guessGiven) {
+        this.guessGiven = guessGiven;
+    }
 
 }

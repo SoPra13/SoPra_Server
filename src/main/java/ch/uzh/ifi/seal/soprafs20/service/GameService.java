@@ -101,6 +101,7 @@ public class GameService {
         newGame.setClueList(clueList);
         newGame.setVoteList(voteList);
         newGame.setCheckList(checkList);
+        newGame.setGuessGiven(false);
         newGame.setGuesser(new Random().nextInt(userList.size()));
         newGame.setMysteryWords(WordFileHandler.getMysteryWords());
 
@@ -134,6 +135,7 @@ public class GameService {
 
         Game game = gameRepository.findByToken(gameToken);
         User user = userService.getUserFromToken(userToken);
+        game.setGuessCorrect(null);
 
         List voteList = game.getVoteList();
         Integer votes = (Integer) voteList.get(vote);
@@ -189,6 +191,7 @@ public class GameService {
         User user = userService.getUserFromToken(userToken);
         List checklist = game.getChecklist();
 
+
         if(!user.getGaveClue()) {
             user.setGaveClue(true);
             if(valid){
@@ -235,17 +238,17 @@ public class GameService {
     }
 
     public Game makeGuess(String gameToken, String guess){
+        System.out.println(guess);
+        System.out.println("");
 
         Game game = gameRepository.findByToken(gameToken);
-
-        if(game.getTopic().equals(guess)){
-            game.setGuessCorrect(true);
-        }else{
-            game.setGuessCorrect(false);
-        }
-
+        game.setGuessGiven(true);
+        game.setGuessCorrect(game.getTopic().equals(guess));
+        System.out.println(game.getTopic().equals(guess));
+        System.out.println("");
+        System.out.println(game.getGuessCorrect());
+        System.out.println("");
         return game;
-
     }
 
     public Game nextRound(String gameToken) {
@@ -260,16 +263,24 @@ public class GameService {
             voteList.add(0);
         }
 
-        game.setCurrentRound(round + 1);
-        game.setGuesser(game.getPlayerList().size() % (guesser + 1));
-        game.setGuessCorrect(null);
+        //add round nr according to result of previous guess
+        if(game.getGuessCorrect()) {
+            game.setCurrentRound(round + 1);
+        }else{
+            game.setCurrentRound(round + 2);
+        }
+        game.setGuesser((guesser+1) % game.getPlayerList().size());
         game.setTopic(null);
         game.setVoteList(voteList);
         game.setClueList(clueList);
         game.setCheckList(checkList);
+        game.setGuessGiven(false);
+
 
         for (User user : game.getPlayerList()) {
-        userService.updateUser(user);
+            user.setUnityReady(false);
+            user.setVoted(false);
+            user.setGaveClue(false);
     }
         return game;
     }
