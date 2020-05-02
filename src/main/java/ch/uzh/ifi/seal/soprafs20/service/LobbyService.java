@@ -69,6 +69,7 @@ public class LobbyService {
         newLobby.setAdminToken(user.getToken());
         newLobby.setLobbyState(LobbyStatus.OPEN);
         newLobby.setPlayerList(userList);
+        newLobby.setJoinToken(this.generateJoinToken());
 
         // saves the given entity but data is only persisted in the database once flush() is called
         newLobby = lobbyRepository.save(newLobby);
@@ -82,16 +83,17 @@ public class LobbyService {
 
 
     //add player to Lobby
-    public Lobby joinLobby(String lToken, String uToken){
+    public Lobby joinLobby(String joinToken, String uToken){
 
+        Lobby lobbyToAdd = lobbyRepository.findByJoinToken(joinToken);
         //checks
-        checkLobbyExists(lToken);
-        checkLobbyFull(lToken);
-        checkLobbyTokens(lToken,uToken);
+        checkLobbyExists(lobbyToAdd.getLobbyToken());
+        checkLobbyFull(lobbyToAdd.getLobbyToken());
+        checkLobbyTokens(lobbyToAdd.getLobbyToken(),uToken);
 
         //get lobby & user
         User userToAdd = userService.getUserFromToken(uToken);
-        Lobby lobbyToAdd = lobbyRepository.findByLobbyToken(lToken);
+
 
         // add user to lobby
         List list = lobbyToAdd.getPlayerList();
@@ -231,4 +233,12 @@ public class LobbyService {
      * @throws org.springframework.web.server.ResponseStatusException
      * @see Lobby
      */
+    public String generateJoinToken(){
+        Integer token = new Random().nextInt(9999);
+
+        while (lobbyRepository.findByJoinToken(String.valueOf(token))!=null){
+            token = new Random().nextInt(9999);
+        }
+        return String.valueOf(token);
+    }
 }

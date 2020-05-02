@@ -26,6 +26,10 @@ public class Lobby implements Serializable {
     @Column(nullable = false, unique = true)
     private String lobbyToken;
 
+
+    @Column(nullable = false, unique = true)
+    private String joinToken;
+
     @Column(nullable = false)
     private LobbyStatus lobbyState;
 
@@ -119,4 +123,13 @@ public class Lobby implements Serializable {
     }
 
     public void removeBot(Bot bot){botList.remove(bot);}
+
+    public String getJoinToken() {
+        return joinToken;
+    }
+
+    public void setJoinToken(String joinToken) {
+        this.joinToken = joinToken;
+    }
+
 }

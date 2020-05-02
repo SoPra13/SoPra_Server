@@ -13,6 +13,7 @@ public class LobbyGetDTO {
     private Long id;
     private String lobbyname;
     private String lobbyToken;
+    private String joinToken;
     private LobbyStatus lobbyState;
     private LobbyType lobbyType;
     private Integer numberOfPlayers;
@@ -92,5 +93,14 @@ public class LobbyGetDTO {
     public void setBotList(List botList) {
         this.botList = botList;
     }
+
+    public String getJoinToken() {
+        return joinToken;
+    }
+
+    public void setJoinToken(String joinToken) {
+        this.joinToken = joinToken;
+    }
+
 
 }

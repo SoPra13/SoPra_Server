@@ -92,10 +92,10 @@ public class LobbyController {
     @PutMapping("/lobby")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public LobbyGetDTO joinLobby(@RequestParam String lobbyToken, @RequestParam String userToken) {
+    public LobbyGetDTO joinLobby(@RequestParam String joinToken, @RequestParam String userToken) {
 
         //add user to lobby
-        Lobby lobby = lobbyService.joinLobby(lobbyToken,userToken);
+        Lobby lobby = lobbyService.joinLobby(joinToken,userToken);
 
         // convert internal representation of lobby back to API
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby);
