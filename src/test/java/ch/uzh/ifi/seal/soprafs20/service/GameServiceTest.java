@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs20.service;
 
+import ch.uzh.ifi.seal.soprafs20.constant.Difficulty;
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.Bot;
 import ch.uzh.ifi.seal.soprafs20.entity.Game;
@@ -14,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -25,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 class GameServiceTest {
+
 
     @Mock
     private GameRepository gameRepository;
@@ -59,6 +62,8 @@ class GameServiceTest {
         testGame.setCurrentRound(0);
         testGame.setGuesser(0);
         testGame.getPlayerList().add(testUser);
+        testGame.setBotsClueGiven(false);
+        testGame.setBotsVoted(false);
 
         testUser.setUsername("UserName");
         testUser.setPassword("PassWord");
@@ -73,6 +78,10 @@ class GameServiceTest {
         Mockito.when(gameRepository.findByToken(testGame.getToken())).thenReturn(testGame);
         Mockito.when(gameRepository.findByToken("INVALID_TOKEN")).thenReturn(null);
         Mockito.when(userService.getUserFromToken(testUser.getToken())).thenReturn(testUser);
+        Mockito.when(botService.botclue(Mockito.any(), Mockito.anyString())).thenReturn("BOT_CLUE");
+
+        Mockito.doCallRealMethod().when(userService).leaveGame(testUser);
+        Mockito.doCallRealMethod().when(userService).leaveLobby(testUser);
 
 
     }
@@ -252,6 +261,24 @@ class GameServiceTest {
     }
 
     @Test
+    void addVote_with_bot_success() {
+        Bot testBot = new Bot();
+        testGame.getBotList().add(testBot);
+        testGame.setVoteList(new ArrayList<Integer>(Collections.nCopies(5,0)));
+
+        Mockito.when(gameRepository.findByToken(testGame.getToken())).thenReturn(testGame);
+
+        gameService.addVote(testGame.getToken(), testUser.getToken(), 0);
+        gameService.addVote(testGame.getToken(), testUser.getToken(), 0);
+        gameService.addVote(testGame.getToken(), testUser.getToken(), 4);
+
+        assertEquals(1, testGame.getVoteList().get(4));
+        assertEquals(2, testGame.getVoteList().get(0));
+        assertEquals(4, testGame.getVoteList().stream().mapToInt(Integer::intValue).sum());
+        assertTrue(testUser.getVoted());
+    }
+
+    @Test
     void addVote_invalid_game_token() {
         testGame.setVoteList(new ArrayList<Integer>(Collections.nCopies(5,0)));
 
@@ -329,6 +356,8 @@ class GameServiceTest {
         Mockito.when(userService.getUserFromToken(userToKick.getToken())).thenReturn(userToKick);
         Mockito.when(lobbyService.getLobbyFromToken(testLobby.getLobbyToken())).thenReturn(testLobby);
         Mockito.doNothing().when(chatService).leaveChat(testGame.getToken(), userToKick.getToken());
+        Mockito.doCallRealMethod().when(userService).leaveGame(userToKick);
+        Mockito.doCallRealMethod().when(userService).leaveLobby(userToKick);
         gameService.removeUser(userToKick.getToken(), testGame.getToken());
 
         assertFalse(testGame.getPlayerList().contains(userToKick));
@@ -373,8 +402,32 @@ class GameServiceTest {
 
         assertTrue(testUser.getGaveClue());
         assertTrue(newGame.getChecklist().contains(clue));
+        assertFalse(newGame.getChecklist().contains("BOT_CLUE"));
         assertFalse(newGame.getClueList().contains(clue));
+    }
 
+    @Test
+    void addClue_with_bot_success() {
+        String clue = "valid";
+        testUser.setGaveClue(false);
+        testGame.setTopic("Topic");
+        User otherUser = new User();
+        otherUser.setGaveClue(false);
+        testGame.getPlayerList().add(otherUser);
+        User guesser = new User();      // guesser is needed to make sure w dont eval clue to early
+        guesser.setGaveClue(false);
+        testGame.getPlayerList().add(guesser);
+        Bot testBot = new Bot();
+        testBot.setDifficulty(Difficulty.NEUTRAL);
+        testGame.getBotList().add(testBot);
+        Mockito.when(botService.botclue(Mockito.any(), Mockito.anyString())).thenReturn("BOT_CLUE");
+
+        Game newGame = gameService.addClue(testUser.getToken(), testGame.getToken(), clue);
+
+        assertTrue(testUser.getGaveClue());
+        assertTrue(newGame.getChecklist().contains(clue));
+        assertTrue(newGame.getChecklist().contains("BOT_CLUE"));
+        assertFalse(newGame.getClueList().contains(clue));
     }
 
     @Test

@@ -143,7 +143,7 @@ public class GameService {
 
 
     //vote for topic, adds one to index of topic voted for
-
+public Game addVote(String gameToken, String userToken, int vote){
         if (vote > 5)throw new ResponseStatusException(HttpStatus.NOT_FOUND, "int has to be <5");
 
         Game game = getGameFromToken(gameToken);
@@ -157,7 +157,7 @@ public class GameService {
             for(Bot bot: game.getBotList()){
                 int botVote = new Random().nextInt(4);
                 Integer votes = (Integer) voteList.get(botVote);
-                voteList.set(botVote,votes+=1);
+                voteList.set(botVote,votes+1);
             }
         }
         Integer votes = (Integer) voteList.get(vote);
@@ -222,7 +222,7 @@ public class GameService {
         }
         if(!user.getGaveClue()) {
             if(valid){
-                if(!clue.equals(game.getTopic())){
+                if(!clue.equals(game.getTopic().toLowerCase())){
                     System.out.println("valid");
                     System.out.println("");
                     checklist.add(clue);

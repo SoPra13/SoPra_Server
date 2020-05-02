@@ -95,6 +95,10 @@ public class DTOMapperTest {
         user.setUsername("firstname@lastname");
         user.setStatus(UserStatus.OFFLINE);
         user.setToken("1");
+        user.setUnityReady(true);
+        user.setLobbyReady(true);
+        user.setVoted(true);
+        user.setGaveClue(true);
 
         // MAP -> Create UserGetDTO
         UserGetDTO userGetDTO = DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
