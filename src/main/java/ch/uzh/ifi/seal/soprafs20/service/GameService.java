@@ -1,9 +1,6 @@
 package ch.uzh.ifi.seal.soprafs20.service;
 
-import ch.uzh.ifi.seal.soprafs20.entity.Bot;
-import ch.uzh.ifi.seal.soprafs20.entity.Game;
-import ch.uzh.ifi.seal.soprafs20.entity.Lobby;
-import ch.uzh.ifi.seal.soprafs20.entity.User;
+import ch.uzh.ifi.seal.soprafs20.entity.*;
 import ch.uzh.ifi.seal.soprafs20.helpers.WordFileHandler;
 import ch.uzh.ifi.seal.soprafs20.repository.GameRepository;
 import org.slf4j.Logger;
@@ -31,17 +28,19 @@ public class GameService {
     private final UserService userService;
     private final BotService botService;
     private final LobbyService lobbyService;
+    private final ChatService chatService;
 
     private final Logger log = LoggerFactory.getLogger(GameService.class);
     private final GameRepository gameRepository;
 
 
     @Autowired
-    public GameService(UserService userService, BotService botService, LobbyService lobbyService, @Qualifier("gameRepository") GameRepository gameRespository) {
+    public GameService(UserService userService, ChatService chatService,BotService botService, LobbyService lobbyService, @Qualifier("gameRepository") GameRepository gameRespository) {
         this.gameRepository = gameRespository;
         this.userService = userService;
         this.lobbyService = lobbyService;
         this.botService = botService;
+        this.chatService = chatService;
     }
 
 
@@ -160,14 +159,13 @@ public class GameService {
         User user = userService.getUserFromToken(userToken);
         Lobby lobby = lobbyService.getLobbyFromToken(gameToken);
         List oldUser = game.getPlayerList();
-
+        chatService.leaveChat(gameToken,userToken);
+        lobby.removePlayer(user);
+        game.removePlayer(user);
         user.setLobby(null);
         user.setGame(null);
-        lobby.setPlayerList(oldUser);
-        game.setPlayerList(oldUser);
 
 
-        oldUser.remove(user);
         if(oldUser.size()==0){
             for(Bot bot : game.getBotList()){
                 botService.deleteBot(bot.getToken());
@@ -193,7 +191,6 @@ public class GameService {
 
 
         if(!user.getGaveClue()) {
-            user.setGaveClue(true);
             if(valid){
                 if(!clue.equals(game.getTopic())){
                     System.out.println("valid");
@@ -210,8 +207,9 @@ public class GameService {
         }else{
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "user already gave clue");
         }
+        user.setGaveClue(true);
         //if all players gave clues, remove duplicates
-        if(this.numberIfCluesGiven(game)==game.getPlayerList().size()-1){
+        if(this.numberOfCluesGiven(game)==game.getPlayerList().size()-1){
             System.out.println("ALL CLUES RECEIVED");
             System.out.println("");
            boolean[] duplicates = WordService.checkSimilarityInArray((String[]) checklist.toArray(new String[checklist.size()]));
@@ -285,7 +283,7 @@ public class GameService {
         return game;
     }
 
-    public int numberIfCluesGiven(Game game){
+    public int numberOfCluesGiven(Game game){
         int count = 0;
 
         for(User user : game.getPlayerList()){

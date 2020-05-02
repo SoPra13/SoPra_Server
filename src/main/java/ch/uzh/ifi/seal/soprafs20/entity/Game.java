@@ -14,13 +14,14 @@ public class Game implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
+
     @GeneratedValue
     private Long id;
 
     @Column(nullable = false)
     private Integer version;
 
+    @Id
     @Column(nullable = false, unique = true)
     private String token;
 
@@ -120,6 +121,8 @@ public class Game implements Serializable {
         return playerList;
      }
 
+     public void removePlayer(User user){playerList.remove(user);}
+
      public void setPlayerList(List playerList) {
          this.playerList = playerList;
      }
@@ -131,6 +134,8 @@ public class Game implements Serializable {
      public void setBotList(List botList) {
         this.botList = botList;
      }
+
+    public void removePlayer(Bot bot){botList.remove(bot);}
 
     public Boolean getGuessCorrect() {return guessCorrect;}
 

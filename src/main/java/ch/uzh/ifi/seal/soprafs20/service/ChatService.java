@@ -1,24 +1,18 @@
 package ch.uzh.ifi.seal.soprafs20.service;
 
 import ch.uzh.ifi.seal.soprafs20.constant.MessageType;
-import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.Chat;
 import ch.uzh.ifi.seal.soprafs20.entity.Message;
 import ch.uzh.ifi.seal.soprafs20.entity.User;
 import ch.uzh.ifi.seal.soprafs20.repository.ChatRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.MessageRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.UserRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * User Service
@@ -70,6 +64,12 @@ public class ChatService {
             messageRepository.saveAndFlush(message);
             chat.addMessage(message);
         }
+    }
+
+    public void leaveChat(String lobbyToken, String userToken){
+        Chat chat = chatRepository.findByLobbyToken(lobbyToken);
+        User user = userRepository.findByToken(userToken);
+        chat.removeUser(user);
     }
 
     public List<Message> getAllMessagesFromChat(String lobbyToken) {

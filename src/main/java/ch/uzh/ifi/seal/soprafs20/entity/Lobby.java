@@ -15,13 +15,14 @@ import java.util.List;
 public class Lobby implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
+
     @GeneratedValue
     private Long id;
 
     @Column(nullable = false, unique = true)
     private String lobbyname;
 
+    @Id
     @Column(nullable = false, unique = true)
     private String lobbyToken;
 
@@ -107,6 +108,8 @@ public class Lobby implements Serializable {
         this.playerList = playerList;
     }
 
+    public void removePlayer(User user){playerList.remove(user);}
+
     public List getBotList() {
         return botList;
     }
@@ -115,4 +118,5 @@ public class Lobby implements Serializable {
         this.botList = botList;
     }
 
+    public void removeBot(Bot bot){botList.remove(bot);}
 }
