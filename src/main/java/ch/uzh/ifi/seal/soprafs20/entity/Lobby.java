@@ -14,6 +14,8 @@ import java.util.List;
 @Table(name = "LOBBY")
 public class Lobby implements Serializable {
 
+    public final int maxpalyer = 7;
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -106,19 +108,19 @@ public class Lobby implements Serializable {
         this.numberOfPlayers = numberOfPlayers;
     }
 
-    public List getPlayerList() { return playerList; }
+    public List<User> getPlayerList() { return playerList; }
 
-    public void setPlayerList(List playerList) {
+    public void setPlayerList(List<User> playerList) {
         this.playerList = playerList;
     }
 
     public void removePlayer(User user){playerList.remove(user);}
 
-    public List getBotList() {
+    public List<Bot> getBotList() {
         return botList;
     }
 
-    public void setBotList(List botList) {
+    public void setBotList(List<Bot> botList) {
         this.botList = botList;
     }
 

@@ -31,6 +31,7 @@ class LobbyRepositoryTest {
         lobby.setNumberOfPlayers(1);
         lobby.setAdminToken("ADMIN_TOKEN");
         lobby.setLobbyType(LobbyType.PUBLIC);
+        lobby.setJoinToken("JOIN_TOKEN");
 
         entityManager.persist(lobby);
         entityManager.flush();
@@ -58,6 +59,7 @@ class LobbyRepositoryTest {
         lobby.setNumberOfPlayers(1);
         lobby.setAdminToken("ADMIN_TOKEN");
         lobby.setLobbyType(LobbyType.PUBLIC);
+        lobby.setJoinToken("JOIN_TOKEN");
 
         entityManager.persist(lobby);
         entityManager.flush();

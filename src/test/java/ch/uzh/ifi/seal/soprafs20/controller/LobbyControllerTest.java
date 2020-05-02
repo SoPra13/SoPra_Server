@@ -206,7 +206,7 @@ public class LobbyControllerTest {
         given(lobbyService.joinLobby("testtoken", "testtokenUser"))
                 .willReturn(lobby);
 
-        MockHttpServletRequestBuilder putRequest = put("/lobby?lobbyToken=testtoken&userToken=testtokenUser").contentType(MediaType.APPLICATION_JSON);
+        MockHttpServletRequestBuilder putRequest = put("/lobby?joinToken=testtoken&userToken=testtokenUser").contentType(MediaType.APPLICATION_JSON);
         mockMvc.perform(putRequest).andExpect(status().isCreated())
                 .andExpect(jsonPath("$.lobbyname", is(lobby.getLobbyname())))
                 .andExpect(jsonPath("$.numberOfPlayers", is(1)))
@@ -222,7 +222,7 @@ public class LobbyControllerTest {
         given(lobbyService.joinLobby("testtoken", "testtokenUser"))
                 .willThrow(new ResponseStatusException(HttpStatus.FORBIDDEN, "Lobby is full"));
 
-        MockHttpServletRequestBuilder putRequest = put("/lobby?lobbyToken=testtoken&userToken=testtokenUser").contentType(MediaType.APPLICATION_JSON);
+        MockHttpServletRequestBuilder putRequest = put("/lobby?joinToken=testtoken&userToken=testtokenUser").contentType(MediaType.APPLICATION_JSON);
         mockMvc.perform(putRequest).andExpect(status().isForbidden())
                 .andExpect(status().reason("Lobby is full"));
     }
@@ -237,7 +237,7 @@ public class LobbyControllerTest {
         given(lobbyService.joinLobby("testtoken", "testtokenUser"))
                 .willThrow(new ResponseStatusException(HttpStatus.FORBIDDEN, "User is already in Lobby"));
 
-        MockHttpServletRequestBuilder putRequest = put("/lobby?lobbyToken=testtoken&userToken=testtokenUser").contentType(MediaType.APPLICATION_JSON);
+        MockHttpServletRequestBuilder putRequest = put("/lobby?joinToken=testtoken&userToken=testtokenUser").contentType(MediaType.APPLICATION_JSON);
         mockMvc.perform(putRequest).andExpect(status().isForbidden())
                 .andExpect(status().reason("User is already in Lobby"));
     }
@@ -250,7 +250,7 @@ public class LobbyControllerTest {
         given(lobbyService.joinLobby("invalid_token", "testtokenUser"))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found"));
 
-        MockHttpServletRequestBuilder putRequest = put("/lobby?lobbyToken=invalid_token&userToken=testtokenUser").contentType(MediaType.APPLICATION_JSON);
+        MockHttpServletRequestBuilder putRequest = put("/lobby?joinToken=invalid_token&userToken=testtokenUser").contentType(MediaType.APPLICATION_JSON);
         mockMvc.perform(putRequest).andExpect(status().isNotFound())
                 .andExpect(status().reason("Lobby not found"));
     }

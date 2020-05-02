@@ -148,7 +148,6 @@ public class LobbyServiceTest {
         newUser.setId(2L);
         newUser.setToken("NEW_TOKEN");
 
-
         Mockito.when(userService.getUserFromToken(newUser.getToken())).thenReturn(newUser);
         Mockito.when(lobbyRepository.findByLobbyToken(testLobby.getLobbyToken())).thenReturn(testLobby);
 
@@ -170,7 +169,7 @@ public class LobbyServiceTest {
         Exception exception = Assertions.assertThrows(ResponseStatusException.class,
                 () -> lobbyService.joinLobby("INVALID_TOKEN", "NEW_TOKEN"));
 
-        assertEquals("404 NOT_FOUND \"Lobby not found\"", exception.getMessage());
+        assertEquals("404 NOT_FOUND \"No matching Lobby found\"", exception.getMessage());
 
     }
 
