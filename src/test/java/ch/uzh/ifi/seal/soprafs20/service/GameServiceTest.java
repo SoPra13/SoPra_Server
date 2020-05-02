@@ -16,6 +16,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.print.DocFlavor;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -345,12 +347,161 @@ class GameServiceTest {
 
     @Test
     void addClue_success() {
+        String clue = "valid";
         testUser.setGaveClue(false);
-//        Mockito.when(WordService.isValidWord("valid_clue")).thenReturn(true);
+        testGame.setTopic("Topic");
+        User otherUser = new User();
+        otherUser.setGaveClue(false);
+        testGame.getPlayerList().add(otherUser);
 
+        Game newGame = gameService.addClue(testUser.getToken(), testGame.getToken(), clue);
 
-
-//        assertTrue(testUser.getGaveClue());
+        assertTrue(testUser.getGaveClue());
+        assertTrue(newGame.getChecklist().contains(clue));
+        assertFalse(newGame.getClueList().contains(clue));
 
     }
+
+    @Test
+    void addClue_invalid_clue() {
+        String clue = "invalid_clue";
+        testUser.setGaveClue(false);
+        testGame.setTopic("Topic");
+
+        Game newGame = gameService.addClue(testUser.getToken(), testGame.getToken(), clue);
+
+        assertTrue(testUser.getGaveClue());
+        assertFalse(testGame.getChecklist().contains(clue));
+        assertTrue(testGame.getChecklist().contains("CENSORED"));
+    }
+
+    @Test
+    void addClue_clue_equals_topic() {
+        testUser.setGaveClue(false);
+        testGame.setTopic("Topic");
+        String clue = testGame.getTopic();
+
+        Game newGame = gameService.addClue(testUser.getToken(), testGame.getToken(), clue);
+
+        assertTrue(testUser.getGaveClue());
+        assertFalse(testGame.getChecklist().contains(clue));
+        assertTrue(testGame.getChecklist().contains("CENSORED"));
+    }
+
+    @Test
+    void addClue_has_already_given_clue() {
+        String clue = "clue";
+        testUser.setGaveClue(true);
+        testGame.setTopic("Topic");
+
+        Exception exception = Assertions.assertThrows(ResponseStatusException.class,
+                () -> gameService.addClue(testUser.getToken(), testGame.getToken(), clue));
+
+        assertTrue(testUser.getGaveClue());
+        assertFalse(testGame.getChecklist().contains(clue));
+        assertFalse(testGame.getChecklist().contains("CENSORED"));
+        assertEquals("403 FORBIDDEN \"user already gave clue\"", exception.getMessage());
+    }
+
+    @Test
+    void addClue_last_clue_success() {
+        String clue = "valid";
+        testUser.setGaveClue(false);
+        testGame.setTopic("Topic");
+
+        Game newGame = gameService.addClue(testUser.getToken(), testGame.getToken(), clue);
+
+        assertTrue(testUser.getGaveClue());
+        assertTrue(testGame.getChecklist().contains(clue));
+        assertTrue(testGame.getClueList().contains(clue));
+    }
+
+    @Test
+    void addClue_remove_duplicate() {
+        String clue = "valid";
+        testUser.setGaveClue(false);
+        testGame.setTopic("Topic");
+        User otherUser = new User();
+        otherUser.setToken("OTHER_TOKEN");
+        otherUser.setGaveClue(false);
+        testGame.getPlayerList().add(otherUser);
+        Mockito.when(userService.getUserFromToken(otherUser.getToken())).thenReturn(otherUser);
+
+        gameService.addClue(otherUser.getToken(), testGame.getToken(), clue);
+        Game newGame = gameService.addClue(testUser.getToken(), testGame.getToken(), clue);
+
+        assertTrue(testUser.getGaveClue());
+        assertFalse(testGame.getClueList().contains(clue));
+        assertTrue(testGame.getClueList().containsAll(Arrays.asList("CENSORED", "CENSORED")));
+    }
+
+    @Test
+    void makeGuess_success() {
+        testGame.setTopic("Topic");
+
+        Game newGame = gameService.makeGuess(testGame.getToken(), testGame.getTopic());
+
+        assertTrue(testGame.getGuessCorrect());
+    }
+
+    @Test
+    void makeGuess_not_correct() {
+        testGame.setTopic("Topic");
+
+        Game newGame = gameService.makeGuess(testGame.getToken(), "other_topic");
+
+        assertFalse(testGame.getGuessCorrect());
+    }
+
+    @Test
+    void nextRound_success() {
+        testGame.setCurrentRound(0);
+        testGame.setGuesser(0);
+        testGame.setGuessCorrect(true);
+        testGame.setTopic("Topic");
+        testGame.getVoteList().add(1337);
+        testGame.getClueList().add("clue");
+        testGame.getChecklist().add("check");
+        testGame.getPlayerList().add(new User());
+
+        Game newGame = gameService.nextRound(testGame.getToken());
+
+        assertEquals(1, newGame.getCurrentRound());
+        assertEquals(1, newGame.getGuesser());
+        assertNull(newGame.getGuessCorrect());
+        assertNull(newGame.getTopic());
+//        assertTrue(newGame.getVoteList().isEmpty());
+        assertTrue(newGame.getVoteList().stream().allMatch(i -> i == 0));
+        assertTrue(newGame.getClueList().isEmpty());
+        assertTrue(newGame.getChecklist().isEmpty());
+        Mockito.verify(userService, Mockito.times(testGame.getPlayerList().size())).updateUser(Mockito.any());
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

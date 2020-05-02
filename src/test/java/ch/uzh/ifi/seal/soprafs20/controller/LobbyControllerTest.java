@@ -8,6 +8,7 @@ import ch.uzh.ifi.seal.soprafs20.entity.User;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.LobbyGetDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.LobbyPostDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.mapper.DTOMapper;
+import ch.uzh.ifi.seal.soprafs20.service.GameService;
 import ch.uzh.ifi.seal.soprafs20.service.LobbyService;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -48,6 +49,9 @@ public class LobbyControllerTest {
 
     @MockBean
     private LobbyService lobbyService;
+
+    @MockBean
+    private GameService gameService;
 
     private Lobby dummyLobby() {
         Lobby lobby = new Lobby();
@@ -170,14 +174,14 @@ public class LobbyControllerTest {
         given(lobbyService.getLobbyFromToken("testtoken")).willReturn(lobby);
 
 
-        MockHttpServletRequestBuilder getRequest = get("/lobby?token=testtoken")
+        MockHttpServletRequestBuilder getRequest = get("/lobby?lobbyToken=testtoken")
                 .contentType(MediaType.APPLICATION_JSON);
         mockMvc.perform(getRequest).andExpect(status().isOk())
-                .andExpect(jsonPath("$.lobbyName", is(lobby.getLobbyname())))
+                .andExpect(jsonPath("$.lobbyname", is(lobby.getLobbyname())))
                 .andExpect(jsonPath("$.id", is(lobby.getId().intValue())))
 //                .andExpect(jsonPath("$.password", is(lobby.getPassword())))
 //                .andExpect(jsonPath("$.token", is(lobby.getToken())))
-                .andExpect(jsonPath("$.status", is(lobby.getLobbyState().toString())));
+                .andExpect(jsonPath("$.lobbyStatus", is(lobby.getLobbyState().toString())));
     }
 
     @Test
@@ -187,7 +191,7 @@ public class LobbyControllerTest {
         given(lobbyService.getLobbyFromToken(Mockito.any())).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,
                 "No matching Lobby found"));
 
-        MockHttpServletRequestBuilder getRequest = get("/lobby?token=invalid").contentType(MediaType.APPLICATION_JSON);
+        MockHttpServletRequestBuilder getRequest = get("/lobby?lobbyToken=invalid").contentType(MediaType.APPLICATION_JSON);
         mockMvc.perform(getRequest).andExpect(status().isNotFound())
                 .andExpect(status().reason("No matching Lobby found"));
     }

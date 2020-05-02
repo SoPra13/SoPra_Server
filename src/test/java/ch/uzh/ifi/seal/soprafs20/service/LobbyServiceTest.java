@@ -34,6 +34,8 @@ public class LobbyServiceTest {
     private UserService userService;
     @Mock
     private BotService botService;
+    @Mock
+    private ChatService chatService;
 
     @InjectMocks
     private LobbyService lobbyService;
@@ -110,8 +112,10 @@ public class LobbyServiceTest {
         testLobby.setLobbyState(null);
         testLobby.setNumberOfPlayers(null);
         testLobby.setAdminToken(null);
+        String test = testLobby.getLobbyToken();
         Mockito.when(userRepository.findByToken(Mockito.any())).thenReturn(testAdmin);
         Mockito.when(userService.getUserFromToken(Mockito.any())).thenReturn(testAdmin);
+        Mockito.doNothing().when(chatService).createChat(testLobby.getLobbyToken());
 
         Lobby newLobby = lobbyService.createLobby(testLobby, "ADMIN_TOKEN");
 
