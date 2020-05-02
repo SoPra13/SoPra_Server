@@ -183,9 +183,8 @@ public class GameService {
     public Game addClue(String userToken, String gameToken, String clue){
 
         System.out.println(clue);
-        clue.toLowerCase();
         System.out.println("");
-        boolean valid = WordService.isValidWord(clue);
+        boolean valid = WordService.isValidWord(clue.toLowerCase());
         Game game = gameRepository.findByToken(gameToken);
         User user = userService.getUserFromToken(userToken);
         List<String> checklist = game.getChecklist();
@@ -193,7 +192,7 @@ public class GameService {
         if(!user.getGaveClue()) {
             user.setGaveClue(true);
             if(valid){
-                if(!clue.equals(game.getTopic())){
+                if(!clue.toLowerCase().equals(game.getTopic().toLowerCase())){    //TODO toLowerCase is needed
                     System.out.println("valid");
                     System.out.println("");
                     checklist.add(clue);
@@ -209,10 +208,11 @@ public class GameService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "user already gave clue");
         }
         //if all players gave clues, remove duplicates
-        if(this.numberIfCluesGiven(game)==game.getPlayerList().size()-1){
+        if(this.numberIfCluesGiven(game)==game.getPlayerList().size()){
             System.out.println("ALL CLUES RECEIVED");
             System.out.println("");
-           boolean[] duplicates = WordService.checkSimilarityInArray((String[]) checklist.toArray(new String[checklist.size()]));
+           boolean[] duplicates = WordService
+                   .checkSimilarityInArray((String[]) checklist.toArray(new String[checklist.size()]));
            //remove duplicates from end to bottom because of indexes removed would break code
             for(int i = checklist.size()-1; i>=0;i--){
                 if(duplicates[i]){
@@ -222,14 +222,15 @@ public class GameService {
             System.out.println(checklist);
             System.out.println("");
 
-            //set ClueList to valid clues
-            List<String> clueList = game.getClueList();
-            clueList.clear();
-            clueList.addAll(checklist);
-            clueList.add("aditionalCLUE");
-            game.setClueList(clueList);
-            System.out.println(clueList);
-            System.out.println("");
+//            //set ClueList to valid clues
+//            List<String> clueList = game.getClueList();
+//            clueList.clear();
+//            clueList.addAll(checklist);
+//            clueList.add("additionalCLUE"); // why
+//            game.setClueList(clueList);
+//            System.out.println(clueList);
+//            System.out.println("");
+            game.setClueList(List.copyOf(game.getChecklist()));
         }
 
         return game;
@@ -252,22 +253,30 @@ public class GameService {
     public Game nextRound(String gameToken) {
 
         Game game = gameRepository.findByToken(gameToken);
-        int round = game.getCurrentRound();
-        int guesser = game.getGuesser();
-        List<String> clueList = new ArrayList<>();
-        List<String> checkList = new ArrayList<>();
-        List<Integer> voteList = new ArrayList<>();
-        for (int a = 0; a < 5; a++) {
-            voteList.add(0);
-        }
+//        int round = game.getCurrentRound();
+//        int guesser = game.getGuesser();
+//        List<String> clueList = new ArrayList<>();
+//        List<String> checkList = new ArrayList<>();
+//        List<Integer> voteList = new ArrayList<>();
+//        for (int a = 0; a < 5; a++) {
+//            voteList.add(0);
+//        }
+//
+//        game.setCurrentRound(round + 1);
+//        game.setGuesser((guesser + 1) % game.getPlayerList().size());
+//        game.setGuessCorrect(null);
+//        game.setTopic(null);
+//        game.setVoteList(voteList);
+//        game.setClueList(clueList);
+//        game.setCheckList(checkList);
 
-        game.setCurrentRound(round + 1);
-        game.setGuesser(game.getPlayerList().size() % (guesser + 1));
+        game.setCurrentRound(game.getCurrentRound() + 1);
+        game.setGuesser((game.getGuesser() + 1) % game.getPlayerList().size());
+        game.setVoteList(new ArrayList<>(Collections.nCopies(5, 0)));
         game.setGuessCorrect(null);
         game.setTopic(null);
-        game.setVoteList(voteList);
-        game.setClueList(clueList);
-        game.setCheckList(checkList);
+        game.getChecklist().clear();
+        game.getClueList().clear();
 
         for (User user : game.getPlayerList()) {
         userService.updateUser(user);
