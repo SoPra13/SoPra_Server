@@ -85,7 +85,7 @@ public class LobbyService {
     //add player to Lobby
     public Lobby joinLobby(String joinToken, String uToken){
 
-        Lobby lobbyToAdd = lobbyRepository.findByJoinToken(joinToken);
+        Lobby lobbyToAdd = getLobbyFromToken(joinToken);
         //checks
         checkLobbyExists(lobbyToAdd.getLobbyToken());
         checkLobbyFull(lobbyToAdd.getLobbyToken());

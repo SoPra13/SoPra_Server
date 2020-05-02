@@ -98,27 +98,27 @@ public class Game implements Serializable {
 
     public void setCurrentRound(Integer currentRound) {this.currentRound = currentRound;}
 
-    public List getClueList() { return clueList; }
+    public List<String> getClueList() { return clueList; }
 
-    public void setClueList(List clueList) {
+    public void setClueList(List<String> clueList) {
        this.clueList = clueList;
     }
 
-    public List getChecklist() { return checkList; }
+    public List<String> getChecklist() { return checkList; }
 
-    public void setCheckList(List checkList) {
+    public void setCheckList(List<String> checkList) {
         this.checkList = checkList;
     }
 
-    public List getVoteList() { return voteList;}
+    public List<Integer> getVoteList() { return voteList;}
 
-    public void setVoteList(List voteList) {
+    public void setVoteList(List<Integer> voteList) {
         this.voteList = voteList;
     }
 
-     public List getMysteryWords() { return mysteryWords; }
+     public List<String> getMysteryWords() { return mysteryWords; }
 
-     public void setMysteryWords(List mysteryWords) {
+     public void setMysteryWords(List<String> mysteryWords) {
      this.mysteryWords = mysteryWords;
      }
 
@@ -128,7 +128,7 @@ public class Game implements Serializable {
 
      public void removePlayer(User user){playerList.remove(user);}
 
-     public void setPlayerList(List playerList) {
+     public void setPlayerList(List<User> playerList) {
          this.playerList = playerList;
      }
 
@@ -136,7 +136,7 @@ public class Game implements Serializable {
         return botList;
      }
 
-     public void setBotList(List botList) {
+     public void setBotList(List<Bot> botList) {
         this.botList = botList;
      }
 

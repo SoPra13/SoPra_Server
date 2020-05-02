@@ -143,11 +143,11 @@ public class GameService {
 
 
     //vote for topic, adds one to index of topic voted for
-    public synchronized Game addVote(String gameToken, String userToken, Integer vote){
 
         if (vote > 5)throw new ResponseStatusException(HttpStatus.NOT_FOUND, "int has to be <5");
 
-        Game game = gameRepository.findByToken(gameToken);
+        Game game = getGameFromToken(gameToken);
+
         User user = userService.getUserFromToken(userToken);
         game.setGuessCorrect(null);
         List voteList = game.getVoteList();
@@ -170,7 +170,8 @@ public class GameService {
 
     //set Topic of game after Voting
     public Game setTopic(String gameToken, String topic){
-        Game game = gameRepository.findByToken(gameToken);
+//        Game game = gameRepository.findByToken(gameToken);
+        Game game = getGameFromToken(gameToken);
         game.setTopic(topic);
         return game;
     }
@@ -298,6 +299,7 @@ public class GameService {
         }else{
             game.setCurrentRound(round + 12);
         }
+        game.setGuessCorrect(null);
         game.setGuesser((guesser+1) % game.getPlayerList().size());
         game.setTopic(null);
         game.setVoteList(voteList);

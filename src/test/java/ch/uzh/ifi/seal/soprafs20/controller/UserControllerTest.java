@@ -4,6 +4,7 @@ import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.User;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.UserPostDTO;
 import ch.uzh.ifi.seal.soprafs20.service.UserService;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -85,11 +86,10 @@ public class UserControllerTest {
     public void get_user_correct() throws Exception {
         User user = dummyUser();
 
-
         given(userService.getUserFromToken("testtoken")).willReturn(user);
 
-
-        MockHttpServletRequestBuilder getRequest = get("/user?token=testtoken").contentType(MediaType.APPLICATION_JSON);
+        MockHttpServletRequestBuilder getRequest = get("/user?token=testtoken")
+                .contentType(MediaType.APPLICATION_JSON);
         mockMvc.perform(getRequest).andExpect(status().isOk())
                 .andExpect(jsonPath("$.username", is(user.getUsername())))
                 .andExpect(jsonPath("$.id", is(user.getId().intValue())))
@@ -123,7 +123,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void post_login_failed() throws Exception {
+    public void put_login_failed() throws Exception {
         UserPostDTO userPostDTO = new UserPostDTO();
         userPostDTO.setUsername("test");
         userPostDTO.setPassword("test");
