@@ -1,7 +1,6 @@
 package ch.uzh.ifi.seal.soprafs20.entity;
 
 import ch.uzh.ifi.seal.soprafs20.constant.Difficulty;
-import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -20,15 +19,15 @@ import java.io.Serializable;
 @Table(name = "BOT")
 
 public class Bot implements Serializable{
+
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String botname;
-
 
     @Column(nullable = false, unique = true)
     private String token;
@@ -36,6 +35,8 @@ public class Bot implements Serializable{
     @Column(nullable = false)
     private Difficulty difficulty;
 
+    @Column
+    private Integer currentPosition;
 
     @Column(nullable = true)
     private Color color;
@@ -89,6 +90,10 @@ public class Bot implements Serializable{
     public void setDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
     }
+
+    public Integer getCurrentPosition() {return  currentPosition;}
+
+    public void setCurrentPosition(Integer position){ this.currentPosition = position;}
 
     @JsonIgnore
     public Lobby getLobby() {

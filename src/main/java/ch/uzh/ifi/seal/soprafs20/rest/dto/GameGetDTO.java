@@ -15,6 +15,8 @@ public class GameGetDTO {
     private String topic;
     private Boolean guessCorrect;
     private Boolean guessGiven;
+    private Boolean botsVoted;
+    private Boolean botsClueGiven;
     private List<String> clueList = new ArrayList<String>();
     private List<String> mysteryWords = new ArrayList<String>();
     private List<Integer> voteList = new ArrayList<>();
@@ -85,4 +87,19 @@ public class GameGetDTO {
         this.guessGiven = guessGiven;
     }
 
+    public Boolean getBotsVoted() {
+        return botsVoted;
+    }
+
+    public void setBotsVoted(Boolean botsVoted) {
+        this.botsVoted = botsVoted;
+    }
+
+    public Boolean getBotsClueGiven() {
+        return botsClueGiven;
+    }
+
+    public void setBotsClueGiven(Boolean botsClueGiven) {
+        this.botsClueGiven = botsClueGiven;
+    }
 }

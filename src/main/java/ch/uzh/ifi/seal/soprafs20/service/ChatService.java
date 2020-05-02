@@ -53,6 +53,17 @@ public class ChatService {
         }
     }
 
+    public void endMessage(String score, String userToken, String lobbyToken){
+        Chat chat = chatRepository.findByLobbyToken(lobbyToken);
+        Message msg = new Message();
+        msg.setMessage("You have scored " + score + " points!");
+        msg.setMessageType(MessageType.ACTION);
+        msg.setUsername("");
+        messageRepository.saveAndFlush(msg);
+        chat.addMessage(msg);
+        this.addMessageToChat(lobbyToken,userToken, msg);
+    }
+
     public void userJoined(String lobbyToken, String userToken) {
         Chat chat = chatRepository.findByLobbyToken(lobbyToken);
         User user = userRepository.findByToken(userToken);

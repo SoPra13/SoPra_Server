@@ -123,23 +123,27 @@ public class WordService {
         wordList.addAll(getRequest("http://api.datamuse.com/words?max=2&rel_gen=" + word));
         wordList.addAll(getRequest("http://api.datamuse.com/words?max=2&rel_com=" + word));
         wordList.addAll(getRequest("http://api.datamuse.com/words?max=2&rel_par=" + word));
+        System.out.println(wordList);
         return getWord(word, wordList);
     }
 
     public static String getBadWord(String word) {
         ArrayList<LinkedTreeMap<String, String>> wordList =
                 new ArrayList<>(getRequest("http://api.datamuse.com/words?max=5&rel_spc=" + word));
+        wordList.addAll(getRequest("http://api.datamuse.com/words?max=2&rel_spc=" + word));
+        wordList.addAll(getRequest("http://api.datamuse.com/words?max=2&rel_spc=" + word));
+        wordList.addAll(getRequest("http://api.datamuse.com/words?max=2&rel_spc=" + word));
         return getWord(word, wordList);
 
     }
 
     private static String getWord(String word, ArrayList<LinkedTreeMap<String, String>> wordList) {
         wordList = removeMultiWords(wordList);
-        String badWord = wordList.get(new Random().nextInt(wordList.size())).get("word");
-        while (isSimilar(badWord, word)) {
-            badWord = wordList.get(new Random().nextInt(wordList.size())).get("word");
+        String selectedWord = wordList.get(new Random().nextInt(wordList.size())).get("word");
+        while (isSimilar(word, selectedWord)) {
+            selectedWord = wordList.get(new Random().nextInt(wordList.size())).get("word");
         }
-        return badWord;
+        return selectedWord;
     }
 
     public static boolean isValidWord(String word) {

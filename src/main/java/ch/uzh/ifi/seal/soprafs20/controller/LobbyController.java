@@ -82,9 +82,11 @@ public class LobbyController {
     public String startGame(@PathVariable String token) {
 
        Lobby lobby = lobbyService.getLobbyFromToken(token);
+
        Game game = gameService.createGame(lobby, token);
 
-       return game.getToken();
+            return game.getToken();
+
     }
 
 

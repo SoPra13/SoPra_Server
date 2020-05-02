@@ -39,6 +39,12 @@ public class Game implements Serializable {
     @Column
     private Boolean guessGiven;
 
+    @Column
+    private Boolean botsVoted;
+
+    @Column
+    private Boolean botsClueGiven;
+
     @ElementCollection
     private List<String> mysteryWords = new ArrayList<String>();
 
@@ -134,11 +140,27 @@ public class Game implements Serializable {
         this.botList = botList;
      }
 
-    public void removePlayer(Bot bot){botList.remove(bot);}
+    public void removeBot(Bot bot){botList.remove(bot);}
 
     public Boolean getGuessCorrect() {return guessCorrect;}
 
     public void setGuessCorrect(Boolean guessCorrect) {this.guessCorrect = guessCorrect;}
+
+    public Boolean getBotsClueGiven() {
+        return botsClueGiven;
+    }
+
+    public void setBotsClueGiven(Boolean botsClueGiven) {
+        this.botsClueGiven = botsClueGiven;
+    }
+
+    public Boolean getBotsVoted() {
+        return botsVoted;
+    }
+
+    public void setBotsVoted(Boolean botsVoted) {
+        this.botsVoted = botsVoted;
+    }
 
     public Boolean getGuessGiven() {
         return guessGiven;

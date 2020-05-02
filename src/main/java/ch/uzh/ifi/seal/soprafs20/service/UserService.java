@@ -130,4 +130,17 @@ public class UserService {
 
     }
 
+    public void leaveGame(User user){
+
+        user.setGame(null);
+        user.setUnityReady(false);
+        user.setGaveClue(false);
+        user.setVoted(false);
+    }
+
+    public void leaveLobby(User user){
+        user.setLobby(null);
+        user.setLobbyReady(false);
+    }
+
 }

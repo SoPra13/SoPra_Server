@@ -1,6 +1,9 @@
 package ch.uzh.ifi.seal.soprafs20.service;
 
-import ch.uzh.ifi.seal.soprafs20.entity.*;
+import ch.uzh.ifi.seal.soprafs20.entity.Bot;
+import ch.uzh.ifi.seal.soprafs20.entity.Game;
+import ch.uzh.ifi.seal.soprafs20.entity.Lobby;
+import ch.uzh.ifi.seal.soprafs20.entity.User;
 import ch.uzh.ifi.seal.soprafs20.helpers.WordFileHandler;
 import ch.uzh.ifi.seal.soprafs20.repository.GameRepository;
 import org.slf4j.Logger;
@@ -79,12 +82,14 @@ public class GameService {
 
     //create new Game based on Lobby
     public Game createGame(Lobby lobby, String token) {
+
         Game newGame = new Game();
 
         List<User> userList = new ArrayList<>();
         userList.addAll(lobby.getPlayerList());
         List<Bot> botList = new ArrayList<>();
         botList.addAll(lobby.getBotList());
+
         List<String> clueList = new ArrayList<>();
         List<String> checkList = new ArrayList<>();
         List<Integer> voteList = new ArrayList<>();
@@ -93,6 +98,8 @@ public class GameService {
         }
 
         newGame.setBotList(botList);
+        newGame.setBotsClueGiven(false);
+        newGame.setBotsVoted(false);
         newGame.setPlayerList(userList);
         newGame.setToken(lobby.getLobbyToken());
         newGame.setCurrentRound(0);
@@ -106,6 +113,7 @@ public class GameService {
 
         // saves the given entity but data is only persisted in the database once flush() is called
         newGame = gameRepository.save(newGame);
+        gameRepository.flush();
 
         //update game of user and add initial position
         Integer position = 0;
@@ -113,14 +121,21 @@ public class GameService {
             user.setGame(newGame);
             user.setCurrentPosition(position);
             position +=1;
+            System.out.println("added User to game;");
+            System.out.println(user.getId());
         }
 
         //update game of bot
+        position = 0;
         for(Bot bot : botList){
             bot.setGame(newGame);
+            bot.setCurrentPosition(position);
+            position +=1;
+            System.out.println("added vot to game;");
+            System.out.println(bot.getId());
         }
 
-        gameRepository.flush();
+
 
         log.debug("Created Information for Lobby: {}", newGame);
         return newGame;
@@ -128,15 +143,23 @@ public class GameService {
 
 
     //vote for topic, adds one to index of topic voted for
-    public Game addVote(String gameToken, String userToken, Integer vote){
+    public synchronized Game addVote(String gameToken, String userToken, Integer vote){
 
         if (vote > 5)throw new ResponseStatusException(HttpStatus.NOT_FOUND, "int has to be <5");
 
         Game game = gameRepository.findByToken(gameToken);
         User user = userService.getUserFromToken(userToken);
         game.setGuessCorrect(null);
-
         List voteList = game.getVoteList();
+
+        if(!game.getBotsVoted()){
+            game.setBotsVoted(true);
+            for(Bot bot: game.getBotList()){
+                int botVote = new Random().nextInt(4);
+                Integer votes = (Integer) voteList.get(botVote);
+                voteList.set(botVote,votes+=1);
+            }
+        }
         Integer votes = (Integer) voteList.get(vote);
         voteList.set(vote,votes+=1);
         game.setVoteList(voteList);
@@ -162,11 +185,10 @@ public class GameService {
         chatService.leaveChat(gameToken,userToken);
         lobby.removePlayer(user);
         game.removePlayer(user);
-        user.setLobby(null);
-        user.setGame(null);
+        userService.leaveGame(user);
+        userService.leaveLobby(user);
 
-
-        if(oldUser.size()==0){
+        if(game.getPlayerList().size()==0){
             for(Bot bot : game.getBotList()){
                 botService.deleteBot(bot.getToken());
             }
@@ -190,6 +212,13 @@ public class GameService {
         List checklist = game.getChecklist();
 
 
+        if (!game.getBotsClueGiven()){
+            game.setBotsClueGiven(true);
+            for(Bot bot : game.getBotList()){
+                String botClue = botService.botclue(bot.getDifficulty(),game.getTopic());
+                checklist.add(botClue);
+            }
+        }
         if(!user.getGaveClue()) {
             if(valid){
                 if(!clue.equals(game.getTopic())){
@@ -207,9 +236,11 @@ public class GameService {
         }else{
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "user already gave clue");
         }
+
+
         user.setGaveClue(true);
         //if all players gave clues, remove duplicates
-        if(this.numberOfCluesGiven(game)==game.getPlayerList().size()-1){
+        if(checklist.size()==(game.getPlayerList().size()-1)+game.getBotList().size()){
             System.out.println("ALL CLUES RECEIVED");
             System.out.println("");
            boolean[] duplicates = WordService.checkSimilarityInArray((String[]) checklist.toArray(new String[checklist.size()]));
@@ -262,10 +293,10 @@ public class GameService {
         }
 
         //add round nr according to result of previous guess
-        if(game.getGuessCorrect()) {
+        if(game.getGuessCorrect()|| game.getGuessCorrect() == null) {
             game.setCurrentRound(round + 1);
         }else{
-            game.setCurrentRound(round + 2);
+            game.setCurrentRound(round + 12);
         }
         game.setGuesser((guesser+1) % game.getPlayerList().size());
         game.setTopic(null);
@@ -273,6 +304,8 @@ public class GameService {
         game.setClueList(clueList);
         game.setCheckList(checkList);
         game.setGuessGiven(false);
+        game.setBotsClueGiven(false);
+        game.setBotsVoted(false);
 
 
         for (User user : game.getPlayerList()) {
@@ -281,6 +314,28 @@ public class GameService {
             user.setGaveClue(false);
     }
         return game;
+    }
+
+    public void endGame(String gameToken, String userToken, String score){
+
+        Game game = gameRepository.findByToken(gameToken);
+        User user = userService.getUserFromToken(userToken);
+        List oldUser = game.getPlayerList();
+        game.removePlayer(user);
+        userService.leaveGame(user);
+
+
+
+        if(game.getPlayerList().size()==0){
+            for(Bot bot : game.getBotList()){
+                game.removeBot(bot);
+                botService.leaveGame(bot);
+            }
+            gameRepository.delete(game);
+            chatService.endMessage(score,userToken,gameToken);
+            return;
+        }
+
     }
 
     public int numberOfCluesGiven(Game game){

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -28,16 +29,18 @@ public class BotService {
 
     private final BotRepository botRepository;
 
+
     @Autowired
     public BotService(@Qualifier("botRepository") BotRepository botRepository) {
         this.botRepository = botRepository;
+
     }
 
 
     public Bot createBot(String difficulty) {
         var bot = new Bot();
         bot.setToken(UUID.randomUUID().toString());
-        bot.setBotname("abc");
+        bot.setBotname(String.valueOf(new Random().nextInt(10000)));
         Difficulty actualDifficulty = Difficulty.valueOf(difficulty);
         bot.setColor(null);
         bot.setDifficulty(actualDifficulty);
@@ -46,7 +49,6 @@ public class BotService {
         botRepository.save(bot);
         botRepository.flush();
 
-        log.debug("Created Information for Bot: {}", bot);
         return bot;
     }
 
@@ -65,6 +67,29 @@ public class BotService {
     public void deleteBot(String token){
         Bot botByToken = botRepository.findByToken(token);
         botRepository.delete(botByToken);
+    }
+
+    public String botclue(Difficulty difficulty, String topic){
+
+        System.out.println("topic for datamuse:");
+        System.out.println(topic);
+        System.out.println(difficulty);
+        System.out.println("type");
+        String clue = "botWordnotSet";
+        if(difficulty == Difficulty.FRIEND || difficulty == Difficulty.NEUTRAL) {
+            clue = WordService.getGoodWord(topic);
+            System.out.println(clue);
+        }else{
+            clue  = WordService.getBadWord(topic);
+            System.out.println(clue);
+         }
+
+        return clue;
+    }
+
+    public void leaveGame(Bot bot){
+
+        bot.setGame(null);
     }
 
 }

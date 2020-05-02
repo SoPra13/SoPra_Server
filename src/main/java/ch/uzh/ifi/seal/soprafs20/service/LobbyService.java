@@ -135,7 +135,7 @@ public class LobbyService {
         checkLobbyExists(lToken);
         checkLobbyFull(lToken);
 
-        //get lobby & user
+        //get lobby
         Lobby lobbyToAdd = lobbyRepository.findByLobbyToken(lToken);
 
         // add bot to lobby
