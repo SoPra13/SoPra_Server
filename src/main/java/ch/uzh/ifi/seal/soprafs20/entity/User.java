@@ -21,6 +21,7 @@ import java.io.Serializable;
 public class User implements Serializable{
     private static final long serialVersionUID = 1L;
 
+    @Id
     @GeneratedValue
     private Long id;
 
@@ -30,7 +31,6 @@ public class User implements Serializable{
     @Column(nullable = false)
     private String password;
 
-    @Id
     @Column(nullable = false, unique = true)
     private String token;
 

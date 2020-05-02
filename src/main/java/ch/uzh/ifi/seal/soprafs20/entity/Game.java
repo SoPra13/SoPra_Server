@@ -14,14 +14,13 @@ public class Game implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-
+    @Id
     @GeneratedValue
     private Long id;
 
     @Column(nullable = false)
     private Integer version;
 
-    @Id
     @Column(nullable = false, unique = true)
     private String token;
 
