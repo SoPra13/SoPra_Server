@@ -129,10 +129,7 @@ public class WordService {
 
     public static String getBadWord(String word) {
         ArrayList<LinkedTreeMap<String, String>> wordList =
-                new ArrayList<>(getRequest("http://api.datamuse.com/words?max=5&rel_spc=" + word));
-        wordList.addAll(getRequest("http://api.datamuse.com/words?max=2&rel_spc=" + word));
-        wordList.addAll(getRequest("http://api.datamuse.com/words?max=2&rel_spc=" + word));
-        wordList.addAll(getRequest("http://api.datamuse.com/words?max=2&rel_spc=" + word));
+                new ArrayList<>(getRequest("http://api.datamuse.com/words?max=5&rel_ant=" + word));
         return getWord(word, wordList);
 
     }
