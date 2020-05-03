@@ -28,7 +28,6 @@ public class Lobby implements Serializable {
     @Column(nullable = false, unique = true)
     private String lobbyToken;
 
-
     @Column(nullable = false, unique = true)
     private String joinToken;
 

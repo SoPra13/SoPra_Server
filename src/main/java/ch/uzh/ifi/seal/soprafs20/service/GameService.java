@@ -107,7 +107,8 @@ public class GameService {
         newGame.setClueList(clueList);
         newGame.setVoteList(voteList);
         newGame.setCheckList(checkList);
-        newGame.setGuessGiven(false);
+        newGame.setGuessGiven(null);
+        newGame.setGuessCorrect(null);
         //todo:make guesser random again
         newGame.setGuesser(0);
         newGame.setMysteryWords(WordFileHandler.getMysteryWords());
@@ -215,15 +216,15 @@ public Game addVote(String gameToken, String userToken, int vote){
         User user = userService.getUserFromToken(userToken);
         List checklist = game.getChecklist();
 
-
-       /* if (!game.getBotsClueGiven()){
+        if (!game.getBotsClueGiven()){
             game.setBotsClueGiven(true);
 
             for(Bot bot : game.getBotList()){
                 String botClue = botService.botclue(bot.getDifficulty(),game.getTopic());
                 checklist.add(botClue);
             }
-        }*/
+        }
+
         if(!user.getGaveClue()) {
             if(valid){
                 if(!clue.equals(game.getTopic().toLowerCase())){
@@ -273,13 +274,16 @@ public Game addVote(String gameToken, String userToken, int vote){
 
     public Game makeGuess(String gameToken, String guess){
         System.out.println(guess);
+        System.out.println(guess.getClass().getName());
         System.out.println("");
 
         Game game = gameRepository.findByToken(gameToken);
         game.setGuessGiven(true);
-        game.setGuessCorrect(game.getTopic().equals(guess.toLowerCase()));
-        System.out.println(game.getTopic().equals(guess));
-        System.out.println("");
+        if(!guess.equals("null")){
+            game.setGuessCorrect(game.getTopic().equals(guess.toLowerCase()));
+            System.out.println(game.getTopic().equals(guess));
+            System.out.println("");
+        }
         System.out.println(game.getGuessCorrect());
         System.out.println("");
         return game;
@@ -298,7 +302,7 @@ public Game addVote(String gameToken, String userToken, int vote){
         }
 
         //add round nr according to result of previous guess
-        if(game.getGuessCorrect()|| game.getGuessCorrect() == null) {
+        if(game.getGuessCorrect() == null || game.getGuessCorrect()) {
             game.setCurrentRound(round + 1);
         }else{
             game.setCurrentRound(round + 2);
@@ -309,7 +313,7 @@ public Game addVote(String gameToken, String userToken, int vote){
         game.setVoteList(voteList);
         game.setClueList(clueList);
         game.setCheckList(checkList);
-        game.setGuessGiven(false);
+        game.setGuessGiven(null);
         game.setBotsClueGiven(false);
         game.setBotsVoted(false);
 

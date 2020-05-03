@@ -123,7 +123,6 @@ public class WordService {
         wordList.addAll(getRequest("http://api.datamuse.com/words?max=2&rel_gen=" + word));
         wordList.addAll(getRequest("http://api.datamuse.com/words?max=2&rel_com=" + word));
         wordList.addAll(getRequest("http://api.datamuse.com/words?max=2&rel_par=" + word));
-        System.out.println(wordList);
         return getWord(word, wordList);
     }
 
@@ -136,11 +135,14 @@ public class WordService {
     }
 
     private static String getWord(String word, ArrayList<LinkedTreeMap<String, String>> wordList) {
+        if(wordList.size()==0) return word;
+
         wordList = removeMultiWords(wordList);
         String selectedWord = wordList.get(new Random().nextInt(wordList.size())).get("word");
         while (isSimilar(word, selectedWord)) {
             selectedWord = wordList.get(new Random().nextInt(wordList.size())).get("word");
         }
+
         return selectedWord;
     }
 

@@ -248,10 +248,11 @@ public class LobbyService {
      * @see Lobby
      */
     public String generateJoinToken(){
-        Integer token = new Random().nextInt(9999);
-
+        Integer token = new Random().nextInt((8999));
+        token += 1000;
         while (lobbyRepository.findByJoinToken(String.valueOf(token))!=null){
-            token = new Random().nextInt(9999);
+            token = new Random().nextInt(8999);
+            token += 1000;
         }
         return String.valueOf(token);
     }
