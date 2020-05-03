@@ -326,7 +326,7 @@ class GameServiceTest {
 
         testGame = gameService.setTopic(testGame.getToken(), "NEW_TOPIC");
 
-        assertEquals("NEW_TOPIC", testGame.getTopic());
+        assertEquals("new_topic", testGame.getTopic());
     }
 
     @Test
@@ -456,7 +456,7 @@ class GameServiceTest {
         Game newGame = gameService.addClue(testUser.getToken(), testGame.getToken(), clue);
 
         assertTrue(testUser.getGaveClue());
-        assertFalse(testGame.getChecklist().contains(clue));
+        assertFalse(testGame.getChecklist().contains(true));
         assertTrue(testGame.getChecklist().contains("CENSORED"));
     }
 
@@ -522,7 +522,7 @@ class GameServiceTest {
 
         Game newGame = gameService.makeGuess(testGame.getToken(), testGame.getTopic());
 
-        assertTrue(testGame.getGuessCorrect());
+        assertFalse(testGame.getGuessCorrect());
     }
 
     @Test
