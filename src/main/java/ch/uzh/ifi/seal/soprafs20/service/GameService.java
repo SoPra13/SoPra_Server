@@ -173,7 +173,8 @@ public Game addVote(String gameToken, String userToken, int vote){
     //set Topic of game after Voting
     public Game setTopic(String gameToken, String topic){
         Game game = getGameFromToken(gameToken);
-        game.setTopic(topic);
+
+        game.setTopic(topic.toLowerCase());
         return game;
     }
 
@@ -203,10 +204,11 @@ public Game addVote(String gameToken, String userToken, int vote){
     }
 
     //add clue given by player
-    public Game addClue(String userToken, String gameToken, String clue){
+    public synchronized Game addClue(String userToken, String gameToken, String Aclue){
 
+
+        String clue = Aclue.toLowerCase();
         System.out.println(clue);
-        clue.toLowerCase();
         System.out.println("");
         boolean valid = WordService.isValidWord(clue);
         Game game = gameRepository.findByToken(gameToken);
@@ -214,13 +216,14 @@ public Game addVote(String gameToken, String userToken, int vote){
         List checklist = game.getChecklist();
 
 
-        if (!game.getBotsClueGiven()){
+       /* if (!game.getBotsClueGiven()){
             game.setBotsClueGiven(true);
+
             for(Bot bot : game.getBotList()){
                 String botClue = botService.botclue(bot.getDifficulty(),game.getTopic());
                 checklist.add(botClue);
             }
-        }
+        }*/
         if(!user.getGaveClue()) {
             if(valid){
                 if(!clue.equals(game.getTopic().toLowerCase())){
@@ -245,6 +248,7 @@ public Game addVote(String gameToken, String userToken, int vote){
         if(checklist.size()==(game.getPlayerList().size()-1)+game.getBotList().size()){
             System.out.println("ALL CLUES RECEIVED");
             System.out.println("");
+            checklist.add(game.getTopic());
            boolean[] duplicates = WordService.checkSimilarityInArray((String[]) checklist.toArray(new String[checklist.size()]));
            //remove duplicates from end to bottom because of indexes removed would break code
             for(int i = checklist.size()-1; i>=0;i--){
@@ -259,7 +263,6 @@ public Game addVote(String gameToken, String userToken, int vote){
             List clueList = game.getClueList();
             clueList.clear();
             clueList.addAll(checklist);
-            clueList.add("aditionalCLUE");
             game.setClueList(clueList);
             System.out.println(clueList);
             System.out.println("");
@@ -274,7 +277,7 @@ public Game addVote(String gameToken, String userToken, int vote){
 
         Game game = gameRepository.findByToken(gameToken);
         game.setGuessGiven(true);
-        game.setGuessCorrect(game.getTopic().equals(guess));
+        game.setGuessCorrect(game.getTopic().equals(guess.toLowerCase()));
         System.out.println(game.getTopic().equals(guess));
         System.out.println("");
         System.out.println(game.getGuessCorrect());
