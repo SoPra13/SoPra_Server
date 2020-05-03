@@ -58,6 +58,19 @@ public class LobbyService {
         return lobbyByToken;
     }
 
+    //Get Lobby from Token
+    public Lobby getLobbyFromJoinToken(String token){
+
+        String baseErrorMessage = "No matching Lobby found";
+        //check if exists
+        Lobby lobbyByToken = this.lobbyRepository.findByJoinToken(token);
+        if (lobbyByToken == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, baseErrorMessage);
+        }
+
+        return lobbyByToken;
+    }
+
     //creates new Lobby
     public Lobby createLobby(Lobby newLobby, String token) {
 
@@ -85,7 +98,7 @@ public class LobbyService {
     //add player to Lobby
     public Lobby joinLobby(String joinToken, String uToken){
 
-        Lobby lobbyToAdd = getLobbyFromToken(joinToken);
+        Lobby lobbyToAdd = getLobbyFromJoinToken(joinToken);
         //checks
         checkLobbyExists(lobbyToAdd.getLobbyToken());
         checkLobbyFull(lobbyToAdd.getLobbyToken());

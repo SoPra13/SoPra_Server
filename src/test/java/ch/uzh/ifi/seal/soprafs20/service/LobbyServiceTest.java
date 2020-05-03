@@ -60,6 +60,7 @@ public class LobbyServiceTest {
         testLobby.setId(1L);
         testLobby.setLobbyname("NAME");
         testLobby.setLobbyToken("TOKEN");
+        testLobby.setJoinToken("JOINTOKEN");
         testLobby.setLobbyState(LobbyStatus.OPEN);
         testLobby.setNumberOfPlayers(1);
         testLobby.setAdminToken(testAdmin.getToken());
@@ -70,6 +71,7 @@ public class LobbyServiceTest {
 
         Mockito.when(lobbyRepository.save(Mockito.any())).thenReturn(testLobby);
         Mockito.when(lobbyRepository.findByLobbyToken(testLobby.getLobbyToken())).thenReturn(testLobby);
+        Mockito.when(lobbyRepository.findByJoinToken(testLobby.getJoinToken())).thenReturn(testLobby);
         Mockito.doReturn(Collections.singletonList(testLobby)).when(lobbyRepository).findAll();
 
     }
@@ -96,6 +98,7 @@ public class LobbyServiceTest {
 
         assertEquals(testLobby.getId(), fetched_Lobby.getId());
         assertEquals(testLobby.getLobbyToken(), fetched_Lobby.getLobbyToken());
+        assertEquals(testLobby.getJoinToken(), fetched_Lobby.getJoinToken());
         assertEquals(testLobby.getAdminToken(), fetched_Lobby.getAdminToken());
     }
 
@@ -151,7 +154,7 @@ public class LobbyServiceTest {
         Mockito.when(userService.getUserFromToken(newUser.getToken())).thenReturn(newUser);
         Mockito.when(lobbyRepository.findByLobbyToken(testLobby.getLobbyToken())).thenReturn(testLobby);
 
-        Lobby newLobby = lobbyService.joinLobby(testLobby.getLobbyToken(), newUser.getToken());
+        Lobby newLobby = lobbyService.joinLobby(testLobby.getJoinToken(), newUser.getToken());
 
         assertTrue(newLobby.getPlayerList().contains(newUser));
         assertEquals(2, newLobby.getNumberOfPlayers());
@@ -184,7 +187,7 @@ public class LobbyServiceTest {
         Mockito.when(lobbyRepository.findByLobbyToken(testLobby.getLobbyToken())).thenReturn(testLobby);
 
         Exception exception = Assertions.assertThrows(ResponseStatusException.class,
-                () -> lobbyService.joinLobby("TOKEN", "NEW_TOKEN"));
+                () -> lobbyService.joinLobby("JOINTOKEN", "NEW_TOKEN"));
 
         assertEquals("403 FORBIDDEN \"Lobby is full\"", exception.getMessage());
 
@@ -199,11 +202,11 @@ public class LobbyServiceTest {
         Mockito.when(userService.getUserFromToken(newUser.getToken())).thenReturn(newUser);
         Mockito.when(lobbyRepository.findByLobbyToken(testLobby.getLobbyToken())).thenReturn(testLobby);
 
-        Lobby givenLobby = lobbyService.joinLobby(testLobby.getLobbyToken(), newUser.getToken());
+        Lobby givenLobby = lobbyService.joinLobby(testLobby.getJoinToken(), newUser.getToken());
 
 
         Exception exception = Assertions.assertThrows(ResponseStatusException.class,
-                () -> lobbyService.joinLobby(givenLobby.getLobbyToken(), newUser.getToken()));
+                () -> lobbyService.joinLobby(givenLobby.getJoinToken(), newUser.getToken()));
 
         assertEquals("403 FORBIDDEN \"User is already in Lobby\"", exception.getMessage());
 
@@ -221,7 +224,7 @@ public class LobbyServiceTest {
         Mockito.when(lobbyRepository.findByLobbyToken(testLobby.getLobbyToken())).thenReturn(testLobby);
 
         Exception exception = Assertions.assertThrows(ResponseStatusException.class,
-                () -> lobbyService.joinLobby(testLobby.getLobbyToken(), "INVALID_NEW_TOKEN"));
+                () -> lobbyService.joinLobby(testLobby.getJoinToken(), "INVALID_NEW_TOKEN"));
 
         assertEquals("404 NOT_FOUND \"There is no User with requested Token\"", exception.getMessage());
 
@@ -237,7 +240,7 @@ public class LobbyServiceTest {
         Mockito.when(userService.getUserFromToken(newUser.getToken())).thenReturn(newUser);
         Mockito.when(lobbyRepository.findByLobbyToken(testLobby.getLobbyToken())).thenReturn(testLobby);
 
-        Lobby givenLobby = lobbyService.joinLobby(testLobby.getLobbyToken(), newUser.getToken());
+        Lobby givenLobby = lobbyService.joinLobby(testLobby.getJoinToken(), newUser.getToken());
 
         Lobby newLobby = lobbyService.leaveLobby(givenLobby.getLobbyToken(), newUser.getToken());
 
@@ -252,7 +255,7 @@ public class LobbyServiceTest {
 
         Mockito.when(userService.getUserFromToken(newUser.getToken())).thenReturn(newUser);
         Mockito.when(lobbyRepository.findByLobbyToken(testLobby.getLobbyToken())).thenReturn(testLobby);
-        Lobby givenLobby = lobbyService.joinLobby(testLobby.getLobbyToken(), newUser.getToken());
+        Lobby givenLobby = lobbyService.joinLobby(testLobby.getJoinToken(), newUser.getToken());
         Mockito.when(lobbyRepository.findByLobbyToken("INVALID_TOKEN")).thenReturn(null);
 
         Exception exception = Assertions.assertThrows(ResponseStatusException.class,
@@ -270,7 +273,7 @@ public class LobbyServiceTest {
 
         Mockito.when(lobbyRepository.findByLobbyToken(testLobby.getLobbyToken())).thenReturn(testLobby);
         Mockito.when(userService.getUserFromToken(newUser.getToken())).thenReturn(newUser);
-        Lobby givenLobby = lobbyService.joinLobby(testLobby.getLobbyToken(), newUser.getToken());
+        Lobby givenLobby = lobbyService.joinLobby(testLobby.getJoinToken(), newUser.getToken());
 
         Mockito.when(userRepository.findByToken("INVALID_NEW_TOKEN")).thenReturn(null);
         Mockito.when(userService.getUserFromToken("INVALID_NEW_TOKEN"))
@@ -293,7 +296,7 @@ public class LobbyServiceTest {
         Mockito.when(userService.getUserFromToken("ADMIN_TOKEN")).thenReturn(testAdmin);
         Mockito.when(lobbyRepository.findByLobbyToken(testLobby.getLobbyToken())).thenReturn(testLobby);
         Mockito.when(userService.getUserFromToken(newUser.getToken())).thenReturn(newUser);
-        Lobby givenLobby = lobbyService.joinLobby(testLobby.getLobbyToken(), newUser.getToken());
+        Lobby givenLobby = lobbyService.joinLobby(testLobby.getJoinToken(), newUser.getToken());
         givenLobby.getPlayerList().add(testAdmin);
 
         Exception exception = Assertions.assertThrows(ResponseStatusException.class,
