@@ -108,7 +108,8 @@ public class GameService {
         newGame.setVoteList(voteList);
         newGame.setCheckList(checkList);
         newGame.setGuessGiven(false);
-        newGame.setGuesser(new Random().nextInt(userList.size()));
+        //todo:make guesser random again
+        newGame.setGuesser(0);
         newGame.setMysteryWords(WordFileHandler.getMysteryWords());
 
         // saves the given entity but data is only persisted in the database once flush() is called
@@ -160,6 +161,7 @@ public Game addVote(String gameToken, String userToken, int vote){
                 voteList.set(botVote,votes+1);
             }
         }
+
         Integer votes = (Integer) voteList.get(vote);
         voteList.set(vote,votes+=1);
         game.setVoteList(voteList);
@@ -170,7 +172,6 @@ public Game addVote(String gameToken, String userToken, int vote){
 
     //set Topic of game after Voting
     public Game setTopic(String gameToken, String topic){
-//        Game game = gameRepository.findByToken(gameToken);
         Game game = getGameFromToken(gameToken);
         game.setTopic(topic);
         return game;
@@ -297,7 +298,7 @@ public Game addVote(String gameToken, String userToken, int vote){
         if(game.getGuessCorrect()|| game.getGuessCorrect() == null) {
             game.setCurrentRound(round + 1);
         }else{
-            game.setCurrentRound(round + 12);
+            game.setCurrentRound(round + 2);
         }
         game.setGuessCorrect(null);
         game.setGuesser((guesser+1) % game.getPlayerList().size());

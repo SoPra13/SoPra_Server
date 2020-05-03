@@ -125,6 +125,7 @@ public class LobbyService {
         //get lobby & user
         User userToRemove = userService.getUserFromToken(uToken);
         Lobby lobbyToRemove = lobbyRepository.findByLobbyToken(lToken);
+        //todo: allow leaving whenn admin is alone
         if(userToRemove.getToken().equals(lobbyToRemove.getAdminToken())){
             String baseErrorMessage = "Cant remove admin from lobby";
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, baseErrorMessage);
