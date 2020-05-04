@@ -143,7 +143,7 @@ public class UserService {
         user.setLobbyReady(false);
     }
 
-    private long getUserCurrentTabCyle(String userToken) {
+    private long getUserCurrentTabCycle(String userToken) {
         return getUserFromToken(userToken).getIsInGameTabCycle();
     }
 
@@ -154,7 +154,7 @@ public class UserService {
     }
 
     public void updateIsInGameTab(String userToken) {
-        long currentCycle = getUserCurrentTabCyle(userToken);
+        long currentCycle = getUserCurrentTabCycle(userToken);
         currentCycle++;
         User user = getUserFromToken(userToken);
         user.setIsInGameTabCycle(currentCycle);
@@ -163,7 +163,7 @@ public class UserService {
         new Thread(() -> {
             try {
                 Thread.sleep(3000);
-                if (finalCurrentCycle == getUserCurrentTabCyle(userToken)) setUserInGameTab(userToken, false);
+                if (finalCurrentCycle == getUserCurrentTabCycle(userToken)) setUserInGameTab(userToken, false);
             }
             catch (InterruptedException e) {
                 e.printStackTrace();
