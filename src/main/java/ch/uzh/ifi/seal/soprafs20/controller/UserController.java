@@ -39,6 +39,12 @@ public class UserController {
         return userGetDTOs;
     }
 
+    @PutMapping("/user/updateingametab")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateInGame(@RequestParam String userToken) {
+        userService.updateIsInGameTab(userToken);
+    }
+
     //Get user from Token
     @GetMapping("/user")
     @ResponseStatus(HttpStatus.OK)

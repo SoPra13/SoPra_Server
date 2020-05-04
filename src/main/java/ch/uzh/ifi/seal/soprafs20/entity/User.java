@@ -58,6 +58,12 @@ public class User implements Serializable{
     @Column
     private Color color;
 
+    @Column
+    private boolean isInGameTab;
+
+    @Column
+    private long isInGameTabCycle = 1;
+
     @ManyToOne
     @JsonManagedReference
     @JsonIgnore
@@ -67,6 +73,22 @@ public class User implements Serializable{
     @JsonManagedReference
     @JsonIgnore
     private Game game;
+
+    public void setIsInGameTabCycle(long isInGameTabCycle) {
+        this.isInGameTabCycle = isInGameTabCycle;
+    }
+
+    public long getIsInGameTabCycle() {
+        return isInGameTabCycle;
+    }
+
+    public boolean isInGameTab() {
+        return isInGameTab;
+    }
+
+    public void setInGameTab(boolean inGameTab) {
+        isInGameTab = inGameTab;
+    }
 
     public void setColor(Color color) {
         this.color = color;
