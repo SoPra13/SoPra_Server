@@ -118,21 +118,15 @@ public class GameService {
         gameRepository.flush();
 
         //update game of user and add initial position
-        Integer position = 0;
         for(User user : userList){
             user.setGame(newGame);
-            user.setCurrentPosition(position);
-            position +=1;
             System.out.println("added User to game;");
             System.out.println(user.getId());
         }
 
         //update game of bot
-        position = 0;
         for(Bot bot : botList){
             bot.setGame(newGame);
-            bot.setCurrentPosition(position);
-            position +=1;
             System.out.println("added vot to game;");
             System.out.println(bot.getId());
         }
@@ -226,6 +220,7 @@ public Game addVote(String gameToken, String userToken, int vote){
         }
 
         if(!user.getGaveClue()) {
+            user.addTotalClues();
             if(valid){
                 if(!clue.equals(game.getTopic().toLowerCase())){
                     System.out.println("valid");
@@ -235,9 +230,11 @@ public Game addVote(String gameToken, String userToken, int vote){
                     System.out.println("");
                 }else{
                     checklist.add("CENSORED");
+                    user.addInvalidClues();
                 }
             }else {
                 checklist.add("CENSORED");
+                user.addDuplicateClues();
             }
         }else{
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "user already gave clue");
@@ -272,17 +269,24 @@ public Game addVote(String gameToken, String userToken, int vote){
         return game;
     }
 
-    public Game makeGuess(String gameToken, String guess){
+    public Game makeGuess(String gameToken,String userToken, String guess){
         System.out.println(guess);
         System.out.println(guess.getClass().getName());
         System.out.println("");
 
+        User user = userService.getUserFromToken(userToken);
         Game game = gameRepository.findByToken(gameToken);
         game.setGuessGiven(true);
         if(!guess.equals("null")){
-            game.setGuessCorrect(game.getTopic().equals(guess.toLowerCase()));
-            System.out.println(game.getTopic().equals(guess));
-            System.out.println("");
+            user.addGuessesMade();
+            if(game.getTopic().equals(guess.toLowerCase())) {
+                game.setGuessCorrect(true);
+                System.out.println(game.getTopic().equals(guess));
+                System.out.println("");
+            }else {
+                game.setGuessCorrect(false);
+                user.addInvalidClues();
+            }
         }
         System.out.println(game.getGuessCorrect());
         System.out.println("");
@@ -330,6 +334,7 @@ public Game addVote(String gameToken, String userToken, int vote){
 
         Game game = gameRepository.findByToken(gameToken);
         User user = userService.getUserFromToken(userToken);
+        user.addGamesPlayed();
         List oldUser = game.getPlayerList();
         game.removePlayer(user);
         userService.leaveGame(user);

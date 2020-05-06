@@ -43,7 +43,6 @@ public class UserService {
         newUser.setStatus(UserStatus.OFFLINE);
         newUser.setUnityReady(false);
         newUser.setLobbyReady(false);
-        newUser.setDarkMode(false);
         newUser.setVoted(false);
         newUser.setGaveClue(false);
         checkIfUserExists(newUser);
@@ -121,7 +120,6 @@ public class UserService {
         if (repoUser == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         if (updatedUser.getUsername() != null) repoUser.setUsername(updatedUser.getUsername());
         if (updatedUser.getPassword() != null) repoUser.setPassword(updatedUser.getPassword());
-        if (updatedUser.getColor() != null) repoUser.setColor(updatedUser.getColor());
     }
 
     public void resetUser(User user){
@@ -136,6 +134,12 @@ public class UserService {
         user.setUnityReady(false);
         user.setGaveClue(false);
         user.setVoted(false);
+        user.setDuplicateClues(0);
+        user.setTotalClues(0);
+        user.setInvalidClues(0);
+        user.setGuessesCorrect(0);
+        user.setGuessesMade(0);
+        user.setDuplicateClues(0);
     }
 
     public void leaveLobby(User user){
