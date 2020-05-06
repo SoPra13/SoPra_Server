@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.awt.*;
 import java.io.Serializable;
 
 /**
@@ -32,10 +33,13 @@ public class Bot implements Serializable{
     private String token;
 
     @Column(nullable = false)
-    private Integer avatar;
-
-    @Column(nullable = false)
     private Difficulty difficulty;
+
+    @Column
+    private Integer currentPosition;
+
+    @Column(nullable = true)
+    private Color color;
 
     @ManyToOne
     @JsonManagedReference
@@ -47,9 +51,18 @@ public class Bot implements Serializable{
     @JsonIgnore
     private Game game;
 
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -57,6 +70,7 @@ public class Bot implements Serializable{
     public String getBotname() {
         return botname;
     }
+
     public void setBotname(String botname) {
         this.botname = botname;
     }
@@ -64,6 +78,7 @@ public class Bot implements Serializable{
     public String getToken() {
         return token;
     }
+
     public void setToken(String token) {
         this.token = token;
     }
@@ -71,14 +86,20 @@ public class Bot implements Serializable{
     public Difficulty getDifficulty() {
         return difficulty;
     }
+
     public void setDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
     }
+
+    public Integer getCurrentPosition() {return  currentPosition;}
+
+    public void setCurrentPosition(Integer position){ this.currentPosition = position;}
 
     @JsonIgnore
     public Lobby getLobby() {
         return lobby;
     }
+
     public void setLobby(Lobby lobby) {
         this.lobby = lobby;
     }
@@ -87,11 +108,9 @@ public class Bot implements Serializable{
     public Game getGame() {
         return game;
     }
+
     public void setGame(Game game) {
         this.game = game;
     }
-
-    public Integer getAvatar() {return  avatar;}
-    public void setAvatar(Integer avatar){ this.avatar = avatar;}
 
 }

@@ -16,21 +16,6 @@ public class UserGetDTO {
     private Boolean lobbyReady;
     private Boolean voted;
     private Boolean gaveClue;
-    private Integer avatar;
-    private Integer gamesPlayed;
-    private Integer guessesMade;
-    private Integer guessesCorrect;
-    private Integer invalidClues;
-    private Integer totalClues;
-    private Integer duplicateClues;
-    private Integer totalScore;
-
-
-    public void setAvatar(Integer avatar) {
-        this.avatar = avatar;
-    }
-
-    public Integer getAvatar(){return avatar;}
 
     public Long getId() {
         return id;
@@ -111,32 +96,4 @@ public class UserGetDTO {
     public Boolean getGaveClue() {
         return gaveClue;
     }
-
-    public Integer getGamesPlayed() {return  gamesPlayed;}
-
-    public void setGamesPlayed(Integer gamesPlayed){ this.gamesPlayed = gamesPlayed;}
-
-    public Integer getTotalClues() {return  totalClues;}
-
-    public void setTotalClues(Integer totalClues){ this.totalClues = totalClues;}
-
-    public Integer getGuessesMade() {return  guessesMade;}
-
-    public void setGuessesMade(Integer guessesMade){ this.guessesMade = guessesMade;}
-
-    public Integer getGuessesCorrect() {return  guessesCorrect;}
-
-    public void setGuessesCorrect(Integer guessesCorrect){ this.guessesCorrect = guessesCorrect;}
-
-    public Integer getInvalidClues() {return  invalidClues;}
-
-    public void setInvalidClues(Integer invalidClues){ this.invalidClues = invalidClues;}
-
-    public Integer getDuplicateClues() {return  duplicateClues;}
-
-    public void setDuplicateClues(Integer duplicateClues){ this.duplicateClues = duplicateClues;}
-
-    public Integer getTotalScore() {return  totalScore;}
-
-    public void setTotalScore(Integer totalScore){ this.totalScore = totalScore;}
 }

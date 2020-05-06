@@ -6,16 +6,6 @@ public class UserPostDTO {
 
     private String username;
 
-    public Integer getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(Integer avatar) {
-        this.avatar = avatar;
-    }
-
-    private Integer avatar;
-
     public String getPassword() {
         return password;
     }

@@ -93,13 +93,4 @@ public class UserController {
        newUser.setToken(token);
        userService.updateUser(newUser);
     }
-
-    //Update user
-    @PutMapping("/user/score")
-    @ResponseStatus(HttpStatus.OK)
-    public void updateUser(@RequestParam String token, @RequestParam Integer score) {
-
-        User user = userService.getUserFromToken(token);
-        user.addTotalScore(score);
-    }
 }

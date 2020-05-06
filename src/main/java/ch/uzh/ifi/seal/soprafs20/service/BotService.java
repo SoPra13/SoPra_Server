@@ -42,7 +42,7 @@ public class BotService {
         bot.setToken(UUID.randomUUID().toString());
         bot.setBotname(String.valueOf(new Random().nextInt(10000)));
         Difficulty actualDifficulty = Difficulty.valueOf(difficulty);
-        bot.setAvatar(3);
+        bot.setColor(null);
         bot.setDifficulty(actualDifficulty);
 
         // saves the given entity but data is only persisted in the database once flush() is called
@@ -69,7 +69,7 @@ public class BotService {
         botRepository.delete(botByToken);
     }
 
-    public String botlue(Difficulty difficulty, String topic){
+    public String botclue(Difficulty difficulty, String topic){
 
         System.out.println("topic for datamuse:");
         System.out.println(topic);
