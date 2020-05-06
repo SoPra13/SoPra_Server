@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import java.awt.*;
 import java.io.Serializable;
 
 /**
@@ -38,9 +37,6 @@ public class User implements Serializable{
     private UserStatus status;
 
     @Column
-    private Integer currentPosition;
-
-    @Column
     private Boolean unityReady;
 
     @Column
@@ -53,10 +49,28 @@ public class User implements Serializable{
     private Boolean gaveClue;
 
     @Column
-    private Boolean darkMode;
+    private Integer avatar;
 
     @Column
-    private Color color;
+    private Integer gamesPlayed;
+
+    @Column
+    private Integer guessesMade;
+
+    @Column
+    private Integer guessesCorrect;
+
+    @Column
+    private Integer invalidClues;
+
+    @Column
+    private Integer totalClues;
+
+    @Column
+    private Integer duplicateClues;
+
+    @Column
+    private Integer totalScore;
 
     @ManyToOne
     @JsonManagedReference
@@ -67,14 +81,6 @@ public class User implements Serializable{
     @JsonManagedReference
     @JsonIgnore
     private Game game;
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    public Color getColor() {
-        return color;
-    }
 
     public void setUnityReady(boolean unityReady) {
         this.unityReady = unityReady;
@@ -92,13 +98,9 @@ public class User implements Serializable{
         return lobbyReady;
     }
 
-    public void setGaveClue(boolean gaveClue) {
-        this.gaveClue = gaveClue;
-    }
+    public void setGaveClue(boolean gaveClue) {this.gaveClue = gaveClue;}
 
-    public Boolean getGaveClue() {
-        return gaveClue;
-    }
+    public Boolean getGaveClue() {return gaveClue; }
 
     public void setVoted(boolean voted) {
         this.voted = voted;
@@ -108,14 +110,6 @@ public class User implements Serializable{
         return voted;
     }
 
-    public void setDarkMode(boolean darkMode) {
-        this.darkMode = darkMode;
-    }
-
-    public Boolean isDarkMode() {
-        return darkMode;
-    }
-
     public Long getId() {
         return id;
     }
@@ -123,10 +117,6 @@ public class User implements Serializable{
     public void setId(Long id) {
         this.id = id;
     }
-
-    public Integer getCurrentPosition() {return  currentPosition;}
-
-    public void setCurrentPosition(Integer position){ this.currentPosition = position;}
 
     @JsonIgnore
     public String getPassword() {
@@ -160,6 +150,37 @@ public class User implements Serializable{
     public void setStatus(UserStatus status) {
         this.status = status;
     }
+
+    public Integer getAvatar() {return  avatar;}
+    public void setAvatar(Integer avatar){ this.avatar = avatar;}
+
+    public Integer getGamesPlayed() {return  gamesPlayed;}
+    public void setGamesPlayed(Integer gamesPlayed){ this.gamesPlayed = gamesPlayed;}
+    public void addGamesPlayed() {gamesPlayed += 1;}
+
+    public Integer getTotalClues() {return  totalClues;}
+    public void setTotalClues(Integer totalClues){ this.totalClues = totalClues;}
+    public void addTotalClues() {totalClues += 1;}
+
+    public Integer getGuessesMade() {return  guessesMade;}
+    public void setGuessesMade(Integer guessesMade){ this.guessesMade = guessesMade;}
+    public void addGuessesMade() {guessesMade += 1;}
+
+    public Integer getGuessesCorrect() {return  guessesCorrect;}
+    public void setGuessesCorrect(Integer guessesCorrect){ this.guessesCorrect = guessesCorrect;}
+    public void addGuessesCorrect() {guessesCorrect += 1;}
+
+    public Integer getInvalidClues() {return  invalidClues;}
+    public void setInvalidClues(Integer invalidClues){ this.invalidClues = invalidClues;}
+    public void addInvalidClues() {invalidClues += 1;}
+
+    public Integer getDuplicateClues() {return  duplicateClues;}
+    public void setDuplicateClues(Integer duplicateClues){ this.duplicateClues = duplicateClues;}
+    public void addDuplicateClues() {duplicateClues += 1;}
+
+    public Integer getTotalScore() {return  totalScore;}
+    public void setTotalScore(Integer totalScore){ this.totalScore = totalScore;}
+    public void addTotalScore(Integer score) {totalScore += score;}
 
     @JsonIgnore
     public Lobby getLobby() {
