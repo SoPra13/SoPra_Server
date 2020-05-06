@@ -24,6 +24,8 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.PostConstruct;
+import java.util.Random;
+import java.util.UUID;
 
 @RestController
 @SpringBootApplication
@@ -53,8 +55,9 @@ public class Application {
 
 }
 
+
 @Transactional
-class init{
+class init {
 
     @Autowired
     private ChatService chatService;
@@ -72,25 +75,34 @@ class init{
 
     @PostConstruct
     void postConstruct() {
-        User user = new User();
-        user.setUsername("test");
-        user.setPassword("test");
-        user.setToken("userToken");
-        user.setStatus(UserStatus.ONLINE);
-        userRepository.saveAndFlush(user);
-        Lobby lobby = new Lobby();
-        lobby.setLobbyType(LobbyType.PUBLIC);
-        lobby.setNumberOfPlayers(1);
-        lobby.setLobbyname("testLobby");
-        lobby.setAdminToken("adminToken");
-        lobby.setLobbyToken("lobbyToken");
-        lobby.setLobbyState(LobbyStatus.OPEN);
-        lobbyRepository.saveAndFlush(lobby);
-        chatService.createChat("lobbyToken");
+        for (int i = 0; i < 300; i++) {
+            userRepository.saveAndFlush(createRandomUser());
+        }
     }
 
     User createRandomUser() {
+        Random rnd = new Random();
         User user = new User();
+        user.setPassword("hihigeheim");
+        user.setUsername(getRandomName());
+        user.setToken(UUID.randomUUID().toString());
+        user.setTotalClues(rnd.nextInt(5000));
+        user.setDuplicateClues(rnd.nextInt(5000));
+        user.setTotalScore(rnd.nextInt(5000));
+        user.setGuessesMade(rnd.nextInt(5000));
+        user.setGamesPlayed(rnd.nextInt(5000));
+        user.setInvalidClues(rnd.nextInt(5000));
+        user.setGuessesCorrect(rnd.nextInt(5000));
         return user;
     }
+
+    String getRandomName() {
+        String alphabet = "abcdefghijklmnopqrstuvwxyz";
+        String username = "";
+        for (int i = 0; i < 15; i++) {
+            username = username + alphabet.charAt(new Random().nextInt(alphabet.length()));
+        }
+        return username;
+    }
 }
+
