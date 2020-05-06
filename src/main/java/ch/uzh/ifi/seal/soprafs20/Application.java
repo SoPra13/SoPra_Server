@@ -15,6 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -57,6 +58,7 @@ public class Application {
 
 
 @Transactional
+@Service
 class init {
 
     @Autowired
@@ -75,7 +77,9 @@ class init {
 
     @PostConstruct
     void postConstruct() {
-        for (int i = 0; i < 300; i++) {
+        System.out.println("dora");
+        for (int i = 0; i < 250; i++) {
+            System.out.println("ree");
             userRepository.saveAndFlush(createRandomUser());
         }
     }
@@ -86,13 +90,14 @@ class init {
         user.setPassword("hihigeheim");
         user.setUsername(getRandomName());
         user.setToken(UUID.randomUUID().toString());
-        user.setTotalClues(rnd.nextInt(5000));
-        user.setDuplicateClues(rnd.nextInt(5000));
-        user.setTotalScore(rnd.nextInt(5000));
-        user.setGuessesMade(rnd.nextInt(5000));
-        user.setGamesPlayed(rnd.nextInt(5000));
-        user.setInvalidClues(rnd.nextInt(5000));
-        user.setGuessesCorrect(rnd.nextInt(5000));
+        user.setStatus(UserStatus.OFFLINE);
+        user.setTotalClues(rnd.nextInt(250));
+        user.setDuplicateClues(rnd.nextInt(250));
+        user.setTotalScore(rnd.nextInt(250));
+        user.setGuessesMade(rnd.nextInt(250));
+        user.setGamesPlayed(rnd.nextInt(250));
+        user.setInvalidClues(rnd.nextInt(250));
+        user.setGuessesCorrect(rnd.nextInt(250));
         return user;
     }
 
