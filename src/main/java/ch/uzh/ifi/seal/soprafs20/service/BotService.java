@@ -69,7 +69,7 @@ public class BotService {
         botRepository.delete(botByToken);
     }
 
-    public String botlue(Difficulty difficulty, String topic){
+    public String botclue(Difficulty difficulty, String topic){
 
         System.out.println("topic for datamuse:");
         System.out.println(topic);

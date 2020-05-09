@@ -140,7 +140,7 @@ public class GameService {
 
     //vote for topic, adds one to index of topic voted for
 public Game addVote(String gameToken, String userToken, int vote){
-        if (vote > 5)throw new ResponseStatusException(HttpStatus.NOT_FOUND, "int has to be <5");
+        if (vote > 5)throw new ResponseStatusException(HttpStatus.NOT_FOUND, "int has to be <=5");
 
         Game game = getGameFromToken(gameToken);
 
@@ -156,9 +156,11 @@ public Game addVote(String gameToken, String userToken, int vote){
                 voteList.set(botVote,votes+1);
             }
         }
-
-        Integer votes = (Integer) voteList.get(vote);
-        voteList.set(vote,votes+=1);
+        //user votes for 5 if not voted in time, vote gets ignored
+        if(vote!=5) {
+            Integer votes = (Integer) voteList.get(vote);
+            voteList.set(vote, votes += 1);
+        }
         game.setVoteList(voteList);
         user.setVoted(true);
         return game;
@@ -201,7 +203,6 @@ public Game addVote(String gameToken, String userToken, int vote){
     //add clue given by player
     public synchronized Game addClue(String userToken, String gameToken, String Aclue){
 
-
         String clue = Aclue.toLowerCase();
         System.out.println(clue);
         System.out.println("");
@@ -222,7 +223,8 @@ public Game addVote(String gameToken, String userToken, int vote){
         if(!user.getGaveClue()) {
             user.addTotalClues();
             if(valid){
-                if(!clue.equals(game.getTopic().toLowerCase())){
+                if(!(clue.equals(game.getTopic().toLowerCase())||clue.equals("empty"))){
+
                     System.out.println("valid");
                     System.out.println("");
                     checklist.add(clue);

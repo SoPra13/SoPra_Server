@@ -44,6 +44,14 @@ public class UserService {
         newUser.setUnityReady(false);
         newUser.setLobbyReady(false);
         newUser.setVoted(false);
+        newUser.setInvalidClues(0);
+        newUser.setTotalClues(0);
+        newUser.setInvalidClues(0);
+        newUser.setGuessesMade(0);
+        newUser.setDuplicateClues(0);
+        newUser.setTotalScore(0);
+        newUser.setGuessesCorrect(0);
+        newUser.setGamesPlayed(0);
         newUser.setGaveClue(false);
         checkIfUserExists(newUser);
 
