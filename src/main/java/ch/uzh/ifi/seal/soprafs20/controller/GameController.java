@@ -91,10 +91,10 @@ public class GameController {
     @PutMapping(value="/game/guess", params = {"gameToken", "guess"})
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public GameGetDTO makeGuess(@RequestParam String gameToken, @RequestParam String guess) {
+    public GameGetDTO makeGuess(@RequestParam String gameToken, @RequestParam String userToken,@RequestParam String guess) {
 
         //set Topic chosen from voting in unity
-        Game game = gameService.makeGuess(gameToken,guess);
+        Game game = gameService.makeGuess(gameToken,userToken,guess);
 
         return DTOMapper.INSTANCE.convertEntityToGameGetDTO(game);
     }

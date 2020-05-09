@@ -37,8 +37,6 @@ public interface DTOMapper {
 
     @Mapping(source = "username", target = "username")
     @Mapping(source = "password", target = "password")
-    @Mapping(source = "color", target = "color")
-    @Mapping(source = "darkMode", target = "darkMode")
     User convertUserPutDTOtoEntity(UserPutDTO userPutDTO);
 
     @Mapping(source = "id", target = "id")

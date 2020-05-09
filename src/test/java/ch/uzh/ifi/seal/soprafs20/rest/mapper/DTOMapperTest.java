@@ -11,7 +11,6 @@ import ch.uzh.ifi.seal.soprafs20.entity.User;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.*;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -74,8 +73,6 @@ public class DTOMapperTest {
         UserPutDTO userPutDTO = new UserPutDTO();
         userPutDTO.setPassword("password");
         userPutDTO.setUsername("username");
-        userPutDTO.setColor(Color.getColor("red"));
-        userPutDTO.setDarkMode(true);
 
         // MAP -> Create user
         User user = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(userPutDTO);
@@ -83,8 +80,6 @@ public class DTOMapperTest {
         // check content
         assertEquals(userPutDTO.getPassword(), user.getPassword());
         assertEquals(userPutDTO.getUsername(), user.getUsername());
-        assertEquals(userPutDTO.getColor(), user.getColor());
-        assertEquals(userPutDTO.isDarkMode(), user.isDarkMode());
     }
 
     @Test
