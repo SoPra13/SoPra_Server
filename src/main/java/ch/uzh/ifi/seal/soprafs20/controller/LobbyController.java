@@ -119,13 +119,12 @@ public class LobbyController {
     @DeleteMapping("/lobby")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public LobbyGetDTO leaveLobby(@RequestParam String lobbyToken, @RequestParam String userToken) {
+    public void leaveLobby(@RequestParam String lobbyToken, @RequestParam String userToken) {
 
-        //add user to lobby
-        Lobby lobby = lobbyService.leaveLobby(lobbyToken,userToken);
+        //remove user from lobby
+       lobbyService.leaveLobby(lobbyToken,userToken);
 
-        // convert internal representation of lobby back to API
-        return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby);
+
     }
 
     //remove bot from Lobby
