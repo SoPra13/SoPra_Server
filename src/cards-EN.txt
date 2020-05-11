@@ -49,7 +49,7 @@ Tennis
 France
 Moon
 Canteen
-Emperor penguin
+Emperor
 Tool
 
 Brain
@@ -144,7 +144,7 @@ Newspaper
 
 Mountains
 Peanut
-Light bulb
+Light
 Jedi
 Chili
 
@@ -157,7 +157,7 @@ Chewbacca
 Revolver
 Doctor
 Strawberry
-Nuclear power
+Nuclear
 Lottery
 
 Cemetery
@@ -190,7 +190,7 @@ Parachute
 Cannon
 Binoculars
 
-Fata morgana
+Floor
 Ramses
 Fire
 Intersection
@@ -233,7 +233,7 @@ Ring
 Pizza
 
 Picture
-Fire department
+Fire
 Glass
 Meatball
 Greece
@@ -283,7 +283,7 @@ Falco
 Jackson
 Cigarette
 Bracelet
-Weather forecast
+Weather
 Tower
 
 Tattoo
@@ -295,7 +295,7 @@ Boxes
 Dwarf
 Circus
 Elvis
-Lawn mower
+Lawn
 Stone
 
 Train
