@@ -116,6 +116,7 @@ public class LobbyServiceTest {
         testLobby.setNumberOfPlayers(null);
         testLobby.setAdminToken(null);
         String test = testLobby.getLobbyToken();
+        Mockito.when(lobbyRepository.findByJoinToken(String.valueOf(1729))).thenReturn(testLobby);
         Mockito.when(userRepository.findByToken(Mockito.any())).thenReturn(testAdmin);
         Mockito.when(userService.getUserFromToken(Mockito.any())).thenReturn(testAdmin);
         Mockito.doNothing().when(chatService).createChat(testLobby.getLobbyToken());
@@ -242,9 +243,9 @@ public class LobbyServiceTest {
 
         Lobby givenLobby = lobbyService.joinLobby(testLobby.getJoinToken(), newUser.getToken());
 
-        Lobby newLobby = lobbyService.leaveLobby(givenLobby.getLobbyToken(), newUser.getToken());
+        lobbyService.leaveLobby(givenLobby.getLobbyToken(), newUser.getToken());
 
-        assertFalse(newLobby.getPlayerList().contains(newUser));
+        assertFalse(testLobby.getPlayerList().contains(newUser));
     }
 
     @Test
@@ -288,24 +289,14 @@ public class LobbyServiceTest {
     }
 
     @Test
-    void leaveLobby_admin() {
-        User newUser = new User();
-        newUser.setId(2L);
-        newUser.setToken("NEW_TOKEN");
+    void leaveLobby_lastUser() {
 
         Mockito.when(userService.getUserFromToken("ADMIN_TOKEN")).thenReturn(testAdmin);
         Mockito.when(lobbyRepository.findByLobbyToken(testLobby.getLobbyToken())).thenReturn(testLobby);
-        Mockito.when(userService.getUserFromToken(newUser.getToken())).thenReturn(newUser);
-        Lobby givenLobby = lobbyService.joinLobby(testLobby.getJoinToken(), newUser.getToken());
-        givenLobby.getPlayerList().add(testAdmin);
 
-        Exception exception = Assertions.assertThrows(ResponseStatusException.class,
-                () -> lobbyService.leaveLobby(givenLobby.getLobbyToken(), "ADMIN_TOKEN"));
+        lobbyService.leaveLobby(testLobby.getLobbyToken(), "ADMIN_TOKEN");
 
-
-        assertEquals("403 FORBIDDEN \"Cant remove admin from lobby\"", exception.getMessage());
-        assertTrue(givenLobby.getPlayerList().contains(newUser));
-        assertTrue(givenLobby.getPlayerList().contains(testAdmin));
+        Mockito.verify(lobbyRepository, Mockito.times(1)).delete(testLobby);
     }
 
     @Test
@@ -488,6 +479,14 @@ public class LobbyServiceTest {
 
         assertEquals("404 NOT_FOUND \"There is no User with requested Token\"", exception.getMessage());
         assertFalse(testAdmin.isLobbyReady());
+    }
+
+    @Test
+    void deleteLobby(){
+
+        lobbyService.deleteLobby(testLobby);
+
+        Mockito.verify(lobbyRepository, Mockito.times(1)).delete(testLobby);
     }
 }
 

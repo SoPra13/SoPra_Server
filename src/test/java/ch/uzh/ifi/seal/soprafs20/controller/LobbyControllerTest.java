@@ -262,8 +262,6 @@ public class LobbyControllerTest {
         lobby.getPlayerList().add(user);
         lobby.setNumberOfPlayers(lobby.getPlayerList().size());
 
-        given(lobbyService.leaveLobby("testtoken", "testtokenUser"))
-                .willReturn(lobby);
 
         MockHttpServletRequestBuilder delRequest = delete("/lobby?lobbyToken=testtoken&userToken=testtokenUser").contentType(MediaType.APPLICATION_JSON);
         mockMvc.perform(delRequest).andExpect(status().isOk());
@@ -277,8 +275,8 @@ public class LobbyControllerTest {
         lobby.getPlayerList().add(user);
         lobby.setNumberOfPlayers(lobby.getPlayerList().size());
 
-        given(lobbyService.leaveLobby("invalid_testtoken", "testtokenUser"))
-                .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found"));
+        Mockito.doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found")).
+                when(lobbyService).leaveLobby("invalid_testtoken", "testtokenUser");
 
         MockHttpServletRequestBuilder delRequest = delete("/lobby?lobbyToken=invalid_testtoken&userToken=testtokenUser").contentType(MediaType.APPLICATION_JSON);
         mockMvc.perform(delRequest).andExpect(status().isNotFound())
@@ -292,8 +290,8 @@ public class LobbyControllerTest {
         lobby.getPlayerList().add(user);
         lobby.setNumberOfPlayers(lobby.getPlayerList().size());
 
-        given(lobbyService.leaveLobby("testtoken", "invalid_testtokenUser"))
-                .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no User with requested Token"));
+        Mockito.doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no User with requested Token")).
+                when(lobbyService).leaveLobby("testtoken", "invalid_testtokenUser");
 
         MockHttpServletRequestBuilder delRequest = delete("/lobby?lobbyToken=testtoken&userToken=invalid_testtokenUser").contentType(MediaType.APPLICATION_JSON);
         mockMvc.perform(delRequest).andExpect(status().isNotFound())

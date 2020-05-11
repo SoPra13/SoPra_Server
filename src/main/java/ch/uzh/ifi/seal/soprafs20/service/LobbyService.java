@@ -238,13 +238,12 @@ public class LobbyService {
      * This is a helper method that will check the uniqueness criteria of the ???? and the ????
      * defined in the Lobby entity. The method will do nothing if the input is unique and throw an error otherwise.
      *
-     * @param lobbyToBeCreated
      * @throws org.springframework.web.server.ResponseStatusException
      * @see Lobby
      */
     public String generateJoinToken(){
-        Integer token = new Random().nextInt((8999));
-        token += 1000;
+        Integer token = 1729;
+//        Integer token = 1337;
         while (lobbyRepository.findByJoinToken(String.valueOf(token))!=null){
             token = new Random().nextInt(8999);
             token += 1000;

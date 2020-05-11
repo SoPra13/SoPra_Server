@@ -7012,8 +7012,6 @@ class GameServiceTest {
         gameService.removeUser(userToKick.getToken(), testGame.getToken());
 
         assertFalse(testGame.getPlayerList().contains(userToKick));
-        assertNull(userToKick.getGame());
-        assertNull(userToKick.getLobby());
     }
 
     @Test
@@ -7028,10 +7026,6 @@ class GameServiceTest {
         gameService.removeUser(testUser.getToken(), testGame.getToken());
 
         assertFalse(testGame.getPlayerList().contains(testUser));
-        assertNull(testUser.getGame());
-        assertNull(testUser.getLobby());
-        Mockito.verify(gameRepository, Mockito.times(1)).delete(testGame);
-        Mockito.verify(lobbyService, Mockito.times(1)).deleteLobby(testLobby);
         Mockito.verify(gameRepository, Mockito.times(1)).delete(testGame);
     }
 
