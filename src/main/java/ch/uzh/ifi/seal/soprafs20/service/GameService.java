@@ -85,10 +85,9 @@ public class GameService {
 
         Game newGame = new Game();
 
-        List<User> userList = new ArrayList<>();
-        userList.addAll(lobby.getPlayerList());
-        List<Bot> botList = new ArrayList<>();
-        botList.addAll(lobby.getBotList());
+        List<User> userList = new ArrayList<>(lobby.getPlayerList());
+        List<Bot> botList = new ArrayList<>(lobby.getBotList());
+
 
         List<String> clueList = new ArrayList<>();
         List<String> checkList = new ArrayList<>();
