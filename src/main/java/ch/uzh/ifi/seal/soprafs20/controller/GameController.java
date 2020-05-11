@@ -65,7 +65,7 @@ public class GameController {
         return DTOMapper.INSTANCE.convertEntityToGameGetDTO(game);
     }
 
-    //Set player in Game ready, called when unity is loaded
+    //player leave game
     @DeleteMapping("/game")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -87,7 +87,7 @@ public class GameController {
         return DTOMapper.INSTANCE.convertEntityToGameGetDTO(game);
     }
 
-    //Set voted Topic as word
+    //make a guess
     @PutMapping(value="/game/guess", params = {"gameToken", "guess"})
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -114,7 +114,7 @@ public class GameController {
     @PutMapping(value="/game/end", params = {"gameToken","userToken","score"})
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void endGame(@RequestParam String gameToken, @RequestParam String userToken, @RequestParam String score){
+    public void endGame(@RequestParam String gameToken, @RequestParam String userToken, @RequestParam Integer score){
 
         //end game
         gameService.endGame(gameToken,userToken,score);
