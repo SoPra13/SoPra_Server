@@ -117,7 +117,7 @@ public class LobbyService {
     }
 
     //remove player from Lobby
-    public Lobby leaveLobby(String lToken, String uToken){
+    public void leaveLobby(String lToken, String uToken){
 
         //checks
         checkLobbyExists(lToken);
@@ -125,20 +125,15 @@ public class LobbyService {
         //get lobby & user
         User userToRemove = userService.getUserFromToken(uToken);
         Lobby lobbyToRemove = lobbyRepository.findByLobbyToken(lToken);
-        //todo: allow leaving whenn admin is alone
-        if(userToRemove.getToken().equals(lobbyToRemove.getAdminToken())){
-            String baseErrorMessage = "Cant remove admin from lobby";
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, baseErrorMessage);
-        }
 
         // remove user from lobby
-        List list = lobbyToRemove.getPlayerList();
-        list.remove(userToRemove);
-        lobbyToRemove.setPlayerList(list);
-        lobbyToRemove.setNumberOfPlayers(list.size()+lobbyToRemove.getBotList().size());
-        userToRemove.setLobby(null);
-        userToRemove.setLobbyReady(false);
-        return lobbyToRemove;
+        lobbyToRemove.removePlayer(userToRemove);
+        userService.leaveLobby(userToRemove);
+        lobbyToRemove.setNumberOfPlayers(lobbyToRemove.getPlayerList().size()+lobbyToRemove.getBotList().size());
+
+        if(lobbyToRemove.getPlayerList().size()==0){
+            lobbyRepository.delete(lobbyToRemove);
+        }
     }
 
 

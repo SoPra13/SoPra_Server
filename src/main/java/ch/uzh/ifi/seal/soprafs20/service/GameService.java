@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs20.service;
 
+import ch.uzh.ifi.seal.soprafs20.constant.LobbyStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.Bot;
 import ch.uzh.ifi.seal.soprafs20.entity.Game;
 import ch.uzh.ifi.seal.soprafs20.entity.Lobby;
@@ -85,6 +86,7 @@ public class GameService {
 
         Game newGame = new Game();
 
+        lobby.setLobbyState(LobbyStatus.INGAME);
         List<User> userList = new ArrayList<>();
         userList.addAll(lobby.getPlayerList());
         List<Bot> botList = new ArrayList<>();
@@ -109,8 +111,7 @@ public class GameService {
         newGame.setCheckList(checkList);
         newGame.setGuessGiven(null);
         newGame.setGuessCorrect(null);
-        //todo:make guesser random again
-        newGame.setGuesser(0);
+        newGame.setGuesser(new Random().nextInt(userList.size()));
         newGame.setMysteryWords(WordFileHandler.getMysteryWords());
 
         // saves the given entity but data is only persisted in the database once flush() is called
@@ -181,19 +182,16 @@ public Game addVote(String gameToken, String userToken, int vote){
         Game game = gameRepository.findByToken(gameToken);
         User user = userService.getUserFromToken(userToken);
         Lobby lobby = lobbyService.getLobbyFromToken(gameToken);
-        List oldUser = game.getPlayerList();
-        chatService.leaveChat(gameToken,userToken);
-        lobby.removePlayer(user);
         game.removePlayer(user);
         userService.leaveGame(user);
-        userService.leaveLobby(user);
+
 
         if(game.getPlayerList().size()==0){
+            lobby.setLobbyState(LobbyStatus.OPEN);
             for(Bot bot : game.getBotList()){
                 botService.deleteBot(bot.getToken());
             }
             gameRepository.delete(game);
-            lobbyService.deleteLobby(lobby);
             return;
         }
 
@@ -273,7 +271,6 @@ public Game addVote(String gameToken, String userToken, int vote){
 
     public Game makeGuess(String gameToken,String userToken, String guess){
         System.out.println(guess);
-        System.out.println(guess.getClass().getName());
         System.out.println("");
 
         User user = userService.getUserFromToken(userToken);
@@ -332,24 +329,23 @@ public Game addVote(String gameToken, String userToken, int vote){
         return game;
     }
 
-    public void endGame(String gameToken, String userToken, String score){
+    public void endGame(String gameToken, String userToken, Integer score){
 
         Game game = gameRepository.findByToken(gameToken);
+        Lobby lobby = lobbyService.getLobbyFromToken(gameToken);
         User user = userService.getUserFromToken(userToken);
         user.addGamesPlayed();
-        List oldUser = game.getPlayerList();
         game.removePlayer(user);
         userService.leaveGame(user);
 
-
-
+        user.addTotalScore(score);
+        lobby.setLobbyState(LobbyStatus.OPEN);
         if(game.getPlayerList().size()==0){
             for(Bot bot : game.getBotList()){
                 game.removeBot(bot);
                 botService.leaveGame(bot);
             }
             gameRepository.delete(game);
-            chatService.endMessage(score,userToken,gameToken);
             return;
         }
 
