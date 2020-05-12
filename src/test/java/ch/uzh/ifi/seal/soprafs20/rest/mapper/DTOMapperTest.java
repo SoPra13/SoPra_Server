@@ -108,13 +108,13 @@ public class DTOMapperTest {
     public void testCreateLobby_fromLobbyPostDTO_toLobby_success() {
         // create LobbyPostDTO
         LobbyPostDTO lobbyPostDTO = new LobbyPostDTO();
-        lobbyPostDTO.setLobbyname("lobbyname");
+        lobbyPostDTO.setLobbyName("lobbyname");
 
         // MAP -> Create lobby
         Lobby lobby = DTOMapper.INSTANCE.convertLobbyPostDTOtoEntity(lobbyPostDTO);
 
         // check content
-        assertEquals(lobbyPostDTO.getLobbyname(), lobby.getLobbyname());
+        assertEquals(lobbyPostDTO.getLobbyName(), lobby.getLobbyName());
     }
 
     @Test
@@ -124,7 +124,7 @@ public class DTOMapperTest {
         testAdmin.setToken("ADMIN_TOKEN");
         Lobby lobby = new Lobby();
         lobby.setId(0L);
-        lobby.setLobbyname("lobbyname");
+        lobby.setLobbyName("lobbyname");
         lobby.setLobbyToken("lobbyToken");
         lobby.setLobbyState(LobbyStatus.OPEN);
         lobby.setLobbyType(LobbyType.PRIVATE);
@@ -137,7 +137,7 @@ public class DTOMapperTest {
 
         // check content
         assertEquals(lobby.getId(), lobbyGetDTO.getId());
-        assertEquals(lobby.getLobbyname(), lobbyGetDTO.getLobbyname());
+        assertEquals(lobby.getLobbyName(), lobbyGetDTO.getLobbyName());
         assertEquals(lobby.getLobbyToken(), lobbyGetDTO.getLobbyToken());
         assertEquals(lobby.getLobbyState(), lobbyGetDTO.getLobbyState());
         assertEquals(lobby.getLobbyType(), lobbyGetDTO.getLobbyType());

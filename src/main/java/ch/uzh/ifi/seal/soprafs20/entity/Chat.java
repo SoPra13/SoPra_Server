@@ -1,9 +1,6 @@
 package ch.uzh.ifi.seal.soprafs20.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,10 +14,10 @@ public class Chat {
     private boolean active;
 
     @OneToMany()
-    private List<Message> messages = new LinkedList<Message>();
+    private List<Message> messages = new LinkedList<>();
 
     @OneToMany()
-    private List<User> loggedInUsers = new LinkedList<User>();
+    private List<User> loggedInUsers = new LinkedList<>();
 
     public List<User> getUserLoggedIn() {
         return loggedInUsers;

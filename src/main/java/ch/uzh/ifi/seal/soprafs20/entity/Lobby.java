@@ -14,7 +14,7 @@ import java.util.List;
 @Table(name = "LOBBY")
 public class Lobby implements Serializable {
 
-    public final int maxpalyer = 7;
+    public final int maxPlayer = 7;
 
     private static final long serialVersionUID = 1L;
 
@@ -23,7 +23,7 @@ public class Lobby implements Serializable {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String lobbyname;
+    private String lobbyName;
 
     @Column(nullable = false, unique = true)
     private String lobbyToken;
@@ -67,12 +67,12 @@ public class Lobby implements Serializable {
         this.adminToken = adminToken;
     }
 
-    public String getLobbyname() {
-        return lobbyname;
+    public String getLobbyName() {
+        return lobbyName;
     }
 
-    public void setLobbyname(String lobbyname) {
-        this.lobbyname = lobbyname;
+    public void setLobbyName(String lobbyname) {
+        this.lobbyName = lobbyname;
     }
 
     public String getLobbyToken() {

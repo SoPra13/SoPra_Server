@@ -72,10 +72,10 @@ public class LobbyService {
     }
 
     //creates new Lobby
-    public Lobby createLobby(Lobby newLobby, String token) {
+    public Lobby createLobby(Lobby newLobby, String userToken) {
 
-        ArrayList<User> userList = new ArrayList<User>();
-        User user = userService.getUserFromToken(token);
+        ArrayList<User> userList = new ArrayList<>();
+        User user = userService.getUserFromToken(userToken);
         userList.add(user);
         newLobby.setLobbyToken(UUID.randomUUID().toString());
         newLobby.setNumberOfPlayers(1);
@@ -107,11 +107,9 @@ public class LobbyService {
         //get lobby & user
         User userToAdd = userService.getUserFromToken(uToken);
 
-
         // add user to lobby
-        List list = lobbyToAdd.getPlayerList();
-        list.add(userToAdd);
-        lobbyToAdd.setNumberOfPlayers(list.size() + lobbyToAdd.getBotList().size());
+        lobbyToAdd.getPlayerList().add(userToAdd);
+        lobbyToAdd.setNumberOfPlayers(lobbyToAdd.getPlayerList().size() + lobbyToAdd.getBotList().size());
         userToAdd.setLobby(lobbyToAdd);
         return lobbyToAdd;
     }
@@ -148,10 +146,10 @@ public class LobbyService {
         Lobby lobbyToAdd = lobbyRepository.findByLobbyToken(lToken);
 
         // add bot to lobby
-        List list = lobbyToAdd.getBotList();
         Bot bot = botService.createBot(difficulty);
-        list.add(bot);
-        lobbyToAdd.setNumberOfPlayers(list.size() + lobbyToAdd.getPlayerList().size());
+        lobbyToAdd.getBotList().add(bot);
+
+        lobbyToAdd.setNumberOfPlayers(lobbyToAdd.getBotList().size() + lobbyToAdd.getPlayerList().size());
         bot.setLobby(lobbyToAdd);
         return lobbyToAdd;
     }
@@ -168,10 +166,8 @@ public class LobbyService {
         Lobby lobbyToRemove = lobbyRepository.findByLobbyToken(lToken);
 
         // remove bot from lobby
-        List list = lobbyToRemove.getBotList();
-        list.remove(botToRemove);
-        lobbyToRemove.setBotList(list);
-        lobbyToRemove.setNumberOfPlayers(list.size() + lobbyToRemove.getPlayerList().size());
+        lobbyToRemove.getBotList().remove(botToRemove);
+        lobbyToRemove.setNumberOfPlayers(lobbyToRemove.getBotList().size() + lobbyToRemove.getPlayerList().size());
         botToRemove.setLobby(null);
         return lobbyToRemove;
     }
@@ -239,11 +235,11 @@ public class LobbyService {
      * This is a helper method that will check the uniqueness criteria of the ???? and the ????
      * defined in the Lobby entity. The method will do nothing if the input is unique and throw an error otherwise.
      *
-     * @throws org.springframework.web.server.ResponseStatusException
+     * @return String
      * @see Lobby
      */
     public String generateJoinToken() {
-        Integer token = 1729;
+        int token = 1729;
 //        Integer token = 1337;
         while (lobbyRepository.findByJoinToken(String.valueOf(token)) != null) {
             token = new Random().nextInt(8999);

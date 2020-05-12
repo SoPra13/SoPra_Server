@@ -201,7 +201,7 @@ public class GameService {
 
         String clue = Aclue.toLowerCase();
         System.out.println(clue);
-        System.out.println("");
+        System.out.println();
         boolean valid = WordService.isValidWord(clue);
         Game game = gameRepository.findByToken(gameToken);
         User user = userService.getUserFromToken(userToken);
@@ -222,10 +222,10 @@ public class GameService {
                 if (!(clue.equals(game.getTopic().toLowerCase()) || clue.equals("empty"))) {
 
                     System.out.println("valid");
-                    System.out.println("");
+                    System.out.println();
                     checklist.add(clue);
                     System.out.println(checklist);
-                    System.out.println("");
+                    System.out.println();
                 }
                 else {
                     checklist.add("CENSORED");
@@ -246,7 +246,7 @@ public class GameService {
         //if all players gave clues, remove duplicates
         if (checklist.size() == (game.getPlayerList().size() - 1) + game.getBotList().size()) {
             System.out.println("ALL CLUES RECEIVED");
-            System.out.println("");
+            System.out.println();
             checklist.add(game.getTopic());
             boolean[] duplicates = WordService.checkSimilarityInArray((String[]) checklist.toArray(new String[checklist.size()]));
             //remove duplicates from end to bottom because of indexes removed would break code
@@ -256,7 +256,7 @@ public class GameService {
                 }
             }
             System.out.println(checklist);
-            System.out.println("");
+            System.out.println();
 
             //set ClueList to valid clues
             List clueList = game.getClueList();
@@ -264,7 +264,7 @@ public class GameService {
             clueList.addAll(checklist);
             game.setClueList(clueList);
             System.out.println(clueList);
-            System.out.println("");
+            System.out.println();
         }
 
         return game;
@@ -272,7 +272,7 @@ public class GameService {
 
     public Game makeGuess(String gameToken, String userToken, String guess) {
         System.out.println(guess);
-        System.out.println("");
+        System.out.println();
 
         User user = userService.getUserFromToken(userToken);
         Game game = gameRepository.findByToken(gameToken);
@@ -282,7 +282,7 @@ public class GameService {
             if (game.getTopic().equals(guess.toLowerCase())) {
                 game.setGuessCorrect(true);
                 System.out.println(game.getTopic().equals(guess));
-                System.out.println("");
+                System.out.println();
             }
             else {
                 game.setGuessCorrect(false);
@@ -290,7 +290,7 @@ public class GameService {
             }
         }
         System.out.println(game.getGuessCorrect());
-        System.out.println("");
+        System.out.println();
         return game;
     }
 

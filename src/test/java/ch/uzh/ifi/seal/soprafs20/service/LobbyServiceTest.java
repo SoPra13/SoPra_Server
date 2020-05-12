@@ -55,10 +55,9 @@ public class LobbyServiceTest {
         testAdmin.setToken("ADMIN_TOKEN");
         testAdmin.setStatus(UserStatus.ONLINE);
 
-
         testLobby = new Lobby();
         testLobby.setId(1L);
-        testLobby.setLobbyname("NAME");
+        testLobby.setLobbyName("NAME");
         testLobby.setLobbyToken("TOKEN");
         testLobby.setJoinToken("JOINTOKEN");
         testLobby.setLobbyState(LobbyStatus.OPEN);
@@ -182,7 +181,7 @@ public class LobbyServiceTest {
         User newUser = new User();
         newUser.setId(2L);
         newUser.setToken("NEW_TOKEN");
-        testLobby.setNumberOfPlayers(testLobby.maxpalyer);
+        testLobby.setNumberOfPlayers(testLobby.maxPlayer);
 
         Mockito.when(userService.getUserFromToken(newUser.getToken())).thenReturn(newUser);
         Mockito.when(lobbyRepository.findByLobbyToken(testLobby.getLobbyToken())).thenReturn(testLobby);
@@ -334,7 +333,7 @@ public class LobbyServiceTest {
     @Test
     void addBot_lobby_overfull() {
         Bot testBot = newBot();
-        testLobby.setNumberOfPlayers(testLobby.maxpalyer);
+        testLobby.setNumberOfPlayers(testLobby.maxPlayer);
 
         Mockito.when(lobbyRepository.findByLobbyToken(testLobby.getLobbyToken())).thenReturn(testLobby);
         Mockito.when(botService.createBot(testBot.getDifficulty().toString())).thenReturn(testBot);

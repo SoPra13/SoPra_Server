@@ -25,7 +25,7 @@ class LobbyRepositoryTest {
     public void findByToken_success() {
         // given
         Lobby lobby = new Lobby();
-        lobby.setLobbyname("LobbyName");
+        lobby.setLobbyName("LobbyName");
         lobby.setLobbyToken("TOKEN");
         lobby.setLobbyState(LobbyStatus.OPEN);
         lobby.setNumberOfPlayers(1);
@@ -41,7 +41,7 @@ class LobbyRepositoryTest {
 
         // then
         assertNotNull(found.getId());
-        assertEquals(found.getLobbyname(), lobby.getLobbyname());
+        assertEquals(found.getLobbyName(), lobby.getLobbyName());
         assertEquals(found.getLobbyToken(), lobby.getLobbyToken());
         assertEquals(found.getLobbyState(), lobby.getLobbyState());
         assertEquals(found.getNumberOfPlayers(), lobby.getNumberOfPlayers());
@@ -53,7 +53,7 @@ class LobbyRepositoryTest {
     public void findByToken_failed() {
         // given
         Lobby lobby = new Lobby();
-        lobby.setLobbyname("LobbyName");
+        lobby.setLobbyName("LobbyName");
         lobby.setLobbyToken("TOKEN");
         lobby.setLobbyState(LobbyStatus.OPEN);
         lobby.setNumberOfPlayers(1);

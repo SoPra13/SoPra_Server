@@ -4,19 +4,19 @@ import ch.uzh.ifi.seal.soprafs20.constant.LobbyType;
 
 public class LobbyPostDTO {
 
-    private String lobbyname;
+    private String lobbyName;
 
     private String adminToken;
 
     private LobbyType lobbyType;
 
 
-    public String getLobbyname() {
-        return lobbyname;
+    public String getLobbyName() {
+        return lobbyName;
     }
 
-    public void setLobbyname(String lobbyname) {
-        this.lobbyname = lobbyname;
+    public void setLobbyName(String lobbyName) {
+        this.lobbyName = lobbyName;
     }
 
     public String getAdminToken() {

@@ -11,7 +11,7 @@ import java.util.List;
 public class LobbyGetDTO {
 
     private Long id;
-    private String lobbyname;
+    private String lobbyName;
     private String lobbyToken;
     private String joinToken;
     private LobbyStatus lobbyState;
@@ -38,12 +38,12 @@ public class LobbyGetDTO {
         this.adminToken = adminToken;
     }
 
-    public String getLobbyname() {
-        return lobbyname;
+    public String getLobbyName() {
+        return lobbyName;
     }
 
-    public void setLobbyname(String lobbyname) {
-        this.lobbyname = lobbyname;
+    public void setLobbyName(String lobbyName) {
+        this.lobbyName = lobbyName;
     }
 
     public String getLobbyToken() {
