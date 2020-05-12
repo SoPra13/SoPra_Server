@@ -17,7 +17,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "USER")
 
-public class User implements Serializable{
+public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -98,9 +98,13 @@ public class User implements Serializable{
         return lobbyReady;
     }
 
-    public void setGaveClue(boolean gaveClue) {this.gaveClue = gaveClue;}
+    public void setGaveClue(boolean gaveClue) {
+        this.gaveClue = gaveClue;
+    }
 
-    public Boolean getGaveClue() {return gaveClue; }
+    public Boolean getGaveClue() {
+        return gaveClue;
+    }
 
     public void setVoted(boolean voted) {
         this.voted = voted;
@@ -151,36 +155,97 @@ public class User implements Serializable{
         this.status = status;
     }
 
-    public Integer getAvatar() {return  avatar;}
-    public void setAvatar(Integer avatar){ this.avatar = avatar;}
+    public Integer getAvatar() {
+        return avatar;
+    }
 
-    public Integer getGamesPlayed() {return  gamesPlayed;}
-    public void setGamesPlayed(Integer gamesPlayed){ this.gamesPlayed = gamesPlayed;}
-    public void addGamesPlayed() {gamesPlayed += 1;}
+    public void setAvatar(Integer avatar) {
+        this.avatar = avatar;
+    }
 
-    public Integer getTotalClues() {return  totalClues;}
-    public void setTotalClues(Integer totalClues){ this.totalClues = totalClues;}
-    public void addTotalClues() {totalClues += 1;}
+    public Integer getGamesPlayed() {
+        return gamesPlayed;
+    }
 
-    public Integer getGuessesMade() {return  guessesMade;}
-    public void setGuessesMade(Integer guessesMade){ this.guessesMade = guessesMade;}
-    public void addGuessesMade() {guessesMade += 1;}
+    public void setGamesPlayed(Integer gamesPlayed) {
+        this.gamesPlayed = gamesPlayed;
+    }
 
-    public Integer getGuessesCorrect() {return  guessesCorrect;}
-    public void setGuessesCorrect(Integer guessesCorrect){ this.guessesCorrect = guessesCorrect;}
-    public void addGuessesCorrect() {guessesCorrect += 1;}
+    public void addGamesPlayed() {
+        gamesPlayed += 1;
+    }
 
-    public Integer getInvalidClues() {return  invalidClues;}
-    public void setInvalidClues(Integer invalidClues){ this.invalidClues = invalidClues;}
-    public void addInvalidClues() {invalidClues += 1;}
+    public Integer getTotalClues() {
+        return totalClues;
+    }
 
-    public Integer getDuplicateClues() {return  duplicateClues;}
-    public void setDuplicateClues(Integer duplicateClues){ this.duplicateClues = duplicateClues;}
-    public void addDuplicateClues() {duplicateClues += 1;}
+    public void setTotalClues(Integer totalClues) {
+        this.totalClues = totalClues;
+    }
 
-    public Integer getTotalScore() {return  totalScore;}
-    public void setTotalScore(Integer totalScore){ this.totalScore = totalScore;}
-    public void addTotalScore(Integer score) {totalScore += score;}
+    public void addTotalClues() {
+        totalClues += 1;
+    }
+
+    public Integer getGuessesMade() {
+        return guessesMade;
+    }
+
+    public void setGuessesMade(Integer guessesMade) {
+        this.guessesMade = guessesMade;
+    }
+
+    public void addGuessesMade() {
+        guessesMade += 1;
+    }
+
+    public Integer getGuessesCorrect() {
+        return guessesCorrect;
+    }
+
+    public void setGuessesCorrect(Integer guessesCorrect) {
+        this.guessesCorrect = guessesCorrect;
+    }
+
+    public void addGuessesCorrect() {
+        guessesCorrect += 1;
+    }
+
+    public Integer getInvalidClues() {
+        return invalidClues;
+    }
+
+    public void setInvalidClues(Integer invalidClues) {
+        this.invalidClues = invalidClues;
+    }
+
+    public void addInvalidClues() {
+        invalidClues += 1;
+    }
+
+    public Integer getDuplicateClues() {
+        return duplicateClues;
+    }
+
+    public void setDuplicateClues(Integer duplicateClues) {
+        this.duplicateClues = duplicateClues;
+    }
+
+    public void addDuplicateClues() {
+        duplicateClues += 1;
+    }
+
+    public Integer getTotalScore() {
+        return totalScore;
+    }
+
+    public void setTotalScore(Integer totalScore) {
+        this.totalScore = totalScore;
+    }
+
+    public void addTotalScore(Integer score) {
+        totalScore += score;
+    }
 
     @JsonIgnore
     public Lobby getLobby() {

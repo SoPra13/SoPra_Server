@@ -11,16 +11,16 @@ public class WordFileHandler {
 
 
     //reads random Block of 5 words from txt file and puts them into a list
-    public static List<String> getMysteryWords(){
+    public static List<String> getMysteryWords() {
         List<String> clues = new ArrayList<>();
         try {
             List<String> file_lines = Files.readAllLines(Paths.get("src/Cards_serious_words-EN.txt"));
-            while (clues.size()<65) {
+            while (clues.size() < 65) {
                 int startLine = new Random().nextInt(936);
-                startLine = startLine*6;
+                startLine = startLine * 6;
                 for (int i = startLine; i <= startLine + 4; i++) {
                     String word = file_lines.get(i);
-                    if(clues.contains(word)){
+                    if (clues.contains(word)) {
                         break;
                     }
                     clues.add(word);
@@ -28,12 +28,12 @@ public class WordFileHandler {
             }
 
             System.out.println(clues);
-        }catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
         return clues;
     }
-
 
 
 }

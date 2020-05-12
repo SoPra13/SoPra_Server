@@ -10,6 +10,7 @@ import ch.uzh.ifi.seal.soprafs20.service.GameService;
 import ch.uzh.ifi.seal.soprafs20.service.LobbyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class LobbyController {
 
     private final LobbyService lobbyService;
     private final GameService gameService;
+
     LobbyController(LobbyService lobbyService, GameService gameService) {
         this.lobbyService = lobbyService;
         this.gameService = gameService;
@@ -44,7 +46,7 @@ public class LobbyController {
     }
 
     //Get Lobby with token
-    @GetMapping(value = "/lobby",params = "lobbyToken")
+    @GetMapping(value = "/lobby", params = "lobbyToken")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public LobbyGetDTO getLobby(@RequestParam String lobbyToken) {
@@ -66,12 +68,11 @@ public class LobbyController {
         Lobby lobbyInput = DTOMapper.INSTANCE.convertLobbyPostDTOtoEntity(lobbyPostDTO);
 
         // create lobby
-        Lobby createdLobby = lobbyService.createLobby(lobbyInput,lobbyPostDTO.getAdminToken());
+        Lobby createdLobby = lobbyService.createLobby(lobbyInput, lobbyPostDTO.getAdminToken());
 
         // convert internal representation of Lobby back to API
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(createdLobby);
     }
-
 
 
     //start game
@@ -80,11 +81,11 @@ public class LobbyController {
     @ResponseBody
     public String startGame(@PathVariable String token) {
 
-       Lobby lobby = lobbyService.getLobbyFromToken(token);
+        Lobby lobby = lobbyService.getLobbyFromToken(token);
 
-       Game game = gameService.createGame(lobby, token);
+        Game game = gameService.createGame(lobby, token);
 
-            return game.getToken();
+        return game.getToken();
 
     }
 
@@ -96,7 +97,7 @@ public class LobbyController {
     public LobbyGetDTO joinLobby(@RequestParam String joinToken, @RequestParam String userToken) {
 
         //add user to lobby
-        Lobby lobby = lobbyService.joinLobby(joinToken,userToken);
+        Lobby lobby = lobbyService.joinLobby(joinToken, userToken);
 
         // convert internal representation of lobby back to API
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby);
@@ -109,7 +110,7 @@ public class LobbyController {
     public LobbyGetDTO addBot(@RequestParam String lobbyToken, @RequestParam String difficulty) {
 
         //add bot to lobby
-        Lobby lobby = lobbyService.addBot(lobbyToken,difficulty);
+        Lobby lobby = lobbyService.addBot(lobbyToken, difficulty);
 
         // convert internal representation of lobby back to API
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby);
@@ -122,7 +123,7 @@ public class LobbyController {
     public void leaveLobby(@RequestParam String lobbyToken, @RequestParam String userToken) {
 
         //remove user from lobby
-       lobbyService.leaveLobby(lobbyToken,userToken);
+        lobbyService.leaveLobby(lobbyToken, userToken);
 
 
     }
@@ -134,7 +135,7 @@ public class LobbyController {
     public LobbyGetDTO removeBot(@RequestParam String lobbyToken, @RequestParam String botToken) {
 
         //add user to lobby
-        Lobby lobby = lobbyService.removeBot(lobbyToken,botToken);
+        Lobby lobby = lobbyService.removeBot(lobbyToken, botToken);
 
         // convert internal representation of lobby back to API
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby);
@@ -147,7 +148,7 @@ public class LobbyController {
     @ResponseBody
     public LobbyGetDTO setPlayerLobbyReady(@RequestParam String userToken, @RequestParam String lobbyToken) {
 
-        gameService.setPlayerReady(lobbyToken,userToken);
+        gameService.setPlayerReady(lobbyToken, userToken);
 
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobbyService.getLobbyFromToken(lobbyToken));
     }

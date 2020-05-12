@@ -38,7 +38,7 @@ public class UserControllerTest {
     @MockBean
     private UserService userService;
 
-    private User dummyUser(){
+    private User dummyUser() {
         User user = new User();
         user.setUsername("testusername");
         user.setPassword("testpassword");

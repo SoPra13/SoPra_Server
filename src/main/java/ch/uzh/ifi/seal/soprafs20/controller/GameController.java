@@ -36,7 +36,7 @@ public class GameController {
     @ResponseBody
     public GameGetDTO setPlayerUnityReady(@RequestParam String userToken, @RequestParam String gameToken) {
 
-        gameService.setPlayerReady(gameToken,userToken);
+        gameService.setPlayerReady(gameToken, userToken);
 
         return DTOMapper.INSTANCE.convertEntityToGameGetDTO(gameService.getGameFromToken(gameToken));
     }
@@ -46,21 +46,21 @@ public class GameController {
     @PutMapping("/game/vote")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public GameGetDTO voteForTopic(@RequestParam String gameToken,@RequestParam String userToken, @RequestParam Integer topic) {
+    public GameGetDTO voteForTopic(@RequestParam String gameToken, @RequestParam String userToken, @RequestParam Integer topic) {
 
-        Game game = gameService.addVote(gameToken,userToken,topic);
+        Game game = gameService.addVote(gameToken, userToken, topic);
 
         return DTOMapper.INSTANCE.convertEntityToGameGetDTO(game);
     }
 
     //Set voted Topic as word
-    @PutMapping(value="/game/topic", params = {"gameToken", "topic"})
+    @PutMapping(value = "/game/topic", params = {"gameToken", "topic"})
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public GameGetDTO setTopic(@RequestParam String gameToken, @RequestParam String topic) {
 
         //set Topic chosen from voting in unity
-        Game game = gameService.setTopic(gameToken,topic);
+        Game game = gameService.setTopic(gameToken, topic);
 
         return DTOMapper.INSTANCE.convertEntityToGameGetDTO(game);
     }
@@ -71,36 +71,36 @@ public class GameController {
     @ResponseBody
     public void removePlayer(@RequestParam String userToken, @RequestParam String gameToken) {
 
-        gameService.removeUser(userToken,gameToken);
+        gameService.removeUser(userToken, gameToken);
 
     }
 
     //Set voted Topic as word
-    @PutMapping(value="/game/clue", params = {"gameToken", "userToken", "clue"})
+    @PutMapping(value = "/game/clue", params = {"gameToken", "userToken", "clue"})
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public GameGetDTO addClue(@RequestParam String gameToken,@RequestParam String userToken, @RequestParam String clue) {
+    public GameGetDTO addClue(@RequestParam String gameToken, @RequestParam String userToken, @RequestParam String clue) {
 
         //set Topic chosen from voting in unity
-        Game game = gameService.addClue(userToken,gameToken,clue);
+        Game game = gameService.addClue(userToken, gameToken, clue);
 
         return DTOMapper.INSTANCE.convertEntityToGameGetDTO(game);
     }
 
     //make a guess
-    @PutMapping(value="/game/guess", params = {"gameToken", "guess"})
+    @PutMapping(value = "/game/guess", params = {"gameToken", "userToken", "guess"})
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public GameGetDTO makeGuess(@RequestParam String gameToken, @RequestParam String userToken,@RequestParam String guess) {
+    public GameGetDTO makeGuess(@RequestParam String gameToken, @RequestParam String userToken, @RequestParam String guess) {
 
         //set Topic chosen from voting in unity
-        Game game = gameService.makeGuess(gameToken,userToken,guess);
+        Game game = gameService.makeGuess(gameToken, userToken, guess);
 
         return DTOMapper.INSTANCE.convertEntityToGameGetDTO(game);
     }
 
     //Set voted Topic as word
-    @PutMapping(value="/game/round", params = {"gameToken"})
+    @PutMapping(value = "/game/round", params = {"gameToken"})
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public GameGetDTO nextRound(@RequestParam String gameToken) {
@@ -111,13 +111,13 @@ public class GameController {
         return DTOMapper.INSTANCE.convertEntityToGameGetDTO(game);
     }
 
-    @PutMapping(value="/game/end", params = {"gameToken","userToken","score"})
+    @PutMapping(value = "/game/end", params = {"gameToken", "userToken", "score"})
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void endGame(@RequestParam String gameToken, @RequestParam String userToken, @RequestParam Integer score){
+    public void endGame(@RequestParam String gameToken, @RequestParam String userToken, @RequestParam Integer score) {
 
         //end game
-        gameService.endGame(gameToken,userToken,score);
+        gameService.endGame(gameToken, userToken, score);
 
     }
 

@@ -26,7 +26,7 @@ import java.util.*;
 public class LobbyService {
 
     private final UserService userService;
-    private  final BotService botService;
+    private final BotService botService;
     private final ChatService chatService;
     private final Logger log = LoggerFactory.getLogger(LobbyService.class);
     private final LobbyRepository lobbyRepository;
@@ -46,7 +46,7 @@ public class LobbyService {
     }
 
     //Get Lobby from Token
-    public Lobby getLobbyFromToken(String token){
+    public Lobby getLobbyFromToken(String token) {
 
         String baseErrorMessage = "No matching Lobby found";
         //check if exists
@@ -59,7 +59,7 @@ public class LobbyService {
     }
 
     //Get Lobby from Token
-    public Lobby getLobbyFromJoinToken(String token){
+    public Lobby getLobbyFromJoinToken(String token) {
 
         String baseErrorMessage = "No matching Lobby found";
         //check if exists
@@ -96,13 +96,13 @@ public class LobbyService {
 
 
     //add player to Lobby
-    public Lobby joinLobby(String joinToken, String uToken){
+    public Lobby joinLobby(String joinToken, String uToken) {
 
         Lobby lobbyToAdd = getLobbyFromJoinToken(joinToken);
         //checks
         checkLobbyExists(lobbyToAdd.getLobbyToken());
         checkLobbyFull(lobbyToAdd.getLobbyToken());
-        checkLobbyTokens(lobbyToAdd.getLobbyToken(),uToken);
+        checkLobbyTokens(lobbyToAdd.getLobbyToken(), uToken);
 
         //get lobby & user
         User userToAdd = userService.getUserFromToken(uToken);
@@ -111,13 +111,13 @@ public class LobbyService {
         // add user to lobby
         List list = lobbyToAdd.getPlayerList();
         list.add(userToAdd);
-        lobbyToAdd.setNumberOfPlayers(list.size()+lobbyToAdd.getBotList().size());
+        lobbyToAdd.setNumberOfPlayers(list.size() + lobbyToAdd.getBotList().size());
         userToAdd.setLobby(lobbyToAdd);
         return lobbyToAdd;
     }
 
     //remove player from Lobby
-    public void leaveLobby(String lToken, String uToken){
+    public void leaveLobby(String lToken, String uToken) {
 
         //checks
         checkLobbyExists(lToken);
@@ -129,16 +129,16 @@ public class LobbyService {
         // remove user from lobby
         lobbyToRemove.removePlayer(userToRemove);
         userService.leaveLobby(userToRemove);
-        lobbyToRemove.setNumberOfPlayers(lobbyToRemove.getPlayerList().size()+lobbyToRemove.getBotList().size());
+        lobbyToRemove.setNumberOfPlayers(lobbyToRemove.getPlayerList().size() + lobbyToRemove.getBotList().size());
 
-        if(lobbyToRemove.getPlayerList().size()==0){
+        if (lobbyToRemove.getPlayerList().size() == 0) {
             lobbyRepository.delete(lobbyToRemove);
         }
     }
 
 
     //add bot to Lobby
-    public Lobby addBot(String lToken, String difficulty){
+    public Lobby addBot(String lToken, String difficulty) {
 
         //checks
         checkLobbyExists(lToken);
@@ -151,14 +151,14 @@ public class LobbyService {
         List list = lobbyToAdd.getBotList();
         Bot bot = botService.createBot(difficulty);
         list.add(bot);
-        lobbyToAdd.setNumberOfPlayers(list.size()+lobbyToAdd.getPlayerList().size());
+        lobbyToAdd.setNumberOfPlayers(list.size() + lobbyToAdd.getPlayerList().size());
         bot.setLobby(lobbyToAdd);
         return lobbyToAdd;
     }
 
 
     //remove bot from Lobby
-    public Lobby removeBot(String lToken, String bToken){
+    public Lobby removeBot(String lToken, String bToken) {
 
         //checks
         checkLobbyExists(lToken);
@@ -171,21 +171,21 @@ public class LobbyService {
         List list = lobbyToRemove.getBotList();
         list.remove(botToRemove);
         lobbyToRemove.setBotList(list);
-        lobbyToRemove.setNumberOfPlayers(list.size()+lobbyToRemove.getPlayerList().size());
+        lobbyToRemove.setNumberOfPlayers(list.size() + lobbyToRemove.getPlayerList().size());
         botToRemove.setLobby(null);
         return lobbyToRemove;
     }
 
     //check if user is already in Lobby
-    private void checkLobbyTokens(String lToken, String uToken){
+    private void checkLobbyTokens(String lToken, String uToken) {
         String baseErrorMessage = "User is already in Lobby";
 
         Lobby lobbyToAdd = lobbyRepository.findByLobbyToken(lToken);
 
         List<User> users = lobbyToAdd.getPlayerList();
 
-        for(User user : users){
-            if(user.getToken().equals(uToken)){
+        for (User user : users) {
+            if (user.getToken().equals(uToken)) {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, baseErrorMessage);
             }
         }
@@ -193,42 +193,43 @@ public class LobbyService {
 
 
     //check if Lobby is full
-    private void checkLobbyFull(String lToken){
+    private void checkLobbyFull(String lToken) {
 
         String baseErrorMessage = "Lobby is full";
         Lobby lobbyToAdd = lobbyRepository.findByLobbyToken(lToken);
 
-            if(lobbyToAdd.getNumberOfPlayers()>=7){
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN, baseErrorMessage);
+        if (lobbyToAdd.getNumberOfPlayers() >= 7) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, baseErrorMessage);
         }
     }
 
 
-// check if Lobby exists
-    private void checkLobbyExists(String token){
+    // check if Lobby exists
+    private void checkLobbyExists(String token) {
         String baseErrorMessage = "Lobby not found";
 
         Lobby lobby = lobbyRepository.findByLobbyToken(token);
 
-        if (lobby == null){
+        if (lobby == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, baseErrorMessage);
         }
     }
 
-    public void deleteLobby(Lobby lobby){
+    public void deleteLobby(Lobby lobby) {
         lobbyRepository.delete(lobby);
     }
 
 
     //set player as ready
-    public void setPlayerReady(String lobbyToken, String userToken){
+    public void setPlayerReady(String lobbyToken, String userToken) {
 
         String baseErrorMessage = "Could not set player ready";
         User user = userService.getUserFromToken(userToken);
 
-        if(user.getLobby().getLobbyToken().equals(lobbyToken)){
+        if (user.getLobby().getLobbyToken().equals(lobbyToken)) {
             user.setLobbyReady(true);
-        }else{
+        }
+        else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, baseErrorMessage);
         }
 
@@ -241,10 +242,10 @@ public class LobbyService {
      * @throws org.springframework.web.server.ResponseStatusException
      * @see Lobby
      */
-    public String generateJoinToken(){
+    public String generateJoinToken() {
         Integer token = 1729;
 //        Integer token = 1337;
-        while (lobbyRepository.findByJoinToken(String.valueOf(token))!=null){
+        while (lobbyRepository.findByJoinToken(String.valueOf(token)) != null) {
             token = new Random().nextInt(8999);
             token += 1000;
         }

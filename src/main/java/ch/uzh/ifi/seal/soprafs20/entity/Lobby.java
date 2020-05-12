@@ -35,7 +35,7 @@ public class Lobby implements Serializable {
     private LobbyStatus lobbyState;
 
     @Column(nullable = false)
-    private Integer numberOfPlayers ;
+    private Integer numberOfPlayers;
 
     @Column(nullable = false)
     private String adminToken;
@@ -107,13 +107,17 @@ public class Lobby implements Serializable {
         this.numberOfPlayers = numberOfPlayers;
     }
 
-    public List<User> getPlayerList() { return playerList; }
+    public List<User> getPlayerList() {
+        return playerList;
+    }
 
     public void setPlayerList(List<User> playerList) {
         this.playerList = playerList;
     }
 
-    public void removePlayer(User user){playerList.remove(user);}
+    public void removePlayer(User user) {
+        playerList.remove(user);
+    }
 
     public List<Bot> getBotList() {
         return botList;
@@ -123,7 +127,9 @@ public class Lobby implements Serializable {
         this.botList = botList;
     }
 
-    public void removeBot(Bot bot){botList.remove(bot);}
+    public void removeBot(Bot bot) {
+        botList.remove(bot);
+    }
 
     public String getJoinToken() {
         return joinToken;

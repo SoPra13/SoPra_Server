@@ -66,7 +66,7 @@ public class ChatService {
         }
     }
 
-    public void leaveChat(String lobbyToken, String userToken){
+    public void leaveChat(String lobbyToken, String userToken) {
         Chat chat = chatRepository.findByLobbyToken(lobbyToken);
         User user = userRepository.findByToken(userToken);
         chat.removeUser(user);

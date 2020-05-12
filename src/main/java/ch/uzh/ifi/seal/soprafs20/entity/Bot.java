@@ -17,7 +17,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "BOT")
 
-public class Bot implements Serializable{
+public class Bot implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -50,6 +50,7 @@ public class Bot implements Serializable{
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -57,6 +58,7 @@ public class Bot implements Serializable{
     public String getBotname() {
         return botname;
     }
+
     public void setBotname(String botname) {
         this.botname = botname;
     }
@@ -64,6 +66,7 @@ public class Bot implements Serializable{
     public String getToken() {
         return token;
     }
+
     public void setToken(String token) {
         this.token = token;
     }
@@ -71,6 +74,7 @@ public class Bot implements Serializable{
     public Difficulty getDifficulty() {
         return difficulty;
     }
+
     public void setDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
     }
@@ -79,6 +83,7 @@ public class Bot implements Serializable{
     public Lobby getLobby() {
         return lobby;
     }
+
     public void setLobby(Lobby lobby) {
         this.lobby = lobby;
     }
@@ -87,11 +92,17 @@ public class Bot implements Serializable{
     public Game getGame() {
         return game;
     }
+
     public void setGame(Game game) {
         this.game = game;
     }
 
-    public Integer getAvatar() {return  avatar;}
-    public void setAvatar(Integer avatar){ this.avatar = avatar;}
+    public Integer getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(Integer avatar) {
+        this.avatar = avatar;
+    }
 
 }

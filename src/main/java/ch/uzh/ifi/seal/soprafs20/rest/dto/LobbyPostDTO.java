@@ -27,7 +27,9 @@ public class LobbyPostDTO {
         this.adminToken = adminToken;
     }
 
-    public LobbyType getLobbyType() { return lobbyType;}
+    public LobbyType getLobbyType() {
+        return lobbyType;
+    }
 
     public void setLobbyType(LobbyType lobbyType) {
         this.lobbyType = lobbyType;

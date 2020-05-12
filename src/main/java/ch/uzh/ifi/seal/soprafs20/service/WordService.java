@@ -21,7 +21,8 @@ public class WordService {
 
             HttpResponse<String> response =
                     client.send(request, HttpResponse.BodyHandlers.ofString());
-            return new Gson().fromJson(response.body(), new TypeToken<ArrayList<LinkedTreeMap<String, Object>>>() {}.getType());
+            return new Gson().fromJson(response.body(), new TypeToken<ArrayList<LinkedTreeMap<String, Object>>>() {
+            }.getType());
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
@@ -69,7 +70,7 @@ public class WordService {
         return (word1.startsWith(word2) || word2.startsWith(word1) || isPlural(word1, word2) || isSameFamily(word1, word2));
     }
 
-    private static boolean isSameFamily(String word1,String word2) {
+    private static boolean isSameFamily(String word1, String word2) {
         return (word1.length() >= 5 && word2.length() >= 5 && word1.substring(0, 5).equals(word2.substring(0, 5)));
     }
 
@@ -99,7 +100,7 @@ public class WordService {
     public static boolean[] checkSimilarityInArray(String[] words) {
         boolean[] result = new boolean[words.length];
         ArrayList<ArrayList<LinkedTreeMap<String, String>>> wordDefsAsList = new ArrayList<>();
-        for (String word :words) {
+        for (String word : words) {
             wordDefsAsList.add(getRequest(("https://api.datamuse.com/words?md=d&max=1&sp=" + word)));
         }
         for (int i = 0; i < words.length; i++) {
@@ -107,7 +108,8 @@ public class WordService {
                 for (int j = i + 1; j < words.length; j++) {
                     if (!result[j]) {
                         if (isSimilar(words[i], words[j], wordDefsAsList.get(i), wordDefsAsList.get(j))) {
-                            result[i] = true; result[j] = true;
+                            result[i] = true;
+                            result[j] = true;
                         }
                     }
                 }
@@ -129,13 +131,13 @@ public class WordService {
     public static String getBadWord(String word) {
         ArrayList<LinkedTreeMap<String, String>> wordList =
                 new ArrayList<>(getRequest("http://api.datamuse.com/words?max=5&rel_ant=" + word));
-                wordList.addAll(getRequest("http://api.datamuse.com/words?max=5&rel_nry=" + word));
+        wordList.addAll(getRequest("http://api.datamuse.com/words?max=5&rel_nry=" + word));
         return getWord(word, wordList);
 
     }
 
     private static String getWord(String word, ArrayList<LinkedTreeMap<String, String>> wordList) {
-        if(wordList.size()==0) return word;
+        if (wordList.size() == 0) return word;
 
         wordList = removeMultiWords(wordList);
         String selectedWord = wordList.get(new Random().nextInt(wordList.size())).get("word");

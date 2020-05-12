@@ -46,7 +46,7 @@ public class ChatController {
     @PostMapping("/chat")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @ResponseBody
-    public void addMessage(@RequestParam String lobbyToken,@RequestParam String userToken, @RequestBody ChatPostDTO chatPostDTO) {
+    public void addMessage(@RequestParam String lobbyToken, @RequestParam String userToken, @RequestBody ChatPostDTO chatPostDTO) {
         chatService.addMessageToChat(lobbyToken, userToken, DTOMapper.INSTANCE.convertChatPostDTOtoEntity(chatPostDTO));
     }
 
@@ -56,7 +56,6 @@ public class ChatController {
     public void userJoined(@RequestParam String lobbyToken, @RequestParam String userToken) {
         chatService.userJoined(lobbyToken, userToken);
     }
-
 
 
     @PostMapping("/chat/toggle")

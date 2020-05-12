@@ -64,30 +64,31 @@ public class BotService {
         return botByToken;
     }
 
-    public void deleteBot(String token){
+    public void deleteBot(String token) {
         Bot botByToken = botRepository.findByToken(token);
         botRepository.delete(botByToken);
     }
 
-    public String botclue(Difficulty difficulty, String topic){
+    public String botclue(Difficulty difficulty, String topic) {
 
         System.out.println("topic for datamuse:");
         System.out.println(topic);
         System.out.println(difficulty);
         System.out.println("type");
         String clue = "botWordnotSet";
-        if(difficulty == Difficulty.FRIEND || difficulty == Difficulty.NEUTRAL) {
+        if (difficulty == Difficulty.FRIEND || difficulty == Difficulty.NEUTRAL) {
             clue = WordService.getGoodWord(topic);
             System.out.println(clue);
-        }else{
-            clue  = WordService.getBadWord(topic);
+        }
+        else {
+            clue = WordService.getBadWord(topic);
             System.out.println(clue);
-         }
+        }
 
         return clue;
     }
 
-    public void leaveGame(Bot bot){
+    public void leaveGame(Bot bot) {
 
         bot.setGame(null);
     }

@@ -116,7 +116,7 @@ public class LobbyControllerTest {
     }
 
     @Test
-    public void get_lobbies_success() throws Exception{
+    public void get_lobbies_success() throws Exception {
         Lobby lobby1 = dummyLobby();
         Lobby lobby2 = dummyLobby();
         lobby2.setId(7L);
@@ -128,18 +128,18 @@ public class LobbyControllerTest {
 
         List<LobbyGetDTO> result = new ArrayList<>();
         result.add(DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby2));
-        
+
 
         given(lobbyService.getLobbies()).willReturn(lobbies);
 
         MockHttpServletRequestBuilder getRequest = get("/lobbies").contentType(MediaType.APPLICATION_JSON);
         mockMvc.perform(getRequest).andExpect(status().isOk())
-        .andExpect(jsonPath("$[0].id", is(7)))
-        .andExpect(jsonPath("$.length()", is(1)));
+                .andExpect(jsonPath("$[0].id", is(7)))
+                .andExpect(jsonPath("$.length()", is(1)));
     }
 
     @Test
-    public void get_lobbies_empty_success() throws Exception{
+    public void get_lobbies_empty_success() throws Exception {
         Lobby lobby1 = dummyLobby();
         List<Lobby> lobbies = new ArrayList<>();
         lobby1.setLobbyType(LobbyType.PRIVATE);

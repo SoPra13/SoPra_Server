@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository("botRepository")
 public interface BotRepository extends JpaRepository<Bot, Long> {
     Bot findByBotname(String botname);
+
     Bot findByToken(String token);
 }

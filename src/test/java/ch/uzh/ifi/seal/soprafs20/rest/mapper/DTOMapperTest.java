@@ -110,7 +110,7 @@ public class DTOMapperTest {
         LobbyPostDTO lobbyPostDTO = new LobbyPostDTO();
         lobbyPostDTO.setLobbyname("lobbyname");
 
-      // MAP -> Create lobby
+        // MAP -> Create lobby
         Lobby lobby = DTOMapper.INSTANCE.convertLobbyPostDTOtoEntity(lobbyPostDTO);
 
         // check content

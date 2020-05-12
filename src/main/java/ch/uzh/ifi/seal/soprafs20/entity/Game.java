@@ -66,17 +66,29 @@ public class Game implements Serializable {
     private List<Bot> botList = new ArrayList<Bot>();
 
 
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
-    public void setId(Long id) { this.id = id; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Integer getVersion() {return version;}
+    public Integer getVersion() {
+        return version;
+    }
 
-    public void setVersion(Integer version) {this.version = version;}
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
 
-    public Integer getGuesser() {return guesser;}
+    public Integer getGuesser() {
+        return guesser;
+    }
 
-    public void setGuesser(Integer guesser) {this.guesser = guesser;}
+    public void setGuesser(Integer guesser) {
+        this.guesser = guesser;
+    }
 
     public String getToken() {
         return token;
@@ -94,57 +106,77 @@ public class Game implements Serializable {
         this.topic = topic;
     }
 
-    public Integer getCurrentRound() {return currentRound;}
-
-    public void setCurrentRound(Integer currentRound) {this.currentRound = currentRound;}
-
-    public List<String> getClueList() { return clueList; }
-
-    public void setClueList(List<String> clueList) {
-       this.clueList = clueList;
+    public Integer getCurrentRound() {
+        return currentRound;
     }
 
-    public List<String> getChecklist() { return checkList; }
+    public void setCurrentRound(Integer currentRound) {
+        this.currentRound = currentRound;
+    }
+
+    public List<String> getClueList() {
+        return clueList;
+    }
+
+    public void setClueList(List<String> clueList) {
+        this.clueList = clueList;
+    }
+
+    public List<String> getChecklist() {
+        return checkList;
+    }
 
     public void setCheckList(List<String> checkList) {
         this.checkList = checkList;
     }
 
-    public List<Integer> getVoteList() { return voteList;}
+    public List<Integer> getVoteList() {
+        return voteList;
+    }
 
     public void setVoteList(List<Integer> voteList) {
         this.voteList = voteList;
     }
 
-     public List<String> getMysteryWords() { return mysteryWords; }
+    public List<String> getMysteryWords() {
+        return mysteryWords;
+    }
 
-     public void setMysteryWords(List<String> mysteryWords) {
-     this.mysteryWords = mysteryWords;
-     }
+    public void setMysteryWords(List<String> mysteryWords) {
+        this.mysteryWords = mysteryWords;
+    }
 
-     public List<User> getPlayerList() {
+    public List<User> getPlayerList() {
         return playerList;
-     }
+    }
 
-     public void removePlayer(User user){playerList.remove(user);}
+    public void removePlayer(User user) {
+        playerList.remove(user);
+    }
 
-     public void setPlayerList(List<User> playerList) {
-         this.playerList = playerList;
-     }
+    public void setPlayerList(List<User> playerList) {
+        this.playerList = playerList;
+    }
 
-     public List<Bot> getBotList() {
+    public List<Bot> getBotList() {
         return botList;
-     }
+    }
 
-     public void setBotList(List<Bot> botList) {
+    public void setBotList(List<Bot> botList) {
         this.botList = botList;
-     }
+    }
 
-    public void removeBot(Bot bot){botList.remove(bot);}
+    public void removeBot(Bot bot) {
+        botList.remove(bot);
+    }
 
-    public Boolean getGuessCorrect() {return guessCorrect;}
+    public Boolean getGuessCorrect() {
+        return guessCorrect;
+    }
 
-    public void setGuessCorrect(Boolean guessCorrect) {this.guessCorrect = guessCorrect;}
+    public void setGuessCorrect(Boolean guessCorrect) {
+        this.guessCorrect = guessCorrect;
+    }
 
     public Boolean getBotsClueGiven() {
         return botsClueGiven;

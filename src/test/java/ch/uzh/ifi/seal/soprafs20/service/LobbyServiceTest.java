@@ -482,7 +482,7 @@ public class LobbyServiceTest {
     }
 
     @Test
-    void deleteLobby(){
+    void deleteLobby() {
 
         lobbyService.deleteLobby(testLobby);
 

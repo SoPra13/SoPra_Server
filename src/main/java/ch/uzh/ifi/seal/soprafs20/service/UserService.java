@@ -32,7 +32,7 @@ public class UserService {
     public UserService(@Qualifier("userRepository") UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-    
+
 
     public List<User> getUsers() {
         return this.userRepository.findAll();
@@ -101,10 +101,11 @@ public class UserService {
         User repoUser = userRepository.findByUsername(user.getUsername());
 
         String baseErrorMessage = "Login unsuccessful.";
-        if ((repoUser.getUsername().equals(user.getUsername())) && (repoUser.getPassword().equals(user.getPassword()))){
+        if ((repoUser.getUsername().equals(user.getUsername())) && (repoUser.getPassword().equals(user.getPassword()))) {
             repoUser.setStatus(UserStatus.ONLINE);
             return repoUser.getToken();
-        }else {
+        }
+        else {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, baseErrorMessage);
         }
     }
@@ -130,13 +131,13 @@ public class UserService {
         if (updatedUser.getPassword() != null) repoUser.setPassword(updatedUser.getPassword());
     }
 
-    public void resetUser(User user){
+    public void resetUser(User user) {
         user.setGaveClue(false);
         user.setVoted(false);
 
     }
 
-    public void leaveGame(User user){
+    public void leaveGame(User user) {
 
         user.setGame(null);
         user.setUnityReady(false);
@@ -150,7 +151,7 @@ public class UserService {
         user.setDuplicateClues(0);
     }
 
-    public void leaveLobby(User user){
+    public void leaveLobby(User user) {
         user.setLobby(null);
         user.setLobbyReady(false);
     }

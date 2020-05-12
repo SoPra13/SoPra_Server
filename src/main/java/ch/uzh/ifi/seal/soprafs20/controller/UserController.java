@@ -21,6 +21,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+
     UserController(UserService userService) {
         this.userService = userService;
     }
@@ -83,9 +84,9 @@ public class UserController {
     @PutMapping("/user")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateUser(@RequestParam String token, @RequestBody UserPutDTO userPutDTO) {
-       User newUser =  DTOMapper.INSTANCE.convertUserPutDTOtoEntity(userPutDTO);
-       newUser.setToken(token);
-       userService.updateUser(newUser);
+        User newUser = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(userPutDTO);
+        newUser.setToken(token);
+        userService.updateUser(newUser);
     }
 
     //Update user

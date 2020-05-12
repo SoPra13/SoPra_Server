@@ -34,7 +34,7 @@ public class Chat {
         this.loggedInUsers.remove(user);
     }
 
-    public void addMessage(Message message){
+    public void addMessage(Message message) {
         this.messages.add(message);
     }
 

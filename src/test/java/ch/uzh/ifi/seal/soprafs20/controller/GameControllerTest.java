@@ -221,15 +221,15 @@ class GameControllerTest {
                 .andExpect(jsonPath("$.guesser", is(game.getGuesser())));
     }
 
-  /*  @Test
+    @Test
     public void put_makeGuess_success() throws Exception {
         Game game = newTestGame();
 
-        given(gameService.makeGuess("Token_Aa0Bb1","USER_TOKEN" ,"Guess"))
+        given(gameService.makeGuess("Token_Aa0Bb1", "USER_TOKEN", "Guess"))
                 .willReturn(game);
 
         MockHttpServletRequestBuilder putRequest =
-                put("/game/guess?gameToken=Token_Aa0Bb1&guess=Guess")
+                put("/game/guess?gameToken=Token_Aa0Bb1&userToken=USER_TOKEN&guess=Guess")
                         .contentType(MediaType.APPLICATION_JSON);
         mockMvc.perform(putRequest).andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(game.getId().intValue())))
@@ -238,7 +238,7 @@ class GameControllerTest {
                 .andExpect(jsonPath("$.currentRound", is(game.getCurrentRound())))
                 .andExpect(jsonPath("$.guesser", is(game.getGuesser())));
     }
-*/
+
     @Test
     public void put_nextRound_success() throws Exception {
         Game game = newTestGame();
