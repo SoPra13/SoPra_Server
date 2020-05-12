@@ -6,10 +6,14 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
+import java.nio.channels.FileChannel;
+import java.nio.file.*;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,20 +23,26 @@ class WordFileHandlerTest {
     @Mock
     Paths paths;
 
+    static final Logger log = LoggerFactory.getLogger(WordFileHandler.class);
+
+
     @Test
     void getMysteryWords_success() {
         List<String> wordlist = WordFileHandler.getMysteryWords();
         assertTrue(65 <= wordlist.size());
     }
-
-/*  not possible to mock Paths.class but is also not needed anymore
+    
 
     @Test
-    void getMysteryWords_wrongPath() {
-        Mockito.when(Mockito.mock(Paths.class).get("src/Cards_serious_words-EN.txt")).
-                thenReturn(Paths.get("IOException_dummy.txt"));
+    void getMysteryWords_wrongPath() throws IOException {
+        Path original = Paths.get("src/Cards_serious_words-EN.txt");
+        FileChannel openChannel = FileChannel.open(original, StandardOpenOption.APPEND);
+        openChannel.lock();
 
-        Exception exception = Assertions.assertThrows(IOException.class,
-                () -> WordFileHandler.getMysteryWords());
-    }*/
+        List<String> wordlist = WordFileHandler.getMysteryWords();
+
+        openChannel.close();
+
+        assertTrue(wordlist.isEmpty());
+    }
 }
