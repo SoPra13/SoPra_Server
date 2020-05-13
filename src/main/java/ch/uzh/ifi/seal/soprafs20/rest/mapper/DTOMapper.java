@@ -25,7 +25,7 @@ public interface DTOMapper {
     @Mapping(source = "username", target = "username")
     @Mapping(source = "message", target = "message")
     @Mapping(source = "messageType", target = "messageType")
-    ChatGetDTO convertEntitytoChatGetDTO(Message message);
+    ChatGetDTO convertEntityToChatGetDTO(Message message);
 
     @Mapping(source = "message", target = "message")
     Message convertChatPostDTOtoEntity(ChatPostDTO chatPostDTO);

@@ -16,7 +16,6 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "BOT")
-
 public class Bot implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -26,7 +25,7 @@ public class Bot implements Serializable {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String botname;
+    private String botName;
 
     @Column(nullable = false, unique = true)
     private String token;
@@ -55,12 +54,12 @@ public class Bot implements Serializable {
         this.id = id;
     }
 
-    public String getBotname() {
-        return botname;
+    public String getBotName() {
+        return botName;
     }
 
-    public void setBotname(String botname) {
-        this.botname = botname;
+    public void setBotName(String botName) {
+        this.botName = botName;
     }
 
     public String getToken() {

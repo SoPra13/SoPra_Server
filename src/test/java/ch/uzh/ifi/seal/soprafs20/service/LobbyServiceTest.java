@@ -78,7 +78,7 @@ public class LobbyServiceTest {
     private Bot newBot() {
         Bot testBot = new Bot();
         testBot.setId(0L);
-        testBot.setBotname("BOT");
+        testBot.setBotName("BOT");
         testBot.setToken("BOT_TOKEN");
         testBot.setDifficulty(Difficulty.NEUTRAL);
         return testBot;

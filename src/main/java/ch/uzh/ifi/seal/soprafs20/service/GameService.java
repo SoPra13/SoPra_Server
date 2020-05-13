@@ -27,6 +27,8 @@ import java.util.*;
 @Transactional
 public class GameService {
 
+    private static final String CENSORED = "CENSORED";
+
     private final UserService userService;
     private final BotService botService;
     private final LobbyService lobbyService;
@@ -138,9 +140,9 @@ public class GameService {
         User user = userService.getUserFromToken(userToken);
         game.setGuessCorrect(null);
 
-        if (!game.getBotsVoted()) {
+        if (Boolean.FALSE.equals(game.getBotsVoted())) {
             game.setBotsVoted(true);
-            for (Bot ignored : game.getBotList()) {
+            for (int i = 0; i < game.getBotList().size(); i++) {
                 int botVote = new Random().nextInt(4);
                 game.getVoteList().set(botVote, game.getVoteList().get(botVote) + 1);
             }
@@ -172,7 +174,7 @@ public class GameService {
         userService.leaveGame(user);
 
 
-        if (game.getPlayerList().size() == 0) {
+        if (game.getPlayerList().isEmpty()) {
             lobby.setLobbyState(LobbyStatus.OPEN);
             for (Bot bot : game.getBotList()) {
                 botService.deleteBot(bot.getToken());
@@ -184,17 +186,16 @@ public class GameService {
     }
 
     //add clue given by player
-    public synchronized Game addClue(String userToken, String gameToken, String Aclue) {
+    public synchronized Game addClue(String userToken, String gameToken, String aClue) {
 
-        String clue = Aclue.toLowerCase();
-        System.out.println(clue);
-        System.out.println();
+        String clue = aClue.toLowerCase();
+        log.info(clue);
         boolean valid = WordService.isValidWord(clue);
         Game game = gameRepository.findByToken(gameToken);
         User user = userService.getUserFromToken(userToken);
         List<String> checklist = game.getChecklist();
 
-        if (!game.getBotsClueGiven()) {
+        if (Boolean.FALSE.equals(game.getBotsClueGiven())) {
             game.setBotsClueGiven(true);
 
             for (Bot bot : game.getBotList()) {
@@ -203,24 +204,22 @@ public class GameService {
             }
         }
 
-        if (!user.getGaveClue()) {
+        if (Boolean.FALSE.equals(user.getGaveClue())) {
             user.addTotalClues();
             if (valid) {
-                if (!(clue.equals(game.getTopic().toLowerCase()) || clue.equals("empty"))) {
+                if (!(clue.equalsIgnoreCase(game.getTopic()) || clue.equals("empty"))) {
 
-                    System.out.println("valid");
-                    System.out.println();
+                    log.info("valid");
                     checklist.add(clue);
-                    System.out.println(checklist);
-                    System.out.println();
+                    log.info(checklist.toString());
                 }
                 else {
-                    checklist.add("CENSORED");
+                    checklist.add(CENSORED);
                     user.addInvalidClues();
                 }
             }
             else {
-                checklist.add("CENSORED");
+                checklist.add(CENSORED);
                 user.addInvalidClues();
             }
         }
@@ -232,50 +231,44 @@ public class GameService {
         user.setGaveClue(true);
         //if all players gave clues, remove duplicates
         if (checklist.size() == (game.getPlayerList().size() - 1) + game.getBotList().size()) {
-            System.out.println("ALL CLUES RECEIVED");
-            System.out.println();
+            log.info("ALL CLUES RECEIVED");
             checklist.add(game.getTopic());
             boolean[] duplicates = WordService.checkSimilarityInArray(checklist.toArray(new String[0]));
             //remove duplicates from end to bottom because of indexes removed would break code
             for (int i = checklist.size() - 1; i >= 0; i--) {
                 if (duplicates[i]) {
-                    checklist.set(i, "CENSORED");
+                    checklist.set(i, CENSORED);
                 }
             }
-            System.out.println(checklist);
-            System.out.println();
+            log.info(checklist.toString());
 
             //set ClueList to valid clues
             game.getClueList().clear();
             game.getClueList().addAll(checklist);
-            System.out.println(game.getClueList());
-            System.out.println();
+            log.info(game.getClueList().toString());
         }
 
         return game;
     }
 
     public Game makeGuess(String gameToken, String userToken, String guess) {
-        System.out.println(guess);
-        System.out.println();
+        log.info(guess);
 
         User user = userService.getUserFromToken(userToken);
         Game game = gameRepository.findByToken(gameToken);
         game.setGuessGiven(true);
         if (!guess.equals("null")) {
             user.addGuessesMade();
-            if (game.getTopic().equals(guess.toLowerCase())) {
+            if (game.getTopic().equalsIgnoreCase(guess)) {
                 game.setGuessCorrect(true);
                 user.addGuessesCorrect();
-                System.out.println(game.getTopic().equals(guess));
-                System.out.println();
+                log.info(guess + " was a correct guess.");
             }
             else {
                 game.setGuessCorrect(false);
             }
         }
-        System.out.println(game.getGuessCorrect());
-        System.out.println();
+        log.info("GuessCorrect: " + game.getGuessCorrect());
         return game;
     }
 
@@ -327,7 +320,7 @@ public class GameService {
         userService.leaveGame(user);
 
 
-        if (game.getPlayerList().size() == 0) {
+        if (game.getPlayerList().isEmpty()) {
             lobby.setLobbyState(LobbyStatus.OPEN);
             for (Bot bot : game.getBotList()) {
                 game.removeBot(bot);

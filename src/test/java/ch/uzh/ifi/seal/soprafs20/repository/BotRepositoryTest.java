@@ -29,7 +29,7 @@ class BotRepositoryTest {
     @BeforeEach
     void setup(){
         bot = new Bot();
-        bot.setBotname("BotName");
+        bot.setBotName("BotName");
         bot.setToken("1");
         bot.setAvatar(0);
         bot.setDifficulty(Difficulty.NEUTRAL);
@@ -42,11 +42,11 @@ class BotRepositoryTest {
     @Test
     public void findByBotName_success() {
         // when
-        Bot found = botRepository.findByBotname(bot.getBotname());
+        Bot found = botRepository.findByBotname(bot.getBotName());
 
         // then
         assertNotNull(found.getId());
-        assertEquals(found.getBotname(), bot.getBotname());
+        assertEquals(found.getBotName(), bot.getBotName());
         assertEquals(found.getToken(), bot.getToken());
         assertEquals(found.getDifficulty(), bot.getDifficulty());
     }
@@ -65,7 +65,7 @@ class BotRepositoryTest {
 
         // then
         assertNotNull(found.getId());
-        assertEquals(found.getBotname(), bot.getBotname());
+        assertEquals(found.getBotName(), bot.getBotName());
         assertEquals(found.getToken(), bot.getToken());
         assertEquals(found.getDifficulty(), bot.getDifficulty());
     }

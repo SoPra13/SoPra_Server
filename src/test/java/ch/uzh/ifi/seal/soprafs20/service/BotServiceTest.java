@@ -31,7 +31,7 @@ public class BotServiceTest {
         // given
         testBot = new Bot();
         testBot.setId(1L);
-        testBot.setBotname("NAME");
+        testBot.setBotName("NAME");
         testBot.setToken("TOKEN");
         testBot.setDifficulty(Difficulty.NEUTRAL);
 
@@ -45,11 +45,11 @@ public class BotServiceTest {
     void createBot_success() {
         Bot neutralBot = botService.createBot("NEUTRAL");
         Bot friendBot = botService.createBot("FRIEND");
-        Bot darksoulsBot = botService.createBot("DARKSOULS");
+        Bot hostileBot = botService.createBot("DARKSOULS");
 
         assertEquals(Difficulty.NEUTRAL, neutralBot.getDifficulty());
         assertEquals(Difficulty.FRIEND, friendBot.getDifficulty());
-        assertEquals(Difficulty.DARKSOULS, darksoulsBot.getDifficulty());
+        assertEquals(Difficulty.HOSTILE, hostileBot.getDifficulty());
     }
 
     @Test

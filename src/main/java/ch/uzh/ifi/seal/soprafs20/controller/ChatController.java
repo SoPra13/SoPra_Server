@@ -28,7 +28,7 @@ public class ChatController {
         List<Message> messages = chatService.getAllMessagesFromChat(lobbyToken);
         List<ChatGetDTO> chatGetDTOs = new ArrayList<>();
         for (Message message : messages) {
-            chatGetDTOs.add(DTOMapper.INSTANCE.convertEntitytoChatGetDTO(message));
+            chatGetDTOs.add(DTOMapper.INSTANCE.convertEntityToChatGetDTO(message));
         }
         return chatGetDTOs;
     }

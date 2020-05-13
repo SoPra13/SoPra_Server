@@ -40,7 +40,7 @@ public class BotService {
     public Bot createBot(String difficulty) {
         var bot = new Bot();
         bot.setToken(UUID.randomUUID().toString());
-        bot.setBotname(String.valueOf(new Random().nextInt(10000)));
+        bot.setBotName(String.valueOf(new Random().nextInt(10000)));
         Difficulty actualDifficulty = Difficulty.valueOf(difficulty);
         bot.setAvatar(3);
         bot.setDifficulty(actualDifficulty);
