@@ -30,7 +30,7 @@ public class DTOMapperTest {
         message.setMessageType(MessageType.NORMAL);
 
         // MAP -> Create user
-        ChatGetDTO chat = DTOMapper.INSTANCE.convertEntitytoChatGetDTO(message);
+        ChatGetDTO chat = DTOMapper.INSTANCE.convertEntityToChatGetDTO(message);
 
         // check content
         assertEquals(message.getUsername(), chat.getUsername());

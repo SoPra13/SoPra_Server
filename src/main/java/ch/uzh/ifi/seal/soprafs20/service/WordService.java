@@ -13,6 +13,9 @@ import java.util.Random;
 import java.util.regex.Pattern;
 
 public class WordService {
+    private static final String GET_WORD = "https://api.datamuse.com/words?md=d&max=1&sp=";
+    private static final String DEF_HEADWORD = "defHeadword";
+
     private static ArrayList<LinkedTreeMap<String, String>> getRequest(String url) {
         try {
             HttpClient client = HttpClient.newHttpClient();
@@ -77,9 +80,10 @@ public class WordService {
     }
 
     private static boolean isPlural(String word1, String word2) {
-        ArrayList<LinkedTreeMap<String, String>> word1request = getRequest(("https://api.datamuse.com/words?md=d&max=1&sp=" + word1));
-        ArrayList<LinkedTreeMap<String, String>> word2request = getRequest(("https://api.datamuse.com/words?md=d&max=1&sp=" + word2));
+        ArrayList<LinkedTreeMap<String, String>> word1request = getRequest((GET_WORD + word1));
+        ArrayList<LinkedTreeMap<String, String>> word2request = getRequest((GET_WORD + word2));
         return isPluralTest(word1, word2, word1request, word2request);
+
     }
 
     private static boolean isPlural(String word1, String word2, ArrayList<LinkedTreeMap<String, String>> word1request, ArrayList<LinkedTreeMap<String, String>> word2request) {
@@ -87,15 +91,15 @@ public class WordService {
     }
 
     private static boolean isPluralTest(String word1, String word2, ArrayList<LinkedTreeMap<String, String>> word1request, ArrayList<LinkedTreeMap<String, String>> word2request) {
-        if (word1request.get(0).containsKey("defHeadword") && word1request.get(0).get("defHeadword").equals(word2)) {
+        if (word1request.get(0).containsKey(DEF_HEADWORD) && word1request.get(0).get(DEF_HEADWORD).equals(word2)) {
             return true;
         }
-        else if (word2request.get(0).containsKey("defHeadword") && word2request.get(0).get("defHeadword").equals(word1)) {
+        else if (word2request.get(0).containsKey(DEF_HEADWORD) && word2request.get(0).get(DEF_HEADWORD).equals(word1)) {
             return true;
         }
         else
-            return word1request.get(0).containsKey("defHeadword") && word2request.get(0).containsKey("defHeadword") &&
-                    word1request.get(0).get("defHeadword").equals(word2request.get(0).get("defHeadword"));
+            return word1request.get(0).containsKey(DEF_HEADWORD) && word2request.get(0).containsKey(DEF_HEADWORD) &&
+                    word1request.get(0).get(DEF_HEADWORD).equals(word2request.get(0).get(DEF_HEADWORD));
     }
 
 
@@ -103,16 +107,14 @@ public class WordService {
         boolean[] result = new boolean[words.length];
         ArrayList<ArrayList<LinkedTreeMap<String, String>>> wordDefsAsList = new ArrayList<>();
         for (String word : words) {
-            wordDefsAsList.add(getRequest(("https://api.datamuse.com/words?md=d&max=1&sp=" + word)));
+            wordDefsAsList.add(getRequest((GET_WORD + word)));
         }
         for (int i = 0; i < words.length; i++) {
             if (!result[i]) {
                 for (int j = i + 1; j < words.length; j++) {
-                    if (!result[j]) {
-                        if (isSimilar(words[i], words[j], wordDefsAsList.get(i), wordDefsAsList.get(j))) {
-                            result[i] = true;
-                            result[j] = true;
-                        }
+                    if (!result[j] && isSimilar(words[i], words[j], wordDefsAsList.get(i), wordDefsAsList.get(j))) {
+                        result[i] = true;
+                        result[j] = true;
                     }
                 }
             }
@@ -139,7 +141,7 @@ public class WordService {
     }
 
     private static String getWord(String word, ArrayList<LinkedTreeMap<String, String>> wordList) {
-        if (wordList.size() == 0) return word;
+        if (wordList.isEmpty()) return word;
 
         wordList = removeMultiWords(wordList);
         String selectedWord = wordList.get(new Random().nextInt(wordList.size())).get("word");
@@ -151,7 +153,8 @@ public class WordService {
     }
 
     public static boolean isValidWord(String word) {
-        if(Pattern.compile("([^\\x41-\\x5A\\x61-\\x7A])").matcher(word).find()) return false; // needed since datamuse accepts pure numbers
+        if (Pattern.compile("([^\\x41-\\x5A\\x61-\\x7A])").matcher(word).find())
+            return false; // needed since datamuse accepts pure numbers
         ArrayList<LinkedTreeMap<String, String>> compareWord = getRequest(
                 "https://api.datamuse.com/words?max=1&sp=" + word);
         return !compareWord.isEmpty() && compareWord.get(0).get("word").equals(word);
