@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs20.repository;
 
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.User;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,10 +21,12 @@ public class UserRepositoryIntegrationTest {
     @Autowired
     private UserRepository userRepository;
 
-    @Test
-    public void findByName_success() {
+    private User user;
+
+    @BeforeEach
+    void setup(){
         // given
-        User user = new User();
+        user = new User();
         user.setPassword("password");
         user.setUsername("firstname@lastname");
         user.setStatus(UserStatus.OFFLINE);
@@ -31,7 +34,10 @@ public class UserRepositoryIntegrationTest {
 
         entityManager.persist(user);
         entityManager.flush();
+    }
 
+    @Test
+    public void findByName_success() {
         // when
         User found = userRepository.findByUsername(user.getUsername());
 
@@ -45,16 +51,6 @@ public class UserRepositoryIntegrationTest {
 
     @Test
     public void findByName_failed() {
-        // given
-        User user = new User();
-        user.setPassword("password");
-        user.setUsername("firstname@lastname");
-        user.setStatus(UserStatus.OFFLINE);
-        user.setToken("1");
-
-        entityManager.persist(user);
-        entityManager.flush();
-
         // when
         User found = userRepository.findByUsername("invalid");
 
@@ -64,16 +60,6 @@ public class UserRepositoryIntegrationTest {
 
     @Test
     public void findByPasswprd_success() {
-        // given
-        User user = new User();
-        user.setPassword("password");
-        user.setUsername("firstname@lastname");
-        user.setStatus(UserStatus.OFFLINE);
-        user.setToken("1");
-
-        entityManager.persist(user);
-        entityManager.flush();
-
         // when
         User found = userRepository.findByPassword(user.getPassword());
 
@@ -87,16 +73,6 @@ public class UserRepositoryIntegrationTest {
 
     @Test
     public void findByPasswprd_failed() {
-        // given
-        User user = new User();
-        user.setPassword("password");
-        user.setUsername("firstname@lastname");
-        user.setStatus(UserStatus.OFFLINE);
-        user.setToken("1");
-
-        entityManager.persist(user);
-        entityManager.flush();
-
         // when
         User found = userRepository.findByPassword("invalid");
 
@@ -106,16 +82,6 @@ public class UserRepositoryIntegrationTest {
 
     @Test
     public void findByToken_success() {
-        // given
-        User user = new User();
-        user.setPassword("password");
-        user.setUsername("firstname@lastname");
-        user.setStatus(UserStatus.OFFLINE);
-        user.setToken("1");
-
-        entityManager.persist(user);
-        entityManager.flush();
-
         // when
         User found = userRepository.findByToken(user.getToken());
 
@@ -129,16 +95,6 @@ public class UserRepositoryIntegrationTest {
 
     @Test
     public void findByToken_failed() {
-        // given
-        User user = new User();
-        user.setPassword("password");
-        user.setUsername("firstname@lastname");
-        user.setStatus(UserStatus.OFFLINE);
-        user.setToken("1");
-
-        entityManager.persist(user);
-        entityManager.flush();
-
         // when
         User found = userRepository.findByToken("invalid");
 

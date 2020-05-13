@@ -1,11 +1,20 @@
 package ch.uzh.ifi.seal.soprafs20.repository;
 
+import ch.uzh.ifi.seal.soprafs20.constant.Difficulty;
+import ch.uzh.ifi.seal.soprafs20.entity.Bot;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
+import javax.transaction.Transactional;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 @DataJpaTest
+@Transactional
 class BotRepositoryTest {
 
     @Autowired
@@ -15,18 +24,23 @@ class BotRepositoryTest {
     @Autowired
     private BotRepository botRepository;
 
+    private Bot bot;
 
- /*   @Test
-    public void findByBotname_success() {
-        // given
-        Bot bot = new Bot();
+    @BeforeEach
+    void setup(){
+        bot = new Bot();
         bot.setBotname("BotName");
         bot.setToken("1");
+        bot.setAvatar(0);
         bot.setDifficulty(Difficulty.NEUTRAL);
 
         entityManager.persist(bot);
         entityManager.flush();
+    }
 
+
+    @Test
+    public void findByBotName_success() {
         // when
         Bot found = botRepository.findByBotname(bot.getBotname());
 
@@ -36,37 +50,16 @@ class BotRepositoryTest {
         assertEquals(found.getToken(), bot.getToken());
         assertEquals(found.getDifficulty(), bot.getDifficulty());
     }
-*/
- /*   @Test
-    public void findByBotname_failed() {
-        // given
-        Bot bot = new Bot();
-        bot.setBotname("BotName");
-        bot.setToken("1");
-        bot.setDifficulty(Difficulty.NEUTRAL);
-
-        entityManager.persist(bot);
-        entityManager.flush();
-
+    @Test
+    public void findByBotName_failed() {
         // when
         Bot found = botRepository.findByBotname("invalid");
 
         // then
         assertNull(found);
     }
-    */
-/*
     @Test
     public void findByToken_success() {
-        // given
-        Bot bot = new Bot();
-        bot.setBotname("BotName");
-        bot.setToken("1");
-        bot.setDifficulty(Difficulty.NEUTRAL);
-
-        entityManager.persist(bot);
-        entityManager.flush();
-
         // when
         Bot found = botRepository.findByToken(bot.getToken());
 
@@ -76,23 +69,12 @@ class BotRepositoryTest {
         assertEquals(found.getToken(), bot.getToken());
         assertEquals(found.getDifficulty(), bot.getDifficulty());
     }
-*/
- /*   @Test
+    @Test
     public void findByToken_failed() {
-        // given
-        Bot bot = new Bot();
-        bot.setBotname("BotName");
-        bot.setToken("1");
-        bot.setDifficulty(Difficulty.NEUTRAL);
-
-        entityManager.persist(bot);
-        entityManager.flush();
-
         // when
         Bot found = botRepository.findByToken("invalid");
 
         // then
         assertNull(found);
     }
-    */
 }

@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs20.repository;
 
 import ch.uzh.ifi.seal.soprafs20.entity.Game;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,10 +20,12 @@ class GameRepositoryTest {
     @Autowired
     private GameRepository gameRepository;
 
-    @Test
-    public void findByToken_success() {
+    private Game game;
+
+    @BeforeEach
+    void setup(){
         // given
-        Game game = new Game();
+        game = new Game();
         game.setVersion(0);
         game.setToken("1");
         game.setCurrentRound(0);
@@ -30,7 +33,10 @@ class GameRepositoryTest {
 
         entityManager.persist(game);
         entityManager.flush();
+    }
 
+    @Test
+    public void findByToken_success() {
         // when
         Game found = gameRepository.findByToken(game.getToken());
 
@@ -44,16 +50,6 @@ class GameRepositoryTest {
 
     @Test
     public void findByToken_failed() {
-        // given
-        Game game = new Game();
-        game.setVersion(0);
-        game.setToken("1");
-        game.setCurrentRound(0);
-        game.setGuesser(0);
-
-        entityManager.persist(game);
-        entityManager.flush();
-
         // when
         Game found = gameRepository.findByToken("invalid");
 

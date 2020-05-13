@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs20.repository;
 import ch.uzh.ifi.seal.soprafs20.constant.LobbyStatus;
 import ch.uzh.ifi.seal.soprafs20.constant.LobbyType;
 import ch.uzh.ifi.seal.soprafs20.entity.Lobby;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,10 +22,12 @@ class LobbyRepositoryTest {
     @Autowired
     private LobbyRepository lobbyRepository;
 
-    @Test
-    public void findByToken_success() {
+    private Lobby lobby;
+
+    @BeforeEach
+    void setup(){
         // given
-        Lobby lobby = new Lobby();
+        lobby = new Lobby();
         lobby.setLobbyName("LobbyName");
         lobby.setLobbyToken("TOKEN");
         lobby.setLobbyState(LobbyStatus.OPEN);
@@ -35,7 +38,10 @@ class LobbyRepositoryTest {
 
         entityManager.persist(lobby);
         entityManager.flush();
+    }
 
+    @Test
+    public void findByToken_success() {
         // when
         Lobby found = lobbyRepository.findByLobbyToken(lobby.getLobbyToken());
 
@@ -51,19 +57,6 @@ class LobbyRepositoryTest {
 
     @Test
     public void findByToken_failed() {
-        // given
-        Lobby lobby = new Lobby();
-        lobby.setLobbyName("LobbyName");
-        lobby.setLobbyToken("TOKEN");
-        lobby.setLobbyState(LobbyStatus.OPEN);
-        lobby.setNumberOfPlayers(1);
-        lobby.setAdminToken("ADMIN_TOKEN");
-        lobby.setLobbyType(LobbyType.PUBLIC);
-        lobby.setJoinToken("JOIN_TOKEN");
-
-        entityManager.persist(lobby);
-        entityManager.flush();
-
         // when
         Lobby found = lobbyRepository.findByLobbyToken("invalid");
 
