@@ -87,10 +87,13 @@ public class GameService {
 
         Game newGame = new Game();
 
-        newGame.setBotList(lobby.getBotList());
+        List<User> userList = new ArrayList<>(lobby.getPlayerList());
+        List<Bot> botList = new ArrayList<>(lobby.getBotList());
+
+        newGame.setBotList(botList);
         newGame.setBotsClueGiven(false);
         newGame.setBotsVoted(false);
-        newGame.setPlayerList(lobby.getPlayerList());
+        newGame.setPlayerList(userList);
         newGame.setToken(lobby.getLobbyToken());
         newGame.setCurrentRound(0);
         newGame.setVersion(1);
@@ -154,7 +157,7 @@ public class GameService {
     //set Topic of game after Voting
     public Game setTopic(String gameToken, String topic) {
         Game game = getGameFromToken(gameToken);
-
+        game.setGuessCorrect(null);
         game.setTopic(topic.toLowerCase());
         return game;
     }
@@ -218,7 +221,7 @@ public class GameService {
             }
             else {
                 checklist.add("CENSORED");
-                user.addDuplicateClues();
+                user.addInvalidClues();
             }
         }
         else {
@@ -263,12 +266,12 @@ public class GameService {
             user.addGuessesMade();
             if (game.getTopic().equals(guess.toLowerCase())) {
                 game.setGuessCorrect(true);
+                user.addGuessesCorrect();
                 System.out.println(game.getTopic().equals(guess));
                 System.out.println();
             }
             else {
                 game.setGuessCorrect(false);
-                user.addInvalidClues();
             }
         }
         System.out.println(game.getGuessCorrect());
@@ -314,7 +317,7 @@ public class GameService {
         return game;
     }
 
-    public void endGame(String gameToken, String userToken, Integer score) {
+    public void endGame(String gameToken, String userToken) {
 
         Game game = gameRepository.findByToken(gameToken);
         Lobby lobby = lobbyService.getLobbyFromToken(gameToken);
@@ -323,9 +326,9 @@ public class GameService {
         game.removePlayer(user);
         userService.leaveGame(user);
 
-        user.addTotalScore(score);
-        lobby.setLobbyState(LobbyStatus.OPEN);
+
         if (game.getPlayerList().size() == 0) {
+            lobby.setLobbyState(LobbyStatus.OPEN);
             for (Bot bot : game.getBotList()) {
                 game.removeBot(bot);
                 botService.leaveGame(bot);

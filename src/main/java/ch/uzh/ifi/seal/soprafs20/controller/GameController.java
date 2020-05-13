@@ -111,14 +111,17 @@ public class GameController {
         return DTOMapper.INSTANCE.convertEntityToGameGetDTO(game);
     }
 
-    @PutMapping(value = "/game/end", params = {"gameToken", "userToken", "score"})
+    @PutMapping(value = "/game/leave", params = {"gameToken", "userToken"})
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void endGame(@RequestParam String gameToken, @RequestParam String userToken, @RequestParam Integer score) {
+    public void endGame(@RequestParam String gameToken, @RequestParam String userToken) {
 
         //end game
-        gameService.endGame(gameToken, userToken, score);
+        gameService.endGame(gameToken, userToken);
 
     }
+
+
+
 
 }
