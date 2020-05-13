@@ -317,7 +317,7 @@ public class GameService {
         return game;
     }
 
-    public void endGame(String gameToken, String userToken, Integer score) {
+    public void endGame(String gameToken, String userToken) {
 
         Game game = gameRepository.findByToken(gameToken);
         Lobby lobby = lobbyService.getLobbyFromToken(gameToken);
@@ -326,9 +326,9 @@ public class GameService {
         game.removePlayer(user);
         userService.leaveGame(user);
 
-        user.addTotalScore(score);
-        lobby.setLobbyState(LobbyStatus.OPEN);
+
         if (game.getPlayerList().size() == 0) {
+            lobby.setLobbyState(LobbyStatus.OPEN);
             for (Bot bot : game.getBotList()) {
                 game.removeBot(bot);
                 botService.leaveGame(bot);

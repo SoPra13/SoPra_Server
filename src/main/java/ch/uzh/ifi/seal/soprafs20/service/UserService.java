@@ -150,6 +150,7 @@ public class UserService {
         user.setGuessesCorrect(0);
         user.setGuessesMade(0);
         user.setDuplicateClues(0);
+        user.setLobbyReady(false);
     }
 
     public void leaveLobby(User user) {
