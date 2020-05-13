@@ -44,17 +44,22 @@ class WordServiceTest {
     void isValidWord() {
         String valid = "english";
         String animal = "pygmy";
-        String foreign = "fremdschämen";
+        String science = "apoptosis";
+        String odd = "kerfuffle";
+        String foreign = "fremdsprache";
         String number = "1337";
         String specialChar = "(*__*)";
         String twoWords = "hallo world";
         String concatenated = "nospaces";
         String space = " ";
         String empty = "";
+        String format = "\t";
+        String end = "\n";
 
-//        assertTrue(WordService.isValidWord());
         assertTrue(WordService.isValidWord(valid));
         assertTrue(WordService.isValidWord(animal));
+        assertTrue(WordService.isValidWord(science));
+        assertTrue(WordService.isValidWord(odd));
         assertFalse(WordService.isValidWord(foreign));
         assertFalse(WordService.isValidWord(number));
         assertFalse(WordService.isValidWord(specialChar));
@@ -62,6 +67,8 @@ class WordServiceTest {
         assertFalse(WordService.isValidWord(concatenated));
         assertFalse(WordService.isValidWord(space));
         assertFalse(WordService.isValidWord(empty));
+        assertFalse(WordService.isValidWord(format));
+        assertFalse(WordService.isValidWord(end));
 
     }
 }

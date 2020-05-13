@@ -10,6 +10,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 public class WordService {
     private static ArrayList<LinkedTreeMap<String, String>> getRequest(String url) {
@@ -150,8 +151,9 @@ public class WordService {
     }
 
     public static boolean isValidWord(String word) {
-        if(word.matches(".*\\d.*")) return false;       // needed since datamuse accepts pure numbers
-        ArrayList<LinkedTreeMap<String, String>> compareWord = getRequest("https://api.datamuse.com/words?max=1&sp=" + word);
+        if(Pattern.compile("([^\\x41-\\x5A\\x61-\\x7A])").matcher(word).find()) return false; // needed since datamuse accepts pure numbers
+        ArrayList<LinkedTreeMap<String, String>> compareWord = getRequest(
+                "https://api.datamuse.com/words?max=1&sp=" + word);
         return !compareWord.isEmpty() && compareWord.get(0).get("word").equals(word);
     }
 
