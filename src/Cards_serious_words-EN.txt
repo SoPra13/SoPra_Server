@@ -476,7 +476,7 @@ Hilarious
 Grass
 Fizzy
 Mourn
-Blue-Eyed
+Spit
 
 Popcorn
 Enjoy
@@ -1098,7 +1098,7 @@ Actually
 
 Pat
 Problem
-Long-Term
+Infinity
 Grade
 Cumbersome
 
@@ -1481,8 +1481,7 @@ Lawn
 Beach
 
 Hard
-Old-Fashioned
-Private
+Antique
 Strip
 Profit
 
@@ -1495,7 +1494,7 @@ Cell
 Depression
 Sigh
 Press
-Far-Flung
+Distance
 Subject
 
 Shower
@@ -1896,7 +1895,7 @@ Mobile
 
 Put
 Return
-Stupid
+Uneducated
 Jog
 Current
 
@@ -1950,7 +1949,7 @@ Useful
 
 Neighborly
 March
-Island
+Plank
 King
 Porter
 
@@ -1982,7 +1981,7 @@ Tension
 Crib
 Neanderthal
 Elderly
-Well-Made
+Mastery
 
 Train
 Tame
@@ -2003,7 +2002,7 @@ Shallow
 Vivacious
 
 Option
-Royal
+Billionaire
 Agreement
 Break
 Gorgeous
@@ -2029,7 +2028,7 @@ Gold
 Icy
 Adventurous
 Rebel
-Space-Time
+Astronomy
 Wrathful
 
 Serve
@@ -2476,7 +2475,7 @@ Learned
 Degree
 Cognitive
 
-Ill-Informed
+Stupid
 Swimming
 Fill
 Round
@@ -2743,12 +2742,12 @@ Unadvised
 Cloth
 Fine
 Comment
-Second-Hand
+Purse
 Algorithm
 
 Charge
 Route
-Wealthy
+Royal
 West
 Mess
 
@@ -2778,7 +2777,7 @@ Amusing
 
 Beans
 Deserve
-Well-Groomed
+Razor
 Haunt
 Beef
 
@@ -3316,8 +3315,8 @@ Instance
 Recondite
 Rip
 
-High-Pitched
-Black-And-White
+Soprano
+Monochrome
 Juvenile
 Finance
 Teaching
@@ -3474,7 +3473,7 @@ Finch
 
 Guest
 Present
-Well-Off
+Wealthy
 Observation
 Cherries
 
@@ -3896,7 +3895,7 @@ Daughter
 Salamander
 Melodic
 Rope
-Bite-Sized
+Sting
 
 Door
 Ear
@@ -3916,7 +3915,7 @@ Material
 Soda
 Catch
 
-See-Saw
+Crust
 Zephyr
 Apple
 Volatile
@@ -4016,7 +4015,7 @@ Moose
 Insect
 Lipstick
 Carrot
-Wide-Eyed
+Island
 
 Shake
 Other
@@ -4123,7 +4122,7 @@ Wine
 Acid
 Economics
 Madly
-Yo-Yo
+Spinner
 Win
 
 Distance
@@ -4375,7 +4374,7 @@ Snails
 Kick
 Register
 Brother
-Well-To-Do
+Correlation
 Anger
 
 Pension
@@ -5564,7 +5563,7 @@ Decorate
 Playground
 Grandfather
 Blot
-Distance
+Parsec
 
 Archaeon
 Row
