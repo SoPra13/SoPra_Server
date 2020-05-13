@@ -198,7 +198,7 @@ class GameServiceTest {
         Mockito.when(gameRepository.save(Mockito.any())).thenReturn(dummyGame);
 
 
-        Game newGame = gameService.createGame(testLobby, "ANY_TOKEN");
+        Game newGame = gameService.createGame(testLobby);
 
         assertTrue(newGame.getBotList().containsAll(testLobby.getBotList()));
         assertTrue(newGame.getPlayerList().containsAll(testLobby.getPlayerList()));
@@ -221,7 +221,7 @@ class GameServiceTest {
         Mockito.when(gameRepository.save(Mockito.any())).thenReturn(dummyGame);
 
 
-        Game newGame = gameService.createGame(testLobby, "ANY_TOKEN");
+        Game newGame = gameService.createGame(testLobby);
 
         assertTrue(newGame.getBotList().isEmpty());
         assertTrue(newGame.getPlayerList().containsAll(testLobby.getPlayerList()));

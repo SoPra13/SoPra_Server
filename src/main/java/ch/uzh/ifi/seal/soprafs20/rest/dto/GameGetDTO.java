@@ -72,35 +72,35 @@ public class GameGetDTO {
         this.currentRound = currentRound;
     }
 
-    public List getClueList() {
+    public List<String> getClueList() {
         return clueList;
     }
 
-    public void setClueList(ArrayList clueList) {
+    public void setClueList(ArrayList<String> clueList) {
         this.clueList = clueList;
     }
 
-    public List getVoteList() {
+    public List<Integer> getVoteList() {
         return voteList;
     }
 
-    public void setVoteList(ArrayList voteList) {
+    public void setVoteList(ArrayList<Integer> voteList) {
         this.voteList = voteList;
     }
 
-    public List getMysteryWords() {
+    public List<String> getMysteryWords() {
         return mysteryWords;
     }
 
-    public void setMysteryWords(ArrayList mysteryWords) {
+    public void setMysteryWords(ArrayList<String> mysteryWords) {
         this.mysteryWords = mysteryWords;
     }
 
-    public List getPlayerList() {
+    public List<User> getPlayerList() {
         return playerList;
     }
 
-    public void setPlayerList(ArrayList playerList) {
+    public void setPlayerList(ArrayList<User> playerList) {
         this.playerList = playerList;
     }
 
@@ -108,7 +108,7 @@ public class GameGetDTO {
         return botList;
     }
 
-    public void setBotList(List botList) {
+    public void setBotList(List<Bot> botList) {
         this.botList = botList;
     }
 

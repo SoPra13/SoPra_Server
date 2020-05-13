@@ -30,7 +30,8 @@ public class WordService {
         }
     }
 
-    private static ArrayList<LinkedTreeMap<String, String>> trimArrayList(ArrayList<LinkedTreeMap<String, String>> oldList, int trimTo) {
+    //  TODO dead code ?
+    /*private static ArrayList<LinkedTreeMap<String, String>> trimArrayList(ArrayList<LinkedTreeMap<String, String>> oldList, int trimTo) {
         ArrayList<LinkedTreeMap<String, String>> newList = new ArrayList<>();
         if (oldList.size() > trimTo) {
             for (int i = 0; i < trimTo; i++) {
@@ -49,7 +50,7 @@ public class WordService {
             }
         }
         return newList;
-    }
+    }*/
 
     private static ArrayList<LinkedTreeMap<String, String>> removeMultiWords(ArrayList<LinkedTreeMap<String, String>> oldList) {
         ArrayList<LinkedTreeMap<String, String>> newList = new ArrayList<>();
@@ -149,6 +150,7 @@ public class WordService {
     }
 
     public static boolean isValidWord(String word) {
+        if(word.matches(".*\\d.*")) return false;       // needed since datamuse accepts pure numbers
         ArrayList<LinkedTreeMap<String, String>> compareWord = getRequest("https://api.datamuse.com/words?max=1&sp=" + word);
         return !compareWord.isEmpty() && compareWord.get(0).get("word").equals(word);
     }

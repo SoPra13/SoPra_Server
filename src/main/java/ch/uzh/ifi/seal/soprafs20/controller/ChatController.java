@@ -1,13 +1,10 @@
 package ch.uzh.ifi.seal.soprafs20.controller;
 
-import ch.uzh.ifi.seal.soprafs20.entity.Game;
 import ch.uzh.ifi.seal.soprafs20.entity.Message;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.ChatGetDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.ChatPostDTO;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.GameGetDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.mapper.DTOMapper;
 import ch.uzh.ifi.seal.soprafs20.service.ChatService;
-import ch.uzh.ifi.seal.soprafs20.service.GameService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

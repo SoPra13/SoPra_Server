@@ -83,7 +83,7 @@ public class LobbyController {
 
         Lobby lobby = lobbyService.getLobbyFromToken(token);
 
-        Game game = gameService.createGame(lobby, token);
+        Game game = gameService.createGame(lobby);
 
         return game.getToken();
 

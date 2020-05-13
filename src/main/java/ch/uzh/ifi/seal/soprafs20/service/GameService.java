@@ -16,9 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * User Service
@@ -32,19 +30,21 @@ public class GameService {
     private final UserService userService;
     private final BotService botService;
     private final LobbyService lobbyService;
-    private final ChatService chatService;
 
     private final Logger log = LoggerFactory.getLogger(GameService.class);
     private final GameRepository gameRepository;
 
 
     @Autowired
-    public GameService(UserService userService, ChatService chatService, BotService botService, LobbyService lobbyService, @Qualifier("gameRepository") GameRepository gameRespository) {
-        this.gameRepository = gameRespository;
+    public GameService(UserService userService,
+                       ChatService chatService,
+                       BotService botService,
+                       LobbyService lobbyService,
+                       @Qualifier("gameRepository") GameRepository gameRepository) {
         this.userService = userService;
-        this.lobbyService = lobbyService;
         this.botService = botService;
-        this.chatService = chatService;
+        this.lobbyService = lobbyService;
+        this.gameRepository = gameRepository;
     }
 
 
@@ -83,34 +83,23 @@ public class GameService {
 
 
     //create new Game based on Lobby
-    public Game createGame(Lobby lobby, String token) {
+    public Game createGame(Lobby lobby) {
 
         Game newGame = new Game();
 
-        List<User> userList = new ArrayList<>(lobby.getPlayerList());
-        List<Bot> botList = new ArrayList<>(lobby.getBotList());
-
-
-        List<String> clueList = new ArrayList<>();
-        List<String> checkList = new ArrayList<>();
-        List<Integer> voteList = new ArrayList<>();
-        for (int a = 0; a < 5; a++) {
-            voteList.add(0);
-        }
-
-        newGame.setBotList(botList);
+        newGame.setBotList(lobby.getBotList());
         newGame.setBotsClueGiven(false);
         newGame.setBotsVoted(false);
-        newGame.setPlayerList(userList);
+        newGame.setPlayerList(lobby.getPlayerList());
         newGame.setToken(lobby.getLobbyToken());
         newGame.setCurrentRound(0);
         newGame.setVersion(1);
-        newGame.setClueList(clueList);
-        newGame.setVoteList(voteList);
-        newGame.setCheckList(checkList);
+        newGame.getClueList().clear();
+        newGame.setVoteList(new ArrayList<>(Collections.nCopies(5, 0)));
+        newGame.getChecklist().clear();
         newGame.setGuessGiven(null);
         newGame.setGuessCorrect(null);
-        newGame.setGuesser(new Random().nextInt(userList.size()));
+        newGame.setGuesser(new Random().nextInt(newGame.getPlayerList().size()));
         newGame.setMysteryWords(WordFileHandler.getMysteryWords());
 
         // saves the given entity but data is only persisted in the database once flush() is called
@@ -118,14 +107,14 @@ public class GameService {
         gameRepository.flush();
 
         //update game of user and add initial position
-        for (User user : userList) {
+        for (User user : newGame.getPlayerList()) {
             user.setGame(newGame);
             System.out.println("added User to game;");
             System.out.println(user.getId());
         }
 
         //update game of bot
-        for (Bot bot : botList) {
+        for (Bot bot : newGame.getBotList()) {
             bot.setGame(newGame);
             System.out.println("added vot to game;");
             System.out.println(bot.getId());
@@ -145,22 +134,18 @@ public class GameService {
 
         User user = userService.getUserFromToken(userToken);
         game.setGuessCorrect(null);
-        List voteList = game.getVoteList();
 
         if (!game.getBotsVoted()) {
             game.setBotsVoted(true);
-            for (Bot bot : game.getBotList()) {
+            for (Bot ignored : game.getBotList()) {
                 int botVote = new Random().nextInt(4);
-                Integer votes = (Integer) voteList.get(botVote);
-                voteList.set(botVote, votes + 1);
+                game.getVoteList().set(botVote, game.getVoteList().get(botVote) + 1);
             }
         }
         //user votes for 5 if not voted in time, vote gets ignored
         if (vote != 5) {
-            Integer votes = (Integer) voteList.get(vote);
-            voteList.set(vote, votes += 1);
+            game.getVoteList().set(vote, game.getVoteList().get(vote) + 1);
         }
-        game.setVoteList(voteList);
         user.setVoted(true);
         return game;
 
@@ -190,7 +175,6 @@ public class GameService {
                 botService.deleteBot(bot.getToken());
             }
             gameRepository.delete(game);
-            return;
         }
 
 
@@ -205,7 +189,7 @@ public class GameService {
         boolean valid = WordService.isValidWord(clue);
         Game game = gameRepository.findByToken(gameToken);
         User user = userService.getUserFromToken(userToken);
-        List checklist = game.getChecklist();
+        List<String> checklist = game.getChecklist();
 
         if (!game.getBotsClueGiven()) {
             game.setBotsClueGiven(true);
@@ -248,7 +232,7 @@ public class GameService {
             System.out.println("ALL CLUES RECEIVED");
             System.out.println();
             checklist.add(game.getTopic());
-            boolean[] duplicates = WordService.checkSimilarityInArray((String[]) checklist.toArray(new String[checklist.size()]));
+            boolean[] duplicates = WordService.checkSimilarityInArray(checklist.toArray(new String[0]));
             //remove duplicates from end to bottom because of indexes removed would break code
             for (int i = checklist.size() - 1; i >= 0; i--) {
                 if (duplicates[i]) {
@@ -259,11 +243,9 @@ public class GameService {
             System.out.println();
 
             //set ClueList to valid clues
-            List clueList = game.getClueList();
-            clueList.clear();
-            clueList.addAll(checklist);
-            game.setClueList(clueList);
-            System.out.println(clueList);
+            game.getClueList().clear();
+            game.getClueList().addAll(checklist);
+            System.out.println(game.getClueList());
             System.out.println();
         }
 
@@ -349,12 +331,11 @@ public class GameService {
                 botService.leaveGame(bot);
             }
             gameRepository.delete(game);
-            return;
         }
-
     }
 
-    public int numberOfCluesGiven(Game game) {
+//    TODO dead code?
+    /*public int numberOfCluesGiven(Game game) {
         int count = 0;
 
         for (User user : game.getPlayerList()) {
@@ -363,5 +344,5 @@ public class GameService {
             }
         }
         return count;
-    }
+    }*/
 }
