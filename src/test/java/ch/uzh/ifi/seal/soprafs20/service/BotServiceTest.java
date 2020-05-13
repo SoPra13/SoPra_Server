@@ -45,7 +45,7 @@ public class BotServiceTest {
     void createBot_success() {
         Bot neutralBot = botService.createBot("NEUTRAL");
         Bot friendBot = botService.createBot("FRIEND");
-        Bot hostileBot = botService.createBot("DARKSOULS");
+        Bot hostileBot = botService.createBot("HOSTILE");
 
         assertEquals(Difficulty.NEUTRAL, neutralBot.getDifficulty());
         assertEquals(Difficulty.FRIEND, friendBot.getDifficulty());
@@ -61,7 +61,7 @@ public class BotServiceTest {
     @Test
     void createBot_invalid_partial_difficulty() {
         Assertions.assertThrows(IllegalArgumentException.class, () ->
-                botService.createBot("DARK"));
+                botService.createBot("HOST"));
     }
 
     @Test

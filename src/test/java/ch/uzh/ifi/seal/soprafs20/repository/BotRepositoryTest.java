@@ -42,7 +42,7 @@ class BotRepositoryTest {
     @Test
     public void findByBotName_success() {
         // when
-        Bot found = botRepository.findByBotname(bot.getBotName());
+        Bot found = botRepository.findByBotName(bot.getBotName());
 
         // then
         assertNotNull(found.getId());
@@ -53,7 +53,7 @@ class BotRepositoryTest {
     @Test
     public void findByBotName_failed() {
         // when
-        Bot found = botRepository.findByBotname("invalid");
+        Bot found = botRepository.findByBotName("invalid");
 
         // then
         assertNull(found);
