@@ -474,7 +474,7 @@ Pick
 
 Hilarious
 Grass
-Fizzy Drink
+Fizzy
 Mourn
 Blue-Eyed
 
@@ -523,7 +523,7 @@ Violet
 Pie
 Rub
 Crate
-Falconsupreme
+Supreme
 Magic
 
 Tiny
@@ -577,7 +577,7 @@ Alike
 Corpuscle
 Woebegone
 Boil
-Shopping Trolley
+Trolley
 Shivering
 
 Ocean
@@ -1128,7 +1128,7 @@ Society
 
 Cut
 Branch
-Game
+Plasma
 Wilderness
 Shadow
 
@@ -1164,14 +1164,14 @@ Dare
 
 Physical
 Worker
-Jet Lag
+Jet
 Snotty
 Upper
 
 Wobble
 Thoughtful
 Unkempt
-Power Line
+Lag
 Oil
 
 Skirt
@@ -1382,7 +1382,7 @@ Pretend
 Conscious
 Prefer
 Cost
-Big Bang
+Boom
 
 Dinosaurs
 Golf
@@ -1477,7 +1477,7 @@ Coil
 Combination
 Histone
 Produce
-Lawn Mower
+Lawn
 Beach
 
 Hard
@@ -1518,7 +1518,7 @@ Legal
 
 Unfasten
 Hop
-Hard-To-Find
+Detective
 Try
 Disillusioned
 
@@ -1567,7 +1567,7 @@ Resolution
 Peck
 Nifty
 Mortgage
-Chuck Norris
+Apoptosis
 Good
 
 Heat
@@ -1997,7 +1997,7 @@ Truck
 Frame
 
 Interferon
-Falconwound
+Wound
 Admit
 Shallow
 Vivacious
@@ -2291,7 +2291,7 @@ Contest
 Subject
 
 Preparation
-Table Tennis
+Soccer
 Tool
 Reminiscent
 Kind
@@ -2464,7 +2464,7 @@ Wish
 Rice
 Sticker
 
-Extra-Small
+Altruism
 Fence
 Capital
 Stove
@@ -2495,7 +2495,7 @@ Modern
 Committee
 
 Loose
-Extra-Large
+Philanthropy
 People
 Effector
 Record
@@ -2755,7 +2755,7 @@ Mess
 Swordfish
 Shopping
 Classroom
-Black Hole
+Singularity
 Nippy
 
 Debonair
@@ -3743,7 +3743,7 @@ Barbarous
 Reveal
 
 Amber
-Solar Wind
+Solar
 Bubble
 Highlight
 Ordinary
@@ -3830,7 +3830,7 @@ Shame
 Defective
 Company
 Joke
-Game Theory
+Mower
 
 Famous
 Phase
@@ -4031,7 +4031,7 @@ Workable
 Communicate
 
 Resident
-Nerve Cell
+Receptor
 Silly
 Motor
 Map
@@ -4452,7 +4452,7 @@ Curly
 
 Prize
 Grotesque
-Football Player
+Hockey
 Drawing
 Dry
 
@@ -4472,7 +4472,7 @@ Law
 Literature
 Salt
 Resolve
-Olive Oil
+Olive
 
 Past
 Scissors
@@ -4603,7 +4603,7 @@ Lazy
 Spider
 Festive
 Energetic
-Ad Hoc
+Reactor
 Pass
 
 Sensitive
@@ -4723,7 +4723,7 @@ Gift
 Internal
 Twig
 Robust
-Tomato Sauce
+Sauce
 Tease
 
 District
@@ -5033,7 +5033,7 @@ Proof
 Ignore
 
 Irritate
-Quantum Mechanics
+Quantum
 Service
 Stick
 Resident
@@ -5131,7 +5131,7 @@ Trash
 Beam
 Commission
 Cable
-Spider Man
+Mechanics
 Foolish
 
 Standard
@@ -5336,7 +5336,7 @@ Goat
 Pressure
 Spoon
 Atmosphere
-Teeny-Tiny
+Nanosecond
 
 Classic
 Press
@@ -5376,7 +5376,7 @@ Silver
 
 Commission
 Car
-Drink
+Drinker
 Race
 Cancel
 
@@ -5449,7 +5449,7 @@ Honk
 Independent
 Practise
 Tourist
-Spider Web
+Sphere
 Flora
 
 Oar
@@ -5479,7 +5479,7 @@ Gnu
 Shaggy
 Ring
 Miss
-Ill-Fated
+Fate
 Successful
 
 Tight
@@ -5619,3 +5619,9 @@ Plug
 Taxi
 Room
 Dinner
+
+Ore
+Moore
+Heliosphere
+Pineapple
+Microphone
