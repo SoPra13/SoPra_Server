@@ -8,6 +8,9 @@ public class UserPutDTO {
 
     private String username;
 
+
+    private int avatar;
+
     private Color color;
 
     private boolean darkMode;
@@ -43,4 +46,13 @@ public class UserPutDTO {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public int getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(int avatar) {
+        this.avatar = avatar;
+    }
+
 }
