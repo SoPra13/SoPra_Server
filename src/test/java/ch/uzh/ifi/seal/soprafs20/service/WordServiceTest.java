@@ -42,7 +42,7 @@ class WordServiceTest {
 
     @Test
     void isValidWord() {
-        String valid = "mathematics";
+        String valid = "english";
         String animal = "pygmy";
         String foreign = "fremdschämen";
         String number = "1337";

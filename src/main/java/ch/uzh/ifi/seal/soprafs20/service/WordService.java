@@ -151,7 +151,7 @@ public class WordService {
 
     public static boolean isValidWord(String word) {
         if(word.matches(".*\\d.*")) return false;       // needed since datamuse accepts pure numbers
-        ArrayList<LinkedTreeMap<String, String>> compareWord = getRequest("https://api.datamuse.com/words?max=1&v=enwiki&sp=" + word);
+        ArrayList<LinkedTreeMap<String, String>> compareWord = getRequest("https://api.datamuse.com/words?max=1&sp=" + word);
         return !compareWord.isEmpty() && compareWord.get(0).get("word").equals(word);
     }
 
