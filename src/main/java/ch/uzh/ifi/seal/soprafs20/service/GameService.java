@@ -87,10 +87,13 @@ public class GameService {
 
         Game newGame = new Game();
 
-        newGame.setBotList(lobby.getBotList());
+        List<User> userList = new ArrayList<>(lobby.getPlayerList());
+        List<Bot> botList = new ArrayList<>(lobby.getBotList());
+
+        newGame.setBotList(botList);
         newGame.setBotsClueGiven(false);
         newGame.setBotsVoted(false);
-        newGame.setPlayerList(lobby.getPlayerList());
+        newGame.setPlayerList(userList);
         newGame.setToken(lobby.getLobbyToken());
         newGame.setCurrentRound(0);
         newGame.setVersion(1);
@@ -154,7 +157,7 @@ public class GameService {
     //set Topic of game after Voting
     public Game setTopic(String gameToken, String topic) {
         Game game = getGameFromToken(gameToken);
-
+        game.setGuessCorrect(null);
         game.setTopic(topic.toLowerCase());
         return game;
     }
@@ -218,7 +221,7 @@ public class GameService {
             }
             else {
                 checklist.add("CENSORED");
-                user.addDuplicateClues();
+                user.addInvalidClues();
             }
         }
         else {
@@ -263,12 +266,12 @@ public class GameService {
             user.addGuessesMade();
             if (game.getTopic().equals(guess.toLowerCase())) {
                 game.setGuessCorrect(true);
+                user.addGuessesCorrect();
                 System.out.println(game.getTopic().equals(guess));
                 System.out.println();
             }
             else {
                 game.setGuessCorrect(false);
-                user.addInvalidClues();
             }
         }
         System.out.println(game.getGuessCorrect());
