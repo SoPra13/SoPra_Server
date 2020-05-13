@@ -513,7 +513,7 @@ class GameServiceTest {
     void makeGuess_success() {
         gameService.makeGuess(testGame.getToken(), testUser.getToken(), testGame.getTopic());
 
-        assertFalse(testGame.getGuessCorrect());
+        assertTrue(testGame.getGuessCorrect());
     }
 
     @Test
