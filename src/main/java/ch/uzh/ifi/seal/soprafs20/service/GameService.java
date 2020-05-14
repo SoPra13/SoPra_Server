@@ -325,9 +325,10 @@ public class GameService {
 
         if (game.getPlayerList().isEmpty()) {
             lobby.setLobbyState(LobbyStatus.OPEN);
-            for (Bot bot : game.getBotList()) {
-                game.removeBot(bot);
-                botService.leaveGame(bot);
+            //  use for with index iter when modifying concurrent objects
+            for (int i = 0; i < game.getBotList().size(); i++) {
+                botService.leaveGame(game.getBotList().get(i));
+                game.removeBot(game.getBotList().get(i));
             }
             gameRepository.delete(game);
         }
