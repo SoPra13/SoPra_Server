@@ -14,6 +14,10 @@ import java.util.Random;
 public final class WordFileHandler {
     static final Logger log = LoggerFactory.getLogger(WordFileHandler.class);
 
+    private WordFileHandler() {
+        throw new IllegalStateException("Utility class");
+    }
+
     //reads random Block of 5 words from txt file and puts them into a list
     public static List<String> getMysteryWords() {
         List<String> clues = new ArrayList<>();
@@ -31,7 +35,8 @@ public final class WordFileHandler {
             for (int j = i * 6; j <= i * 6 + 4; j++) clues.add(fileLines.get(j));
         }
         if(clues.size() != 65) log.error("src/Cards_serious_words-EN.txt", new EOFException());
-        log.info(clues.toString());
+        String msg = clues.toString();
+        log.info(msg);
         return clues;
     }
 }
