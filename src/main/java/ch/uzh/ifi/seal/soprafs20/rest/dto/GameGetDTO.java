@@ -18,10 +18,10 @@ public class GameGetDTO {
     private Boolean guessGiven;
     private Boolean botsVoted;
     private Boolean botsClueGiven;
-    private List<String> clueList = new ArrayList<String>();
-    private List<String> mysteryWords = new ArrayList<String>();
+    private List<String> clueList = new ArrayList<>();
+    private List<String> mysteryWords = new ArrayList<>();
     private List<Integer> voteList = new ArrayList<>();
-    private List<User> playerList = new ArrayList<User>();
+    private List<User> playerList = new ArrayList<>();
     private List<Bot> botList = new ArrayList<>();
 
     public Long getId() {
@@ -76,7 +76,7 @@ public class GameGetDTO {
         return clueList;
     }
 
-    public void setClueList(ArrayList<String> clueList) {
+    public void setClueList(List<String> clueList) {
         this.clueList = clueList;
     }
 
@@ -84,7 +84,7 @@ public class GameGetDTO {
         return voteList;
     }
 
-    public void setVoteList(ArrayList<Integer> voteList) {
+    public void setVoteList(List<Integer> voteList) {
         this.voteList = voteList;
     }
 
@@ -92,7 +92,7 @@ public class GameGetDTO {
         return mysteryWords;
     }
 
-    public void setMysteryWords(ArrayList<String> mysteryWords) {
+    public void setMysteryWords(List<String> mysteryWords) {
         this.mysteryWords = mysteryWords;
     }
 
@@ -100,7 +100,7 @@ public class GameGetDTO {
         return playerList;
     }
 
-    public void setPlayerList(ArrayList<User> playerList) {
+    public void setPlayerList(List<User> playerList) {
         this.playerList = playerList;
     }
 
