@@ -31,6 +31,7 @@ import java.util.Random;
 @Transactional
 public class GameService {
 
+    private static final String SANITIZER = "[\n|\r|\t]";
     private static final String CENSORED = "CENSORED";
 
     private final UserService userService;
@@ -199,7 +200,7 @@ public class GameService {
     //add clue given by player
     public synchronized Game addClue(String userToken, String gameToken, String aClue) {
         String clue = aClue.toLowerCase();
-        String sanitizedMsg = clue.replaceAll("[\n|\r|\t]", "_");
+        String sanitizedMsg = clue.replaceAll(SANITIZER, "_");
         log.info(sanitizedMsg);
         boolean valid = WordService.isValidWord(clue);
         Game game = gameRepository.findByToken(gameToken);
@@ -241,7 +242,7 @@ public class GameService {
 
     public Game makeGuess(String gameToken, String userToken, String guess) {
         String msg;
-        String sanitizedMsg = guess.replaceAll("[\n|\r|\t]", "_");
+        String sanitizedMsg = guess.replaceAll(SANITIZER, "_");
         log.info(sanitizedMsg);
 
         User user = userService.getUserFromToken(userToken);
@@ -263,7 +264,7 @@ public class GameService {
         else {
             game.setGuess("no guess given");
         }
-        sanitizedMsg = ("GuessCorrect: " + game.getGuessCorrect()).replaceAll("[\n|\r|\t]", "_");
+        sanitizedMsg = ("GuessCorrect: " + game.getGuessCorrect()).replaceAll(SANITIZER, "_");
         log.info(sanitizedMsg);
         return game;
     }
