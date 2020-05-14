@@ -84,7 +84,7 @@ class GameServiceTest {
         Mockito.when(gameRepository.findByToken(testGame.getToken())).thenReturn(testGame);
         Mockito.when(gameRepository.findByToken("INVALID_TOKEN")).thenReturn(null);
         Mockito.when(userService.getUserFromToken(testUser.getToken())).thenReturn(testUser);
-        Mockito.when(botService.botclue(Mockito.any(), Mockito.anyString())).thenReturn("BOT_CLUE");
+        Mockito.when(botService.botClue(Mockito.any(), Mockito.anyString())).thenReturn("BOT_CLUE");
 
         Mockito.doCallRealMethod().when(userService).leaveGame(testUser);
         Mockito.doCallRealMethod().when(userService).leaveLobby(testUser);
@@ -415,7 +415,7 @@ class GameServiceTest {
         Bot testBot = new Bot();
         testBot.setDifficulty(Difficulty.NEUTRAL);
         testGame.getBotList().add(testBot);
-        Mockito.when(botService.botclue(Mockito.any(), Mockito.anyString())).thenReturn("BOT_CLUE");
+        Mockito.when(botService.botClue(Mockito.any(), Mockito.anyString())).thenReturn("BOT_CLUE");
 
         Game newGame = gameService.addClue(testUser.getToken(), testGame.getToken(), clue);
 

@@ -12,6 +12,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -24,6 +29,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class BotService {
+    private static final int BOT_AVATARS = 7;
 
     private final Logger log = LoggerFactory.getLogger(BotService.class);
 
@@ -38,11 +44,21 @@ public class BotService {
 
 
     public Bot createBot(String difficulty) {
+        List<String> names;
+        try {
+            names = Files.readAllLines(Paths.get("src/Bot_Names.txt"));
+        }
+        catch (IOException e) {
+            log.error(e.getMessage());
+            names = Collections.singletonList("Fritz");
+        }
+
         var bot = new Bot();
         bot.setToken(UUID.randomUUID().toString());
-        bot.setBotName(String.valueOf(new Random().nextInt(10000)));
+        bot.setBotName(String.valueOf(names.get(new Random().nextInt(names.size()))));
+        log.info("bot name found: " + bot.getBotName());
         Difficulty actualDifficulty = Difficulty.valueOf(difficulty);
-        bot.setAvatar(3);
+        bot.setAvatar(new Random().nextInt(BOT_AVATARS));
         bot.setDifficulty(actualDifficulty);
 
         // saves the given entity but data is only persisted in the database once flush() is called
@@ -69,22 +85,21 @@ public class BotService {
         botRepository.delete(botByToken);
     }
 
-    public String botclue(Difficulty difficulty, String topic) {
+    public String botClue(Difficulty difficulty, String topic) {
 
-        System.out.println("topic for datamuse:");
-        System.out.println(topic);
-        System.out.println(difficulty);
-        System.out.println("type");
-        String clue = "botWordnotSet";
-        if (difficulty == Difficulty.FRIEND || difficulty == Difficulty.NEUTRAL) {
+        log.info("topic for datamuse:");
+        log.info(topic);
+        log.info(difficulty.toString());
+        log.info("type");
+        String clue;
+        if (difficulty == Difficulty.FRIEND || (difficulty == Difficulty.NEUTRAL && new Random().nextBoolean())) {
             clue = WordService.getGoodWord(topic);
-            System.out.println(clue);
+            log.info("good clue: " + clue);
         }
         else {
             clue = WordService.getBadWord(topic);
-            System.out.println(clue);
+            log.info("bad clue: " + clue);
         }
-
         return clue;
     }
 

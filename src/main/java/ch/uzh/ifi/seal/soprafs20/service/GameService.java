@@ -16,7 +16,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 /**
  * User Service
@@ -199,7 +202,7 @@ public class GameService {
             game.setBotsClueGiven(true);
 
             for (Bot bot : game.getBotList()) {
-                String botClue = botService.botclue(bot.getDifficulty(), game.getTopic());
+                String botClue = botService.botClue(bot.getDifficulty(), game.getTopic());
                 checklist.add(botClue);
             }
         }
