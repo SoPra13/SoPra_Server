@@ -115,7 +115,7 @@ public class UserControllerTest {
         userPostDTO.setPassword("testpassword");
 
 
-        given(userService.LoginUser(Mockito.any())).willReturn("testtoken");
+        given(userService.loginUser(Mockito.any())).willReturn("testtoken");
 
 
         MockHttpServletRequestBuilder putRequest = put("/login").contentType(MediaType.APPLICATION_JSON).content(asJsonString(userPostDTO));
@@ -128,7 +128,7 @@ public class UserControllerTest {
         userPostDTO.setUsername("test");
         userPostDTO.setPassword("test");
 
-        given(userService.LoginUser(Mockito.any())).willThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Login unsuccessful."));
+        given(userService.loginUser(Mockito.any())).willThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Login unsuccessful."));
 
 
         MockHttpServletRequestBuilder putRequest = put("/login").contentType(MediaType.APPLICATION_JSON).content(asJsonString(userPostDTO));
@@ -144,7 +144,7 @@ public class UserControllerTest {
 
     @Test
     public void put_logout_failed() throws Exception {
-        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "logout unsuccessful.")).when(userService).LogoutUser("testtoken");
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "logout unsuccessful.")).when(userService).logoutUser("testtoken");
 
         MockHttpServletRequestBuilder getRequest = put("/logout?token=testtoken").contentType(MediaType.APPLICATION_JSON);
         mockMvc.perform(getRequest).andExpect(status().isNotFound()).andExpect(status().reason("logout unsuccessful."));

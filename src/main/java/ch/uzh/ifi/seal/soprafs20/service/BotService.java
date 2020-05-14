@@ -44,19 +44,22 @@ public class BotService {
 
 
     public Bot createBot(String difficulty) {
+        String msg;
         List<String> names;
         try {
             names = Files.readAllLines(Paths.get("src/Bot_Names.txt"));
         }
         catch (IOException e) {
-            log.error(e.getMessage());
+            msg = e.getMessage();
+            log.error(msg);
             names = Collections.singletonList("Fritz");
         }
 
         var bot = new Bot();
         bot.setToken(UUID.randomUUID().toString());
         bot.setBotName(String.valueOf(names.get(new Random().nextInt(names.size()))));
-        log.info("bot name found: " + bot.getBotName());
+        msg = "bot name found: " + bot.getBotName();
+        log.info(msg);
         Difficulty actualDifficulty = Difficulty.valueOf(difficulty);
         bot.setAvatar(new Random().nextInt(BOT_AVATARS));
         bot.setDifficulty(actualDifficulty);
@@ -86,19 +89,23 @@ public class BotService {
     }
 
     public String botClue(Difficulty difficulty, String topic) {
+        String msg;
 
         log.info("topic for datamuse:");
         log.info(topic);
-        log.info(difficulty.toString());
+        msg = difficulty.toString();
+        log.info(msg);
         log.info("type");
         String clue;
         if (difficulty == Difficulty.FRIEND || (difficulty == Difficulty.NEUTRAL && new Random().nextBoolean())) {
             clue = WordService.getGoodWord(topic);
-            log.info("good clue: " + clue);
+            msg = "good clue: " + clue;
+            log.info(msg);
         }
         else {
             clue = WordService.getBadWord(topic);
-            log.info("bad clue: " + clue);
+            msg = "bad clue: " + clue;
+            log.info(msg);
         }
         return clue;
     }

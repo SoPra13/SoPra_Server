@@ -13,14 +13,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.StreamingHttpOutputMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * User Service
@@ -199,8 +197,8 @@ public class GameService {
     //add clue given by player
     public synchronized Game addClue(String userToken, String gameToken, String aClue) {
         String clue = aClue.toLowerCase();
-        String sanitized_msg = clue.replaceAll("[\n|\r|\t]", "_");
-        log.info(sanitized_msg);
+        String sanitizedMsg = clue.replaceAll("[\n|\r|\t]", "_");
+        log.info(sanitizedMsg);
         boolean valid = WordService.isValidWord(clue);
         Game game = gameRepository.findByToken(gameToken);
         User user = userService.getUserFromToken(userToken);
@@ -217,18 +215,11 @@ public class GameService {
 
         if (Boolean.FALSE.equals(user.getGaveClue())) {
             user.addTotalClues();
-            if (valid) {
-                if (!(clue.equalsIgnoreCase(game.getTopic()) || clue.equals("empty"))) {
-
+            if (valid && !(clue.equalsIgnoreCase(game.getTopic()) || clue.equals("empty"))) {
                     log.info("valid");
                     checklist.add(clue);
                     String msg = checklist.toString();
                     log.info(msg);
-                }
-                else {
-                    checklist.add(CENSORED);
-                    user.addInvalidClues();
-                }
             }
             else {
                 checklist.add(CENSORED);
@@ -242,33 +233,14 @@ public class GameService {
 
         user.setGaveClue(true);
         //if all players gave clues, remove duplicates
-        if (checklist.size() == (game.getPlayerList().size() - 1) + game.getBotList().size()) {
-            log.info("ALL CLUES RECEIVED");
-            checklist.add(game.getTopic());
-            boolean[] duplicates = WordService.checkSimilarityInArray(checklist.toArray(new String[0]));
-            //remove duplicates from end to bottom because of indexes removed would break code
-            for (int i = checklist.size() - 1; i >= 0; i--) {
-                if (duplicates[i]) {
-                    checklist.set(i, CENSORED);
-                }
-            }
-            String msg = checklist.toString();
-            log.info(msg);
-
-            //set ClueList to valid clues
-            game.getClueList().clear();
-            game.getClueList().addAll(checklist);
-            msg = game.getClueList().toString();
-            log.info(msg);
-        }
-
+        removeDuplicates(game, checklist);
         return game;
     }
 
     public Game makeGuess(String gameToken, String userToken, String guess) {
         String msg;
-        String sanitized_msg = guess.replaceAll("[\n|\r|\t]", "_");
-        log.info(sanitized_msg);
+        String sanitizedMsg = guess.replaceAll("[\n|\r|\t]", "_");
+        log.info(sanitizedMsg);
 
         User user = userService.getUserFromToken(userToken);
         Game game = gameRepository.findByToken(gameToken);
@@ -352,5 +324,27 @@ public class GameService {
         }
     }
 
-    //    public int numberOfCluesGiven(Game game) {commit: 81a7cd97dfaa31a4c50e7ccb42a535b80c3fb941}
+    void removeDuplicates(Game game, List<String> checklist){
+        String msg;
+        if (checklist.size() == (game.getPlayerList().size() - 1) + game.getBotList().size()) {
+            log.info("ALL CLUES RECEIVED");
+            checklist.add(game.getTopic());
+            boolean[] duplicates = WordService.checkSimilarityInArray(checklist.toArray(new String[0]));
+            for (int i = checklist.size() - 1; i >= 0; i--) {
+                if (duplicates[i]) {
+                    checklist.set(i, CENSORED);
+                }
+            }
+            msg = checklist.toString();
+            log.info(msg);
+
+            //set ClueList to valid clues
+            game.getClueList().clear();
+            game.getClueList().addAll(checklist);
+            msg = game.getClueList().toString();
+            log.info(msg);
+        }
+    }
+
+//    numberOfCluesGiven() {commit: 81a7cd97dfaa31a4c50e7ccb42a535b80c3fb941}
 }

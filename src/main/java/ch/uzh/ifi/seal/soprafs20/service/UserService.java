@@ -67,8 +67,8 @@ public class UserService {
      * This is a helper method that will check the uniqueness criteria of the username and the name
      * defined in the User entity. The method will do nothing if the input is unique and throw an error otherwise.
      *
-     * @param userToBeCreated
-     * @throws org.springframework.web.server.ResponseStatusException
+     * @param userToBeCreated   this Entity will be check if it exist in the database
+     * @throws org.springframework.web.server.ResponseStatusException   if nothing can be found throw exception
      * @see User
      */
 
@@ -96,7 +96,7 @@ public class UserService {
 
 
     //log in a user
-    public String LoginUser(User user) {
+    public String loginUser(User user) {
 
         User repoUser = userRepository.findByUsername(user.getUsername());
 
@@ -112,7 +112,7 @@ public class UserService {
 
 
     //logut a user
-    public void LogoutUser(String token) {
+    public void logoutUser(String token) {
 
         User repoUser = userRepository.findByToken(token);
 
@@ -181,7 +181,8 @@ public class UserService {
                 if (finalCurrentCycle == getUserCurrentTabCycle(userToken)) setUserInGameTab(userToken, false);
             }
             catch (InterruptedException e) {
-                e.printStackTrace();
+                log.error("Thread interrupted: ", e);
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User cant be updated anymore.");
             }
         }).start();
     }
