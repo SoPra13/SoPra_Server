@@ -132,7 +132,7 @@ public class LobbyService {
         userService.leaveLobby(userToRemove);
         lobbyToRemove.setNumberOfPlayers(lobbyToRemove.getPlayerList().size() + lobbyToRemove.getBotList().size());
 
-        if (lobbyToRemove.getPlayerList().size() == 0) {
+        if (lobbyToRemove.getPlayerList().isEmpty()) {
             lobbyRepository.delete(lobbyToRemove);
         }
     }
@@ -243,7 +243,7 @@ public class LobbyService {
      */
     public String generateJoinToken() {
         int token = 1729;
-//        Integer token = 1337;
+//      this allows to test the while loop and only affect the first lobby created  Integer token = 1337;
         while (lobbyRepository.findByJoinToken(String.valueOf(token)) != null) {
             token = new Random().nextInt(8999);
             token += 1000;

@@ -14,7 +14,7 @@ import java.util.List;
 @Table(name = "LOBBY")
 public class Lobby implements Serializable {
 
-    public static final int maxPlayer = 7;
+    public static final int MAX_PLAYER = 7;
 
     private static final long serialVersionUID = 1L;
 

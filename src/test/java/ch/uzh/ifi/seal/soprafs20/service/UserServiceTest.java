@@ -66,5 +66,15 @@ public class UserServiceTest {
         assertThrows(ResponseStatusException.class, () -> userService.createUser(testUser));
     }
 
+    @Test
+    public void resetUser(){
+
+        userService.resetUser(testUser);
+
+        assertFalse(testUser.getGaveClue());
+        assertFalse(testUser.getVoted());
+
+    }
+
 
 }

@@ -74,7 +74,7 @@ public class UserController {
     public String loginUser(@RequestBody UserPostDTO userPostDTO) {
         User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
 
-        return userService.LoginUser(userInput);
+        return userService.loginUser(userInput);
     }
 
     //logout new user
@@ -83,7 +83,7 @@ public class UserController {
     @ResponseBody
     public void logoutUser(@RequestParam String token) {
 
-        userService.LogoutUser(token);
+        userService.logoutUser(token);
     }
 
     //Update user
