@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs20.service;
 
 import ch.uzh.ifi.seal.soprafs20.constant.Difficulty;
+import ch.uzh.ifi.seal.soprafs20.constant.LobbyStatus;
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.Bot;
 import ch.uzh.ifi.seal.soprafs20.entity.Game;
@@ -25,6 +26,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GameServiceTest {
 
+    @InjectMocks
+    GameService gameService;
 
     @Mock
     private GameRepository gameRepository;
@@ -37,13 +40,8 @@ class GameServiceTest {
     @Mock
     private BotService botService;
 
-
-    @InjectMocks
-    GameService gameService;
-
     private Game testGame;
     private User testUser;
-
 
     @BeforeEach
     void setUp() {
@@ -80,7 +78,7 @@ class GameServiceTest {
         testUser.setInvalidClues(0);
 
 
-//        Mockito.when(gameRepository.save(Mockito.any())).thenReturn(testGame);
+        Mockito.when(gameRepository.save(Mockito.any())).thenReturn(testGame);
         Mockito.when(gameRepository.findByToken(testGame.getToken())).thenReturn(testGame);
         Mockito.when(gameRepository.findByToken("INVALID_TOKEN")).thenReturn(null);
         Mockito.when(userService.getUserFromToken(testUser.getToken())).thenReturn(testUser);
@@ -227,14 +225,13 @@ class GameServiceTest {
         assertTrue(newGame.getPlayerList().containsAll(testLobby.getPlayerList()));
         assertEquals(testLobby.getLobbyToken(), newGame.getToken());
         assertTrue(newGame.getVoteList().stream().allMatch(i -> i == 0));
-        assertTrue(65 <= newGame.getMysteryWords().size());       //TODO why does wordservice return 67 in some cases
+        assertEquals(65, newGame.getMysteryWords().size());
         assertEquals(newGame, testUser.getGame());
         assertNotNull(newGame.getClueList());
         assertNotNull(newGame.getChecklist());
     }
 
-    //todo:make guesser random again
-   /* @Test
+    @Test
     void createGame_without_players() {
         Game dummyGame = new Game(); // Mockito.mock(Game.class);
         Bot testBot = new Bot();
@@ -244,11 +241,11 @@ class GameServiceTest {
         Mockito.when(gameRepository.save(Mockito.any())).thenReturn(dummyGame);
 
         Exception exception = Assertions.assertThrows(IllegalArgumentException.class,
-                () -> gameService.createGame(testLobby, "ANY_TOKEN"));
+                () -> gameService.createGame(testLobby));
 
         assertEquals("bound must be positive", exception.getMessage());
         Mockito.verify(gameRepository, Mockito.times(0)).flush();
-    }*/
+    }
 
     @Test
     void addVote_success() {
@@ -539,13 +536,68 @@ class GameServiceTest {
         assertEquals(1, newGame.getGuesser());
         assertNull(newGame.getGuessCorrect());
         assertNull(newGame.getTopic());
-//        assertTrue(newGame.getVoteList().isEmpty());
         assertTrue(newGame.getVoteList().stream().allMatch(i -> i == 0));
         assertTrue(newGame.getClueList().isEmpty());
         assertTrue(newGame.getChecklist().isEmpty());
         assertFalse(testUser.isUnityReady());
         assertFalse(testUser.getVoted());
         assertFalse(testUser.getGaveClue());
+    }
+
+    @Test
+    void nextRound_false_guess() {
+        testGame.setCurrentRound(0);
+        testGame.setGuesser(0);
+        testGame.setGuessCorrect(true);
+        testGame.getVoteList().add(1337);
+        testGame.getClueList().add("clue");
+        testGame.getChecklist().add("check");
+        testGame.getPlayerList().add(new User());
+        testGame.setGuessCorrect(false);
+
+        Game newGame = gameService.nextRound(testGame.getToken());
+
+        assertEquals(2, newGame.getCurrentRound());
+        assertEquals(1, newGame.getGuesser());
+        assertNull(newGame.getGuessCorrect());
+        assertNull(newGame.getTopic());
+        assertTrue(newGame.getVoteList().stream().allMatch(i -> i == 0));
+        assertTrue(newGame.getClueList().isEmpty());
+        assertTrue(newGame.getChecklist().isEmpty());
+        assertFalse(testUser.isUnityReady());
+        assertFalse(testUser.getVoted());
+        assertFalse(testUser.getGaveClue());
+    }
+
+    @Test
+    void endGame_notLastPlayer() {
+        testGame.getPlayerList().add(new User());
+        testUser.setGamesPlayed(0);
+
+        gameService.endGame(testGame.getToken(), testUser.getToken());
+
+        assertEquals(1, testUser.getGamesPlayed());
+        assertFalse(testGame.getPlayerList().contains(testUser));
+    }
+
+    @Test
+    void endGame_lastPlayer() {
+        Bot testBot = new Bot();
+        testBot.setGame(testGame);
+        testGame.getBotList().add(testBot);
+        Lobby testLobby = new Lobby();
+        testLobby.setLobbyState(LobbyStatus.INGAME);
+        testUser.setGamesPlayed(0);
+        Mockito.when(lobbyService.getLobbyFromToken(testGame.getToken())).thenReturn(testLobby);
+        Mockito.doNothing().when(botService).leaveGame(testBot);
+
+        gameService.endGame(testGame.getToken(), testUser.getToken());
+
+        assertEquals(1, testUser.getGamesPlayed());
+        assertFalse(testGame.getPlayerList().contains(testUser));
+        assertEquals(LobbyStatus.OPEN, testLobby.getLobbyState());
+        assertTrue(testGame.getBotList().isEmpty());
+        Mockito.verify(botService, Mockito.times(1)).leaveGame(testBot);
     }
 
 }
