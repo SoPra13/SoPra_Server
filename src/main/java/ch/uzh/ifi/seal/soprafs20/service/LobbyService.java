@@ -242,8 +242,8 @@ public class LobbyService {
      * @see Lobby
      */
     public String generateJoinToken() {
+//      setting the token of first lobby allows to test the while loop and only affect the first lobby created
         int token = 1729;
-//      this allows to test the while loop and only affect the first lobby created  Integer token = 1337;
         while (lobbyRepository.findByJoinToken(String.valueOf(token)) != null) {
             token = new Random().nextInt(8999);
             token += 1000;

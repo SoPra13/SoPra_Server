@@ -3,18 +3,26 @@ package ch.uzh.ifi.seal.soprafs20.service;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
 
 public class WordService {
     private static final String GET_WORD = "https://api.datamuse.com/words?md=d&max=1&sp=";
     private static final String DEF_HEADWORD = "defHeadword";
+    private static final Logger log = LoggerFactory.getLogger(WordService.class);
+
+    private WordService() {
+        throw new IllegalStateException("Utility class");
+    }
 
     private static ArrayList<LinkedTreeMap<String, String>> getRequest(String url) {
         try {
@@ -29,13 +37,16 @@ public class WordService {
             }.getType());
         }
         catch (Exception e) {
-            System.out.println(e.getMessage());
+            String err = e.getMessage();
+            log.error(err);
             return new ArrayList<>();
         }
     }
 
-    //trimArrayList() {commit: 81a7cd97dfaa31a4c50e7ccb42a535b80c3fb941}
-    //removeAllSimilarWordsFromRequest() { commit: 81a7cd97dfaa31a4c50e7ccb42a535b80c3fb941}
+/*
+The two methodes trimArrayList() and removeAllSimilarWordsFromRequest() where not use. the can both be retrieved
+from the last functional commit: 81a7cd97dfaa31a4c50e7ccb42a535b80c3fb941
+*/
 
     private static ArrayList<LinkedTreeMap<String, String>> removeMultiWords(ArrayList<LinkedTreeMap<String, String>> oldList) {
         ArrayList<LinkedTreeMap<String, String>> newList = new ArrayList<>();
@@ -48,7 +59,7 @@ public class WordService {
     }
 
 
-    public static boolean isSimilar(String word1, String word2, ArrayList<LinkedTreeMap<String, String>> word1request, ArrayList<LinkedTreeMap<String, String>> word2request) {
+    public static boolean isSimilar(String word1, String word2, List<LinkedTreeMap<String, String>> word1request, List<LinkedTreeMap<String, String>> word2request) {
         return (word1.startsWith(word2) || word2.startsWith(word1) || isPlural(word1, word2, word1request, word2request) || isSameFamily(word1, word2));
     }
 
@@ -67,11 +78,11 @@ public class WordService {
 
     }
 
-    private static boolean isPlural(String word1, String word2, ArrayList<LinkedTreeMap<String, String>> word1request, ArrayList<LinkedTreeMap<String, String>> word2request) {
+    private static boolean isPlural(String word1, String word2, List<LinkedTreeMap<String, String>> word1request, List<LinkedTreeMap<String, String>> word2request) {
         return isPluralTest(word1, word2, word1request, word2request);
     }
 
-    private static boolean isPluralTest(String word1, String word2, ArrayList<LinkedTreeMap<String, String>> word1request, ArrayList<LinkedTreeMap<String, String>> word2request) {
+    private static boolean isPluralTest(String word1, String word2, List<LinkedTreeMap<String, String>> word1request, List<LinkedTreeMap<String, String>> word2request) {
         if (word1request.get(0).containsKey(DEF_HEADWORD) && word1request.get(0).get(DEF_HEADWORD).equals(word2)) {
             return true;
         }

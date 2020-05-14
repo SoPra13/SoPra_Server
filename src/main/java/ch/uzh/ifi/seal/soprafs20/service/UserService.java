@@ -182,6 +182,7 @@ public class UserService {
             }
             catch (InterruptedException e) {
                 log.error("Thread interrupted: ", e);
+                Thread.currentThread().interrupt();
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User cant be updated anymore.");
             }
         }).start();

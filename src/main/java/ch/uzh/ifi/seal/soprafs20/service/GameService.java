@@ -13,12 +13,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.StreamingHttpOutputMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 /**
  * User Service
@@ -216,10 +218,10 @@ public class GameService {
         if (Boolean.FALSE.equals(user.getGaveClue())) {
             user.addTotalClues();
             if (valid && !(clue.equalsIgnoreCase(game.getTopic()) || clue.equals("empty"))) {
-                    log.info("valid");
-                    checklist.add(clue);
-                    String msg = checklist.toString();
-                    log.info(msg);
+                log.info("valid");
+                checklist.add(clue);
+                String msg = checklist.toString();
+                log.info(msg);
             }
             else {
                 checklist.add(CENSORED);
@@ -257,11 +259,12 @@ public class GameService {
             else {
                 game.setGuessCorrect(false);
             }
-        }else{
+        }
+        else {
             game.setGuess("no guess given");
         }
-        msg = "GuessCorrect: " + game.getGuessCorrect();
-        log.info(msg);
+        sanitizedMsg = ("GuessCorrect: " + game.getGuessCorrect()).replaceAll("[\n|\r|\t]", "_");
+        log.info(sanitizedMsg);
         return game;
     }
 
@@ -324,7 +327,7 @@ public class GameService {
         }
     }
 
-    void removeDuplicates(Game game, List<String> checklist){
+    void removeDuplicates(Game game, List<String> checklist) {
         String msg;
         if (checklist.size() == (game.getPlayerList().size() - 1) + game.getBotList().size()) {
             log.info("ALL CLUES RECEIVED");
@@ -345,6 +348,6 @@ public class GameService {
             log.info(msg);
         }
     }
-
-//    numberOfCluesGiven() {commit: 81a7cd97dfaa31a4c50e7ccb42a535b80c3fb941}
+//  this function (numberOfCluesGiven()) was not used but can
+//  be fetch from following commit: 81a7cd97dfaa31a4c50e7ccb42a535b80c3fb941
 }
