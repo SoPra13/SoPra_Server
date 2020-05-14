@@ -18,7 +18,7 @@ public class LobbyGetDTO {
     private LobbyType lobbyType;
     private Integer numberOfPlayers;
     private String adminToken;
-    private List<User> playerList = new ArrayList<User>();
+    private List<User> playerList = new ArrayList<>();
     private List<Bot> botList = new ArrayList<>();
 
 
@@ -82,15 +82,15 @@ public class LobbyGetDTO {
         return playerList;
     }
 
-    public void setPlayerList(List playerList) {
+    public void setPlayerList(List<User> playerList) {
         this.playerList = playerList;
     }
 
-    public List getBotList() {
+    public List<Bot> getBotList() {
         return botList;
     }
 
-    public void setBotList(List botList) {
+    public void setBotList(List<Bot> botList) {
         this.botList = botList;
     }
 

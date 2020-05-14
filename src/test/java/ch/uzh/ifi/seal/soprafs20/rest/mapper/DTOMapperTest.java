@@ -26,7 +26,7 @@ public class DTOMapperTest {
         // create Message
         Message message = new Message();
         message.setUsername("username");
-        message.setMessage("message");
+        message.setMessageBody("message");
         message.setMessageType(MessageType.NORMAL);
 
         // MAP -> Create user
@@ -34,7 +34,7 @@ public class DTOMapperTest {
 
         // check content
         assertEquals(message.getUsername(), chat.getUsername());
-        assertEquals(message.getMessage(), chat.getMessage());
+        assertEquals(message.getMessageBody(), chat.getMessage());
         assertEquals(message.getMessageType(), chat.getMessageType());
     }
 
@@ -48,7 +48,7 @@ public class DTOMapperTest {
         Message message = DTOMapper.INSTANCE.convertChatPostDTOtoEntity(chat);
 
         // check content
-        assertEquals(chat.getMessage(), message.getMessage());
+        assertEquals(chat.getMessage(), message.getMessageBody());
     }
 
 

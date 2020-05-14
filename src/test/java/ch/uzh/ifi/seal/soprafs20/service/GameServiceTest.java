@@ -191,6 +191,7 @@ class GameServiceTest {
     @Test
     void createGame_success() {
         Bot testBot = new Bot();
+        testBot.setId(1337L);
         Lobby testLobby = new Lobby();
         testLobby.setLobbyToken("LOBBY_TOKEN");
         testLobby.getPlayerList().add(testUser);
@@ -378,8 +379,6 @@ class GameServiceTest {
         assertFalse(testGame.getPlayerList().contains(testUser));
         Mockito.verify(gameRepository, Mockito.times(1)).delete(testGame);
     }
-
-    //TODO if we check if game and user token are valid we need two more test.
 
     @Test
     void addClue_success() {

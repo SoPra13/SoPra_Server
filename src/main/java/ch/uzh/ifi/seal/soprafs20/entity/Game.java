@@ -49,24 +49,24 @@ public class Game implements Serializable {
     private Boolean botsClueGiven;
 
     @ElementCollection
-    private List<String> mysteryWords = new ArrayList<String>();
+    private List<String> mysteryWords = new ArrayList<>();
 
     @ElementCollection
     private List<Integer> voteList = new ArrayList<>();
 
     @ElementCollection
-    private List<String> clueList = new ArrayList<String>();
+    private List<String> clueList = new ArrayList<>();
 
     @ElementCollection
-    private List<String> checkList = new ArrayList<String>();
+    private List<String> checkList = new ArrayList<>();
 
     @OneToMany(mappedBy = "game")
     @JsonBackReference
-    private List<User> playerList = new ArrayList<User>();
+    private List<User> playerList = new ArrayList<>();
 
     @OneToMany(mappedBy = "game")
     @JsonBackReference
-    private List<Bot> botList = new ArrayList<Bot>();
+    private List<Bot> botList = new ArrayList<>();
 
 
     public Long getId() {

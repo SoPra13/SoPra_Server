@@ -34,27 +34,8 @@ public class WordService {
         }
     }
 
-    //  TODO dead code ?
-    /*private static ArrayList<LinkedTreeMap<String, String>> trimArrayList(ArrayList<LinkedTreeMap<String, String>> oldList, int trimTo) {
-        ArrayList<LinkedTreeMap<String, String>> newList = new ArrayList<>();
-        if (oldList.size() > trimTo) {
-            for (int i = 0; i < trimTo; i++) {
-                newList.add(oldList.get(i));
-            }
-            return newList;
-        }
-        return oldList;
-    }
-
-    private static ArrayList<LinkedTreeMap<String, String>> removeAllSimilarWordsFromRequest(String similarWordToRemove, ArrayList<LinkedTreeMap<String, String>> oldList) {
-        ArrayList<LinkedTreeMap<String, String>> newList = new ArrayList<>();
-        for (LinkedTreeMap<String, String> word : oldList) {
-            if (!isSimilar(word.get("word"), similarWordToRemove)) {
-                newList.add(word);
-            }
-        }
-        return newList;
-    }*/
+    //trimArrayList() {commit: 81a7cd97dfaa31a4c50e7ccb42a535b80c3fb941}
+    //removeAllSimilarWordsFromRequest() { commit: 81a7cd97dfaa31a4c50e7ccb42a535b80c3fb941}
 
     private static ArrayList<LinkedTreeMap<String, String>> removeMultiWords(ArrayList<LinkedTreeMap<String, String>> oldList) {
         ArrayList<LinkedTreeMap<String, String>> newList = new ArrayList<>();
@@ -98,8 +79,8 @@ public class WordService {
             return true;
         }
         else
-            return word1request.get(0).containsKey(DEF_HEADWORD) && word2request.get(0).containsKey(DEF_HEADWORD) &&
-                    word1request.get(0).get(DEF_HEADWORD).equals(word2request.get(0).get(DEF_HEADWORD));
+            return (word1request.get(0).containsKey(DEF_HEADWORD) && word2request.get(0).containsKey(DEF_HEADWORD) &&
+                    word1request.get(0).get(DEF_HEADWORD).equals(word2request.get(0).get(DEF_HEADWORD)));
     }
 
 

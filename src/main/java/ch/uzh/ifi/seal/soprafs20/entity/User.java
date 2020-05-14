@@ -72,6 +72,12 @@ public class User implements Serializable {
     @Column
     private Integer totalScore;
 
+    @Column
+    private boolean inGameTab;
+
+    @Column
+    private long isInGameTabCycle;
+
     @ManyToOne
     @JsonManagedReference
     @JsonIgnore
@@ -81,6 +87,22 @@ public class User implements Serializable {
     @JsonManagedReference
     @JsonIgnore
     private Game game;
+
+    public boolean isInGameTab() {
+        return inGameTab;
+    }
+
+    public void setInGameTab(boolean inGameTab) {
+        this.inGameTab = inGameTab;
+    }
+
+    public long getIsInGameTabCycle() {
+        return isInGameTabCycle;
+    }
+
+    public void setIsInGameTabCycle(long isInGameTabCycle) {
+        this.isInGameTabCycle = isInGameTabCycle;
+    }
 
     public void setUnityReady(boolean unityReady) {
         this.unityReady = unityReady;
