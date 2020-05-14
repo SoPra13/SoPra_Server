@@ -8,8 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class WordFileHandlerTest {
 
@@ -39,4 +38,12 @@ class WordFileHandlerTest {
 
         assertTrue(wordList.isEmpty());
     }*/
+
+   @Test
+    void constructor(){
+
+       Exception exception = assertThrows(IllegalStateException.class,
+               () -> WordFileHandler.testWordFileHandler());
+
+   }
 }

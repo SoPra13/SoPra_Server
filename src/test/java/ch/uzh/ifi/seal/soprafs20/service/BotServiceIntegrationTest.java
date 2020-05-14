@@ -117,6 +117,14 @@ public class BotServiceIntegrationTest {
 
         assertNull(testBot.getGame());
     }
+
+    @Test
+    public void getAvatar(){
+
+        int avatar = testBot.getAvatar();
+
+        assertNotNull(avatar);
+    }
 }
 
 

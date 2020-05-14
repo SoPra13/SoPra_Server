@@ -17,7 +17,7 @@ public final class WordFileHandler {
     private WordFileHandler() {
         throw new IllegalStateException("Utility class");
     }
-
+    public static void testWordFileHandler(){new WordFileHandler();}
     //reads random Block of 5 words from txt file and puts them into a list
     public static List<String> getMysteryWords() {
         List<String> clues = new ArrayList<>();
