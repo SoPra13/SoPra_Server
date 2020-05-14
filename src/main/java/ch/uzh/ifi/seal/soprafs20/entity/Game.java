@@ -34,6 +34,9 @@ public class Game implements Serializable {
     private String topic;
 
     @Column
+    private String guess;
+
+    @Column
     private Boolean guessCorrect;
 
     @Column
@@ -104,6 +107,14 @@ public class Game implements Serializable {
 
     public void setTopic(String topic) {
         this.topic = topic;
+    }
+
+    public String getGuess() {
+        return guess;
+    }
+
+    public void setGuess(String guess) {
+        this.guess = guess;
     }
 
     public Integer getCurrentRound() {

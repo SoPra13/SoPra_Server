@@ -106,6 +106,7 @@ public class GameService {
         newGame.setToken(lobby.getLobbyToken());
         newGame.setCurrentRound(0);
         newGame.setVersion(1);
+        newGame.setGuess(null);
         newGame.getClueList().clear();
         newGame.setVoteList(new ArrayList<>(Collections.nCopies(5, 0)));
         newGame.getChecklist().clear();
@@ -264,6 +265,7 @@ public class GameService {
         User user = userService.getUserFromToken(userToken);
         Game game = gameRepository.findByToken(gameToken);
         game.setGuessGiven(true);
+        game.setGuess(guess);
         if (!guess.equals("null")) {
             user.addGuessesMade();
             if (game.getTopic().equalsIgnoreCase(guess)) {
@@ -274,6 +276,8 @@ public class GameService {
             else {
                 game.setGuessCorrect(false);
             }
+        }else{
+            game.setGuess("no guess given");
         }
         log.info("GuessCorrect: " + game.getGuessCorrect());
         return game;
