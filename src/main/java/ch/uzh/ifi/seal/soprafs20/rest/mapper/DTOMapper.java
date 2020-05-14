@@ -23,11 +23,11 @@ public interface DTOMapper {
     DTOMapper INSTANCE = Mappers.getMapper(DTOMapper.class);
 
     @Mapping(source = "username", target = "username")
-    @Mapping(source = "message", target = "message")
+    @Mapping(source = "messageBody", target = "message")
     @Mapping(source = "messageType", target = "messageType")
     ChatGetDTO convertEntityToChatGetDTO(Message message);
 
-    @Mapping(source = "message", target = "message")
+    @Mapping(source = "message", target = "messageBody")
     Message convertChatPostDTOtoEntity(ChatPostDTO chatPostDTO);
 
     @Mapping(source = "password", target = "password")
