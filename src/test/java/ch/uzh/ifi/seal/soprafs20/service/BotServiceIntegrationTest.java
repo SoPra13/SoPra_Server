@@ -2,24 +2,34 @@ package ch.uzh.ifi.seal.soprafs20.service;
 
 import ch.uzh.ifi.seal.soprafs20.constant.Difficulty;
 import ch.uzh.ifi.seal.soprafs20.entity.Bot;
+import ch.uzh.ifi.seal.soprafs20.entity.Game;
 import ch.uzh.ifi.seal.soprafs20.repository.BotRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class BotServiceTest {
+@WebAppConfiguration
+@SpringBootTest
+@Transactional
+public class BotServiceIntegrationTest {
 
-    @Mock
+    @Qualifier("botRepository")
+    @Autowired
     private BotRepository botRepository;
 
-    @InjectMocks
+    @Autowired
     private BotService botService;
 
     private Bot testBot;
@@ -29,16 +39,12 @@ public class BotServiceTest {
         MockitoAnnotations.initMocks(this);
 
         // given
-        testBot = new Bot();
-        testBot.setId(1L);
-        testBot.setBotName("NAME");
-        testBot.setToken("TOKEN");
-        testBot.setDifficulty(Difficulty.NEUTRAL);
+        testBot = botService.createBot("NEUTRAL");
+    }
 
-        Mockito.when(botRepository.save(Mockito.any())).thenReturn(testBot);
-        Mockito.when(botRepository.findByToken("TOKEN")).thenReturn(testBot);
-
-
+    @AfterEach
+    void clear() {
+        botRepository.deleteAll();
     }
 
     @Test
@@ -78,6 +84,38 @@ public class BotServiceTest {
                 botService.getBotFromToken("INVALID_TOKEN"));
 
         assertEquals("404 NOT_FOUND \"There is no Bot with requested Token\"", exception.getMessage());
+    }
+
+    @Test
+    void deleteBot() {
+        botService.deleteBot(testBot.getToken());
+
+        assertNull(botRepository.findByToken(testBot.getToken()));
+    }
+
+    @Test
+    void botClue_FRIEND() {
+
+        String clue = botService.botClue(Difficulty.FRIEND, "topic");
+
+        assertNotNull(clue);
+    }
+
+    @Test
+    void botClue_HOSTILE() {
+
+        String clue = botService.botClue(Difficulty.HOSTILE, "topic");
+
+        assertNotNull(clue);
+    }
+
+    @Test
+    void leaveGame(){
+        testBot.setGame(new Game());
+
+        botService.leaveGame(testBot);
+
+        assertNull(testBot.getGame());
     }
 }
 
