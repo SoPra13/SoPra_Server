@@ -101,12 +101,12 @@ public class UserService {
         User repoUser = userRepository.findByUsername(user.getUsername());
 
         String baseErrorMessage = "Login unsuccessful.";
-        if ((repoUser.getUsername().equals(user.getUsername())) && (repoUser.getPassword().equals(user.getPassword()))) {
-            repoUser.setStatus(UserStatus.ONLINE);
-            return repoUser.getToken();
+        if (repoUser == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, baseErrorMessage);
         }
         else {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, baseErrorMessage);
+            repoUser.setStatus(UserStatus.ONLINE);
+            return repoUser.getToken();
         }
     }
 
@@ -178,7 +178,7 @@ public class UserService {
         new Thread(() -> {
             try {
                 Thread.sleep(3000);
-                if (finalCurrentCycle == getUserCurrentTabCycle(userToken)) setUserInGameTab(userToken, false);
+                if (finalCurrentCycle >= getUserCurrentTabCycle(userToken)) setUserInGameTab(userToken, false);
             }
             catch (InterruptedException e) {
                 log.error("Thread interrupted: ", e);
