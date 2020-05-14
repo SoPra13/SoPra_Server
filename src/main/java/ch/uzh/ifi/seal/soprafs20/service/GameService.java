@@ -6,6 +6,7 @@ import ch.uzh.ifi.seal.soprafs20.entity.Game;
 import ch.uzh.ifi.seal.soprafs20.entity.Lobby;
 import ch.uzh.ifi.seal.soprafs20.entity.User;
 import ch.uzh.ifi.seal.soprafs20.helpers.WordFileHandler;
+import ch.uzh.ifi.seal.soprafs20.repository.BotRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.GameRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +39,7 @@ public class GameService {
 
     private final Logger log = LoggerFactory.getLogger(GameService.class);
     private final GameRepository gameRepository;
+    private final BotRepository botRepository;
 
 
     @Autowired
@@ -45,11 +47,13 @@ public class GameService {
                        ChatService chatService,
                        BotService botService,
                        LobbyService lobbyService,
-                       @Qualifier("gameRepository") GameRepository gameRepository) {
+                       @Qualifier("gameRepository") GameRepository gameRepository,
+                       @Qualifier("botRepository") BotRepository botRepository) {
         this.userService = userService;
         this.botService = botService;
         this.lobbyService = lobbyService;
         this.gameRepository = gameRepository;
+        this.botRepository = botRepository;
     }
 
 
@@ -325,11 +329,11 @@ public class GameService {
 
         if (game.getPlayerList().isEmpty()) {
             lobby.setLobbyState(LobbyStatus.OPEN);
-            //  use for with index iter when modifying concurrent objects
-            for (int i = 0; i < game.getBotList().size(); i++) {
-                botService.leaveGame(game.getBotList().get(i));
-                game.removeBot(game.getBotList().get(i));
+            //  use for loop with index iter or dont modifying concurrent objects
+            for (Bot bot : game.getBotList()) {
+                botRepository.delete(bot);
             }
+            game.getBotList().clear();
             gameRepository.delete(game);
         }
     }

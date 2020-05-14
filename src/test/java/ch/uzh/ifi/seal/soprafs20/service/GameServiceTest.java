@@ -8,6 +8,7 @@ import ch.uzh.ifi.seal.soprafs20.entity.Game;
 import ch.uzh.ifi.seal.soprafs20.entity.Lobby;
 import ch.uzh.ifi.seal.soprafs20.entity.User;
 import ch.uzh.ifi.seal.soprafs20.helpers.WordFileHandler;
+import ch.uzh.ifi.seal.soprafs20.repository.BotRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.GameRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,6 +32,8 @@ class GameServiceTest {
 
     @Mock
     private GameRepository gameRepository;
+    @Mock
+    private BotRepository botRepository;
     @Mock
     private UserService userService;
     @Mock
@@ -589,7 +592,7 @@ class GameServiceTest {
         testLobby.setLobbyState(LobbyStatus.INGAME);
         testUser.setGamesPlayed(0);
         Mockito.when(lobbyService.getLobbyFromToken(testGame.getToken())).thenReturn(testLobby);
-        Mockito.doNothing().when(botService).leaveGame(testBot);
+        Mockito.doNothing().when(botRepository).delete(testBot);
 
         gameService.endGame(testGame.getToken(), testUser.getToken());
 
@@ -597,7 +600,7 @@ class GameServiceTest {
         assertFalse(testGame.getPlayerList().contains(testUser));
         assertEquals(LobbyStatus.OPEN, testLobby.getLobbyState());
         assertTrue(testGame.getBotList().isEmpty());
-        Mockito.verify(botService, Mockito.times(1)).leaveGame(testBot);
+        Mockito.verify(botRepository, Mockito.times(1)).delete(testBot);
     }
 
 }
