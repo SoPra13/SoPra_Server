@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.nio.file.Paths;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class WordFileHandlerTest {
@@ -22,7 +23,7 @@ class WordFileHandlerTest {
     void getMysteryWords_success() {
         List<String> wordList = WordFileHandler.getMysteryWords();
 
-        assertTrue(65 <= wordList.size());
+        assertEquals(65, wordList.size());
     }
 
 //  This test runs perfectly normal on local system. only during deployment when testing on SonarQube it fails

@@ -104,7 +104,6 @@ public class BotService {
     }
 
     public void leaveGame(Bot bot) {
-
         bot.setGame(null);
     }
 
