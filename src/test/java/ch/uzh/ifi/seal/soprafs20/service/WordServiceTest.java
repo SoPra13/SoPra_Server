@@ -1,6 +1,5 @@
 package ch.uzh.ifi.seal.soprafs20.service;
 
-import ch.uzh.ifi.seal.soprafs20.helpers.WordFileHandler;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -73,7 +72,7 @@ class WordServiceTest {
     }
 
     @Test
-    void constructor(){
+    void constructor() {
 
         Exception exception = assertThrows(IllegalStateException.class,
                 () -> WordService.testWordService());

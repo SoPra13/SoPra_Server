@@ -25,7 +25,7 @@ class LobbyRepositoryTest {
     private Lobby lobby;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         // given
         lobby = new Lobby();
         lobby.setLobbyName("LobbyName");

@@ -9,8 +9,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -110,7 +108,7 @@ public class BotServiceIntegrationTest {
     }
 
     @Test
-    void leaveGame(){
+    void leaveGame() {
         testBot.setGame(new Game());
 
         botService.leaveGame(testBot);
@@ -119,7 +117,7 @@ public class BotServiceIntegrationTest {
     }
 
     @Test
-    public void getAvatar(){
+    public void getAvatar() {
 
         int avatar = testBot.getAvatar();
 

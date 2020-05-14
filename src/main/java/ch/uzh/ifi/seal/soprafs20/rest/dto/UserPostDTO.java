@@ -5,6 +5,7 @@ public class UserPostDTO {
     private String password;
 
     private String username;
+    private Integer avatar;
 
     public Integer getAvatar() {
         return avatar;
@@ -13,8 +14,6 @@ public class UserPostDTO {
     public void setAvatar(Integer avatar) {
         this.avatar = avatar;
     }
-
-    private Integer avatar;
 
     public String getPassword() {
         return password;

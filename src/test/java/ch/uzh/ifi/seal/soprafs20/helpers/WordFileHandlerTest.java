@@ -8,15 +8,14 @@ import org.slf4j.LoggerFactory;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class WordFileHandlerTest {
 
+    static final Logger log = LoggerFactory.getLogger(WordFileHandler.class);
     @Mock
     Paths paths;
-
-    static final Logger log = LoggerFactory.getLogger(WordFileHandler.class);
-
 
     @Test
     void getMysteryWords_success() {
@@ -39,11 +38,11 @@ class WordFileHandlerTest {
         assertTrue(wordList.isEmpty());
     }*/
 
-   @Test
-    void constructor(){
+    @Test
+    void constructor() {
 
-       Exception exception = assertThrows(IllegalStateException.class,
-               () -> WordFileHandler.testWordFileHandler());
+        Exception exception = assertThrows(IllegalStateException.class,
+                () -> WordFileHandler.testWordFileHandler());
 
-   }
+    }
 }

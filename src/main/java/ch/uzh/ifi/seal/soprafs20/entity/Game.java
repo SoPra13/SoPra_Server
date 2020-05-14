@@ -161,12 +161,12 @@ public class Game implements Serializable {
         return playerList;
     }
 
-    public void removePlayer(User user) {
-        playerList.remove(user);
-    }
-
     public void setPlayerList(List<User> playerList) {
         this.playerList = playerList;
+    }
+
+    public void removePlayer(User user) {
+        playerList.remove(user);
     }
 
     public List<Bot> getBotList() {

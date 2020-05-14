@@ -1,6 +1,5 @@
 package ch.uzh.ifi.seal.soprafs20.service;
 
-import ch.uzh.ifi.seal.soprafs20.helpers.WordFileHandler;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
@@ -24,7 +23,10 @@ public class WordService {
     private WordService() {
         throw new IllegalStateException("Utility class");
     }
-    public static void testWordService(){new WordService();}
+
+    public static void testWordService() {
+        new WordService();
+    }
 
     private static ArrayList<LinkedTreeMap<String, String>> getRequest(String url) {
         try {

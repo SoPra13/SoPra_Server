@@ -29,7 +29,7 @@ public class LeaderboardService {
         users.sort(getComparator(by).reversed());
         ArrayList<TreeMap<String, String>> leaderboard = new ArrayList<>();
         int rank = 1;
-        for (User user: users) {
+        for (User user : users) {
             TreeMap<String, String> jsonUser = new TreeMap<>();
             jsonUser.put("rank", Integer.toString(rank));
             jsonUser.put("username", user.getUsername());

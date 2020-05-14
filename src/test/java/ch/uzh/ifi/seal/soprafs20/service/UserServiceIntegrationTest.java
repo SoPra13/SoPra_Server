@@ -3,14 +3,12 @@ package ch.uzh.ifi.seal.soprafs20.service;
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.User;
 import ch.uzh.ifi.seal.soprafs20.repository.UserRepository;
-import org.aspectj.lang.annotation.After;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -40,10 +38,10 @@ public class UserServiceIntegrationTest {
 
     @BeforeEach
     public void setup() {
-    testUser = new User();
-    testUser.setPassword("testPassword");
-    testUser.setUsername("testUsername");
-    testUser = userService.createUser(testUser);
+        testUser = new User();
+        testUser.setPassword("testPassword");
+        testUser.setUsername("testUsername");
+        testUser = userService.createUser(testUser);
 
     }
 
@@ -74,7 +72,7 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
-    public void getAll(){
+    public void getAll() {
         List<User> all = userService.getUsers();
 
         assertNotNull(all);
@@ -96,7 +94,7 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
-    public void loginUser_success(){
+    public void loginUser_success() {
 
         userService.loginUser(testUser);
 
@@ -104,13 +102,13 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
-    public void loginUser_failed(){
+    public void loginUser_failed() {
 
         assertThrows(ResponseStatusException.class, () -> userService.loginUser(new User()));
     }
 
     @Test
-    public void logoutUser_success(){
+    public void logoutUser_success() {
 
         userService.logoutUser(testUser.getToken());
 
@@ -118,13 +116,13 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
-    public void logoutUser_failed(){
+    public void logoutUser_failed() {
 
         assertThrows(ResponseStatusException.class, () -> userService.logoutUser("wrongToken"));
     }
 
     @Test
-    public void updateUser_success(){
+    public void updateUser_success() {
         testUser.setUsername("newUserName");
 
         userService.updateUser(testUser);
@@ -133,14 +131,14 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
-    public void updateUser_failed(){
+    public void updateUser_failed() {
         testUser.setToken("wrongToken");
 
         assertThrows(ResponseStatusException.class, () -> userService.updateUser(new User()));
     }
 
     @Test
-    public void leaveLobby_success(){
+    public void leaveLobby_success() {
 
         userService.leaveLobby(testUser);
 
@@ -149,7 +147,7 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
-    public void setUserInGameTab_success(){
+    public void setUserInGameTab_success() {
 
         userService.setUserInGameTab(testUser.getToken(), true);
 
@@ -157,7 +155,7 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
-    public void updateIsInGameTab_success(){
+    public void updateIsInGameTab_success() {
 
         userService.updateIsInGameTab(testUser.getToken());
 
@@ -165,20 +163,10 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
-    public void updateIsInGameTab_failed(){
+    public void updateIsInGameTab_failed() {
         testUser.setIsInGameTabCycle(2L);
         userService.updateIsInGameTab(testUser.getToken());
-        new Thread(() -> {
-            try {
-                Thread.sleep(1000);
-                testUser.setIsInGameTabCycle(0L);
-            }
-            catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User cant be updated anymore.");
-            }
-        }).start();
-
+        testUser.setIsInGameTabCycle(0L);
         assertTrue(userRepository.findByToken(testUser.getToken()).isInGameTab());
     }
 }

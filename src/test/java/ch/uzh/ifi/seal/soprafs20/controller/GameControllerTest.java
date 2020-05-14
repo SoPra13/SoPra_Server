@@ -265,7 +265,7 @@ class GameControllerTest {
                 put("/game/leave?gameToken=Token_Aa0Bb1&userToken=USER_TOKEN")
                         .contentType(MediaType.APPLICATION_JSON);
         mockMvc.perform(putRequest).andExpect(status().isOk());
-        verify(gameService,times(1)).endGame(anyString(), anyString());
+        verify(gameService, times(1)).endGame(anyString(), anyString());
     }
 
 }
