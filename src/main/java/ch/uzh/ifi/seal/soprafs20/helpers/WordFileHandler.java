@@ -16,24 +16,20 @@ public final class WordFileHandler {
     //reads random Block of 5 words from txt file and puts them into a list
     public static List<String> getMysteryWords() {
         List<String> clues = new ArrayList<>();
+        List<String> fileLines = null;
         try {
-            List<String> fileLines = Files.readAllLines(Paths.get("src/Cards_serious_words-EN.txt"));
-            while (clues.size() < 65) {
-                int startLine = new Random().nextInt(936);
-                startLine = startLine * 6;
-                for (int i = startLine; i <= startLine + 4; i++) {
-                    String word = fileLines.get(i);
-                    if (clues.contains(word)) {
-                        break;
-                    }
-                    clues.add(word);
-                }
-            }
-            log.info(clues.toString());
+            fileLines = Files.readAllLines(Paths.get("src/Cards_serious_words-EN.txt"));
         }
-        catch (IOException e) {
-            log.error("file could not be read", e);
+        catch (IOException ex) {
+            log.error("file could not be read", ex);
+            return clues;
         }
+        List<Integer> cards = new ArrayList<>();
+        while (cards.size() < 13) cards.add(new Random().nextInt(fileLines.size() / 6));
+        for (int i : cards) {
+            for (int j = i * 6; j <= i * 6 + 4; j++) clues.add(fileLines.get(j));
+        }
+        log.info(clues.toString());
         return clues;
     }
 }
