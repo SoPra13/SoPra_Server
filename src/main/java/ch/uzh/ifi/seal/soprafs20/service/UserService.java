@@ -43,7 +43,6 @@ public class UserService {
         newUser.setStatus(UserStatus.OFFLINE);
         newUser.setUnityReady(false);
         newUser.setLobbyReady(false);
-        newUser.setDarkMode(false);
         newUser.setVoted(false);
         newUser.setInvalidClues(0);
         newUser.setTotalClues(0);

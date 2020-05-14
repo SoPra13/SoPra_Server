@@ -16,7 +16,7 @@ public class Chat {
     @OneToMany()
     private List<Message> messages = new LinkedList<>();
 
-    @OneToMany()
+    @ManyToMany()
     private List<User> loggedInUsers = new LinkedList<>();
 
     public List<User> getUserLoggedIn() {
