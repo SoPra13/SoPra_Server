@@ -189,7 +189,7 @@ public class GameService {
     public synchronized Game addClue(String userToken, String gameToken, String aClue) {
 
         String clue = aClue.toLowerCase();
-        log.info(clue);
+        log.info(clue.replaceAll("[\n|\r|\t]", "_"));
         boolean valid = WordService.isValidWord(clue);
         Game game = gameRepository.findByToken(gameToken);
         User user = userService.getUserFromToken(userToken);
@@ -252,7 +252,7 @@ public class GameService {
     }
 
     public Game makeGuess(String gameToken, String userToken, String guess) {
-        log.info(guess);
+        log.info(guess.replaceAll("[\n|\r|\t]", "_"));
 
         User user = userService.getUserFromToken(userToken);
         Game game = gameRepository.findByToken(gameToken);
