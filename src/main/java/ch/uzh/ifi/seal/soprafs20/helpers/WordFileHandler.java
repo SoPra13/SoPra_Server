@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs20.helpers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -29,6 +30,7 @@ public final class WordFileHandler {
         for (int i : cards) {
             for (int j = i * 6; j <= i * 6 + 4; j++) clues.add(fileLines.get(j));
         }
+        if(clues.size() != 65) log.error("src/Cards_serious_words-EN.txt", new EOFException());
         log.info(clues.toString());
         return clues;
     }
