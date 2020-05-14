@@ -43,6 +43,7 @@ public class UserService {
         newUser.setStatus(UserStatus.OFFLINE);
         newUser.setUnityReady(false);
         newUser.setLobbyReady(false);
+        newUser.setDarkMode(false);
         newUser.setVoted(false);
         newUser.setInvalidClues(0);
         newUser.setTotalClues(0);
@@ -156,6 +157,34 @@ public class UserService {
     public void leaveLobby(User user) {
         user.setLobby(null);
         user.setLobbyReady(false);
+    }
+
+    private long getUserCurrentTabCycle(String userToken) {
+        return getUserFromToken(userToken).getIsInGameTabCycle();
+    }
+
+    public void setUserInGameTab(String userToken, boolean b) {
+        User user = getUserFromToken(userToken);
+        user.setInGameTab(b);
+        userRepository.save(user);
+    }
+
+    public void updateIsInGameTab(String userToken) {
+        long currentCycle = getUserCurrentTabCycle(userToken);
+        currentCycle++;
+        User user = getUserFromToken(userToken);
+        user.setIsInGameTabCycle(currentCycle);
+        user.setInGameTab(true);
+        long finalCurrentCycle = currentCycle;
+        new Thread(() -> {
+            try {
+                Thread.sleep(3000);
+                if (finalCurrentCycle == getUserCurrentTabCycle(userToken)) setUserInGameTab(userToken, false);
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
 }
