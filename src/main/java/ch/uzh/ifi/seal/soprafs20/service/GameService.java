@@ -93,7 +93,6 @@ public class GameService {
 
     //create new Game based on Lobby
     public Game createGame(Lobby lobby) {
-        String msg;
 
         Game newGame = new Game();
 
@@ -122,17 +121,15 @@ public class GameService {
         //update game of user and add initial position
         for (User user : newGame.getPlayerList()) {
             user.setGame(newGame);
-            log.info("added User to game;");
-            msg = user.getId().toString();
-            log.info(msg);
+            System.out.println("added User to game;");
+            System.out.println(user.getId());
         }
 
         //update game of bot
         for (Bot bot : newGame.getBotList()) {
             bot.setGame(newGame);
-            log.info("added vot to game;");
-            msg = bot.getId().toString();
-            log.info(msg);
+            System.out.println("added vot to game;");
+            System.out.println(bot.getId());
         }
 
 
@@ -197,9 +194,9 @@ public class GameService {
 
     //add clue given by player
     public synchronized Game addClue(String userToken, String gameToken, String aClue) {
+
         String clue = aClue.toLowerCase();
-        String sanitized_msg = clue.replaceAll("[\n|\r|\t]", "_");
-        log.info(sanitized_msg);
+        log.info(clue.replaceAll("[\n|\r|\t]", "_"));
         boolean valid = WordService.isValidWord(clue);
         Game game = gameRepository.findByToken(gameToken);
         User user = userService.getUserFromToken(userToken);
@@ -221,8 +218,7 @@ public class GameService {
 
                     log.info("valid");
                     checklist.add(clue);
-                    String msg = checklist.toString();
-                    log.info(msg);
+                    log.info(checklist.toString());
                 }
                 else {
                     checklist.add(CENSORED);
@@ -251,23 +247,19 @@ public class GameService {
                     checklist.set(i, CENSORED);
                 }
             }
-            String msg = checklist.toString();
-            log.info(msg);
+            log.info(checklist.toString());
 
             //set ClueList to valid clues
             game.getClueList().clear();
             game.getClueList().addAll(checklist);
-            msg = game.getClueList().toString();
-            log.info(msg);
+            log.info(game.getClueList().toString());
         }
 
         return game;
     }
 
     public Game makeGuess(String gameToken, String userToken, String guess) {
-        String msg;
-        String sanitized_msg = guess.replaceAll("[\n|\r|\t]", "_");
-        log.info(sanitized_msg);
+        log.info(guess.replaceAll("[\n|\r|\t]", "_"));
 
         User user = userService.getUserFromToken(userToken);
         Game game = gameRepository.findByToken(gameToken);
@@ -277,15 +269,13 @@ public class GameService {
             if (game.getTopic().equalsIgnoreCase(guess)) {
                 game.setGuessCorrect(true);
                 user.addGuessesCorrect();
-                msg = guess + " was a correct guess.";
-                log.info(msg);
+                log.info(guess + " was a correct guess.");
             }
             else {
                 game.setGuessCorrect(false);
             }
         }
-        msg = "GuessCorrect: " + game.getGuessCorrect();
-        log.info(msg);
+        log.info("GuessCorrect: " + game.getGuessCorrect());
         return game;
     }
 
@@ -348,5 +338,15 @@ public class GameService {
         }
     }
 
-    //    public int numberOfCluesGiven(Game game) {commit: 81a7cd97dfaa31a4c50e7ccb42a535b80c3fb941}
+//    TODO dead code?
+    /*public int numberOfCluesGiven(Game game) {
+        int count = 0;
+
+        for (User user : game.getPlayerList()) {
+            if (user.getGaveClue()) {
+                count += 1;
+            }
+        }
+        return count;
+    }*/
 }

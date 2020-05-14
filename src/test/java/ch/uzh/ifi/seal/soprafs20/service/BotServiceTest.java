@@ -77,7 +77,7 @@ public class BotServiceTest {
         Exception exception = Assertions.assertThrows(ResponseStatusException.class, () ->
                 botService.getBotFromToken("INVALID_TOKEN"));
 
-        assertEquals("404 NOT_FOUND \"There is no Bot with requested Token\"", exception.getMessage());
+        assertEquals(exception.getMessage(), "404 NOT_FOUND \"There is no Bot with requested Token\"");
     }
 }
 

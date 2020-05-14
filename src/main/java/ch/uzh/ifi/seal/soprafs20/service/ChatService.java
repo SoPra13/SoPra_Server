@@ -59,7 +59,7 @@ public class ChatService {
         if (!chat.getUserLoggedIn().contains(user)) {
             chat.addUser(user);
             Message message = new Message();
-            message.setMessageBody(user.getUsername() + " joined Chat.");
+            message.setMessage(user.getUsername() + " joined Chat.");
             message.setMessageType(MessageType.ACTION);
             messageRepository.saveAndFlush(message);
             chat.addMessage(message);

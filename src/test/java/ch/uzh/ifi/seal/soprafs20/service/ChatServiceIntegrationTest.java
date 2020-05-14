@@ -83,7 +83,7 @@ class ChatServiceIntegrationTest {
         testLobby.setLobbyType(LobbyType.PUBLIC);
 
         msg = new Message();
-        msg.setMessageBody("dummyMessage");
+        msg.setMessage("dummyMessage");
         msg.setMessageType(MessageType.ACTION);
         msg.setUsername("dummyName");
 
@@ -131,7 +131,7 @@ class ChatServiceIntegrationTest {
 
         assertTrue(testChat.getUserLoggedIn().contains(testUser));
         assertTrue(testChat.getMessages().stream()
-                .anyMatch(o -> o.getMessageBody().equals(testUser.getUsername()+" joined Chat.")));
+                .anyMatch(o -> o.getMessage().equals(testUser.getUsername()+" joined Chat.")));
     }
 
     @Test
@@ -142,7 +142,7 @@ class ChatServiceIntegrationTest {
 
         assertEquals(1, testChat.getUserLoggedIn().stream().filter(o -> o.getToken().equals(testUser.getToken())).count());
         assertEquals(1, testChat.getMessages().stream()
-                .filter(o -> o.getMessageBody().equals(testUser.getUsername()+" joined Chat.")).count());
+                .filter(o -> o.getMessage().equals(testUser.getUsername()+" joined Chat.")).count());
     }
 
     @Test

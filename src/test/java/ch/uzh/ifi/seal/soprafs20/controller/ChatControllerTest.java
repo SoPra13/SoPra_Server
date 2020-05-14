@@ -92,9 +92,9 @@ class ChatControllerTest {
     @Test
     void get_getMessages() throws Exception {
         Message msg1 = new Message();
-        msg1.setMessageBody("MSG1");
+        msg1.setMessage("MSG1");
         Message msg2 = new Message();
-        msg2.setMessageBody("MSG2");
+        msg2.setMessage("MSG2");
         ArrayList<Message> allMsg = new ArrayList<Message>();
         allMsg.add(msg1);
         allMsg.add(msg2);
@@ -104,7 +104,7 @@ class ChatControllerTest {
         MockHttpServletRequestBuilder getRequest = get("/chat?lobbyToken=Token_Aa0Bb1")
                 .contentType(MediaType.APPLICATION_JSON);
         mockMvc.perform(getRequest).andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].message", is(msg1.getMessageBody())))
-                .andExpect(jsonPath("$[1].message", is(msg2.getMessageBody())));
+                .andExpect(jsonPath("$[0].message", is(msg1.getMessage())))
+                .andExpect(jsonPath("$[1].message", is(msg2.getMessage())));
     }
 }

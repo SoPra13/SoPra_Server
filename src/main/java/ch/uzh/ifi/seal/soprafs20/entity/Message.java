@@ -14,7 +14,7 @@ public class Message implements Serializable {
     @Column(nullable = true)
     private String username;
     @Column(nullable = false)
-    private String messageBody;
+    private String message;
     @Column(nullable = false)
     private MessageType messageType;
 
@@ -26,12 +26,12 @@ public class Message implements Serializable {
         this.messageType = messageType;
     }
 
-    public String getMessageBody() {
-        return messageBody;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMessageBody(String message) {
-        this.messageBody = message;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getUsername() {

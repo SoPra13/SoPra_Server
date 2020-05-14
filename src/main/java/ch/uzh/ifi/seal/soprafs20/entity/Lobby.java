@@ -14,7 +14,7 @@ import java.util.List;
 @Table(name = "LOBBY")
 public class Lobby implements Serializable {
 
-    public static final int maxPlayer = 7;
+    public final int maxPlayer = 7;
 
     private static final long serialVersionUID = 1L;
 
@@ -45,11 +45,11 @@ public class Lobby implements Serializable {
 
     @OneToMany(mappedBy = "lobby")
     @JsonBackReference
-    private List<User> playerList = new ArrayList<>();
+    private List<User> playerList = new ArrayList<User>();
 
     @OneToMany(mappedBy = "lobby")
     @JsonBackReference
-    private List<Bot> botList = new ArrayList<>();
+    private List<Bot> botList = new ArrayList<Bot>();
 
     public Long getId() {
         return id;
@@ -71,8 +71,8 @@ public class Lobby implements Serializable {
         return lobbyName;
     }
 
-    public void setLobbyName(String lobbyName) {
-        this.lobbyName = lobbyName;
+    public void setLobbyName(String lobbyname) {
+        this.lobbyName = lobbyname;
     }
 
     public String getLobbyToken() {
