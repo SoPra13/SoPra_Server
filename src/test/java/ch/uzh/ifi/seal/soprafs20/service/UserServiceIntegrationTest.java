@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs20.service;
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.User;
 import ch.uzh.ifi.seal.soprafs20.repository.UserRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.server.ResponseStatusException;
+
+import javax.transaction.Transactional;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @WebAppConfiguration
 @SpringBootTest
+@Transactional
 public class UserServiceIntegrationTest {
 
     @Qualifier("userRepository")
@@ -29,13 +34,25 @@ public class UserServiceIntegrationTest {
     @Autowired
     private UserService userService;
 
+    private User testUser;
+
     @BeforeEach
     public void setup() {
+        testUser = new User();
+        testUser.setPassword("testPassword");
+        testUser.setUsername("testUsername");
+        testUser = userService.createUser(testUser);
+
+    }
+
+    @AfterEach
+    public void clear() {
         userRepository.deleteAll();
     }
 
     @Test
     public void createUser_validInputs_success() {
+        userRepository.deleteAll();
         // given
         assertNull(userRepository.findByUsername("testUsername"));
 
@@ -55,13 +72,15 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
-    public void createUser_duplicateUsername_throwsException() {
-        assertNull(userRepository.findByUsername("testUsername"));
+    public void getAll() {
+        List<User> all = userService.getUsers();
 
-        User testUser = new User();
-        testUser.setPassword("testPassword");
-        testUser.setUsername("testUsername");
-        User createdUser = userService.createUser(testUser);
+        assertNotNull(all);
+        assertTrue(all.contains(testUser));
+    }
+
+    @Test
+    public void createUser_duplicateUsername_throwsException() {
 
         // attempt to create second user with same username
         User testUser2 = new User();
@@ -72,5 +91,82 @@ public class UserServiceIntegrationTest {
 
         // check that an error is thrown
         assertThrows(ResponseStatusException.class, () -> userService.createUser(testUser2));
+    }
+
+    @Test
+    public void loginUser_success() {
+
+        userService.loginUser(testUser);
+
+        assertEquals(UserStatus.ONLINE, userRepository.findByToken(testUser.getToken()).getStatus());
+    }
+
+    @Test
+    public void loginUser_failed() {
+
+        assertThrows(ResponseStatusException.class, () -> userService.loginUser(new User()));
+    }
+
+    @Test
+    public void logoutUser_success() {
+
+        userService.logoutUser(testUser.getToken());
+
+        assertEquals(UserStatus.OFFLINE, userRepository.findByToken(testUser.getToken()).getStatus());
+    }
+
+    @Test
+    public void logoutUser_failed() {
+
+        assertThrows(ResponseStatusException.class, () -> userService.logoutUser("wrongToken"));
+    }
+
+    @Test
+    public void updateUser_success() {
+        testUser.setUsername("newUserName");
+
+        userService.updateUser(testUser);
+
+        assertEquals(testUser.getUsername(), userRepository.findByToken(testUser.getToken()).getUsername());
+    }
+
+    @Test
+    public void updateUser_failed() {
+        testUser.setToken("wrongToken");
+
+        assertThrows(ResponseStatusException.class, () -> userService.updateUser(new User()));
+    }
+
+    @Test
+    public void leaveLobby_success() {
+
+        userService.leaveLobby(testUser);
+
+        assertNull(testUser.getLobby());
+        assertFalse(testUser.isLobbyReady());
+    }
+
+    @Test
+    public void setUserInGameTab_success() {
+
+        userService.setUserInGameTab(testUser.getToken(), true);
+
+        assertTrue(userRepository.findByToken(testUser.getToken()).isInGameTab());
+    }
+
+    @Test
+    public void updateIsInGameTab_success() {
+
+        userService.updateIsInGameTab(testUser.getToken());
+
+        assertTrue(userRepository.findByToken(testUser.getToken()).isInGameTab());
+    }
+
+    @Test
+    public void updateIsInGameTab_failed() {
+        testUser.setIsInGameTabCycle(2L);
+        userService.updateIsInGameTab(testUser.getToken());
+        testUser.setIsInGameTabCycle(0L);
+        assertTrue(userRepository.findByToken(testUser.getToken()).isInGameTab());
     }
 }

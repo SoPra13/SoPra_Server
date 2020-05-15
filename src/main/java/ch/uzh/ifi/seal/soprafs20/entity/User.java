@@ -120,20 +120,20 @@ public class User implements Serializable {
         return lobbyReady;
     }
 
-    public void setGaveClue(boolean gaveClue) {
-        this.gaveClue = gaveClue;
-    }
-
     public Boolean getGaveClue() {
         return gaveClue;
     }
 
-    public void setVoted(boolean voted) {
-        this.voted = voted;
+    public void setGaveClue(boolean gaveClue) {
+        this.gaveClue = gaveClue;
     }
 
     public Boolean getVoted() {
         return voted;
+    }
+
+    public void setVoted(boolean voted) {
+        this.voted = voted;
     }
 
     public Long getId() {

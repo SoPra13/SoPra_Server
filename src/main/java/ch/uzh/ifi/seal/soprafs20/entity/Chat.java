@@ -47,11 +47,11 @@ public class Chat {
         this.active = active;
     }
 
-    public void setLobbyToken(String lobbyToken) {
-        this.lobbyToken = lobbyToken;
-    }
-
     public String getLobbyToken() {
         return lobbyToken;
+    }
+
+    public void setLobbyToken(String lobbyToken) {
+        this.lobbyToken = lobbyToken;
     }
 }

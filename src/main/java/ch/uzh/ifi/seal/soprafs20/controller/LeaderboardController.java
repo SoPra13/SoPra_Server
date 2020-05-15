@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class LeaderboardController {
     LeaderboardService leaderboardService;
 
-    LeaderboardController(LeaderboardService leaderboardService){
+    LeaderboardController(LeaderboardService leaderboardService) {
         this.leaderboardService = leaderboardService;
     }
 

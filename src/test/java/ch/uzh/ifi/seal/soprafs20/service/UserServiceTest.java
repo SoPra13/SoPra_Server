@@ -67,7 +67,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void resetUser(){
+    public void resetUser() {
 
         userService.resetUser(testUser);
 

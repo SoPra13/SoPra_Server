@@ -67,8 +67,8 @@ public class UserService {
      * This is a helper method that will check the uniqueness criteria of the username and the name
      * defined in the User entity. The method will do nothing if the input is unique and throw an error otherwise.
      *
-     * @param userToBeCreated   this Entity will be check if it exist in the database
-     * @throws org.springframework.web.server.ResponseStatusException   if nothing can be found throw exception
+     * @param userToBeCreated this Entity will be check if it exist in the database
+     * @throws org.springframework.web.server.ResponseStatusException if nothing can be found throw exception
      * @see User
      */
 
@@ -101,12 +101,12 @@ public class UserService {
         User repoUser = userRepository.findByUsername(user.getUsername());
 
         String baseErrorMessage = "Login unsuccessful.";
-        if ((repoUser.getUsername().equals(user.getUsername())) && (repoUser.getPassword().equals(user.getPassword()))) {
-            repoUser.setStatus(UserStatus.ONLINE);
-            return repoUser.getToken();
+        if (repoUser == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, baseErrorMessage);
         }
         else {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, baseErrorMessage);
+            repoUser.setStatus(UserStatus.ONLINE);
+            return repoUser.getToken();
         }
     }
 
@@ -178,7 +178,7 @@ public class UserService {
         new Thread(() -> {
             try {
                 Thread.sleep(3000);
-                if (finalCurrentCycle == getUserCurrentTabCycle(userToken)) setUserInGameTab(userToken, false);
+                if (finalCurrentCycle >= getUserCurrentTabCycle(userToken)) setUserInGameTab(userToken, false);
             }
             catch (InterruptedException e) {
                 log.error("Thread interrupted: ", e);

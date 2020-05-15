@@ -27,7 +27,7 @@ class BotRepositoryTest {
     private Bot bot;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         bot = new Bot();
         bot.setBotName("BotName");
         bot.setToken("1");
@@ -50,6 +50,7 @@ class BotRepositoryTest {
         assertEquals(found.getToken(), bot.getToken());
         assertEquals(found.getDifficulty(), bot.getDifficulty());
     }
+
     @Test
     public void findByBotName_failed() {
         // when
@@ -58,6 +59,7 @@ class BotRepositoryTest {
         // then
         assertNull(found);
     }
+
     @Test
     public void findByToken_success() {
         // when
@@ -69,6 +71,7 @@ class BotRepositoryTest {
         assertEquals(found.getToken(), bot.getToken());
         assertEquals(found.getDifficulty(), bot.getDifficulty());
     }
+
     @Test
     public void findByToken_failed() {
         // when

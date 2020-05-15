@@ -100,6 +100,7 @@ public class BotService {
         if (difficulty == Difficulty.FRIEND || (difficulty == Difficulty.NEUTRAL && new Random().nextBoolean())) {
             clue = WordService.getGoodWord(topic);
             msg = "good clue: " + clue;
+            log.debug("test");
             log.info(msg);
         }
         else {

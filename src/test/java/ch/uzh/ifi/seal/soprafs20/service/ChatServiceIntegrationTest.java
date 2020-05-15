@@ -11,16 +11,13 @@ import ch.uzh.ifi.seal.soprafs20.repository.ChatRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.LobbyRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.MessageRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.UserRepository;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import java.util.List;
 
@@ -131,7 +128,7 @@ class ChatServiceIntegrationTest {
 
         assertTrue(testChat.getUserLoggedIn().contains(testUser));
         assertTrue(testChat.getMessages().stream()
-                .anyMatch(o -> o.getMessageBody().equals(testUser.getUsername()+" joined Chat.")));
+                .anyMatch(o -> o.getMessageBody().equals(testUser.getUsername() + " joined Chat.")));
     }
 
     @Test
@@ -142,7 +139,7 @@ class ChatServiceIntegrationTest {
 
         assertEquals(1, testChat.getUserLoggedIn().stream().filter(o -> o.getToken().equals(testUser.getToken())).count());
         assertEquals(1, testChat.getMessages().stream()
-                .filter(o -> o.getMessageBody().equals(testUser.getUsername()+" joined Chat.")).count());
+                .filter(o -> o.getMessageBody().equals(testUser.getUsername() + " joined Chat.")).count());
     }
 
     @Test

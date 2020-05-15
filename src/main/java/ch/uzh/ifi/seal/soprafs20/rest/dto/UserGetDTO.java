@@ -25,13 +25,12 @@ public class UserGetDTO {
     private Integer duplicateClues;
     private Integer totalScore;
 
+    public Integer getAvatar() {
+        return avatar;
+    }
 
     public void setAvatar(Integer avatar) {
         this.avatar = avatar;
-    }
-
-    public Integer getAvatar() {
-        return avatar;
     }
 
     public Long getId() {
@@ -98,20 +97,20 @@ public class UserGetDTO {
         return lobbyReady;
     }
 
-    public void setVoted(boolean voted) {
-        this.voted = voted;
-    }
-
     public Boolean getVoted() {
         return voted;
     }
 
-    public void setGaveClue(boolean gaveClue) {
-        this.gaveClue = gaveClue;
+    public void setVoted(boolean voted) {
+        this.voted = voted;
     }
 
     public Boolean getGaveClue() {
         return gaveClue;
+    }
+
+    public void setGaveClue(boolean gaveClue) {
+        this.gaveClue = gaveClue;
     }
 
     public Integer getGamesPlayed() {

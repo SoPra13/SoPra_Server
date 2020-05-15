@@ -23,7 +23,7 @@ class GameRepositoryTest {
     private Game game;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         // given
         game = new Game();
         game.setVersion(0);

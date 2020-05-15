@@ -24,7 +24,7 @@ public class UserRepositoryIntegrationTest {
     private User user;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         // given
         user = new User();
         user.setPassword("password");

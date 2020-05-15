@@ -23,7 +23,7 @@ class ChatRepositoryTest {
     private Chat testChat;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         Chat testChat = new Chat();
         testChat.setLobbyToken("lobbyToken");
         testChat.setActive(true);

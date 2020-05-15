@@ -69,6 +69,13 @@ class WordServiceTest {
         assertFalse(WordService.isValidWord(empty));
         assertFalse(WordService.isValidWord(format));
         assertFalse(WordService.isValidWord(end));
+    }
+
+    @Test
+    void constructor() {
+
+        Exception exception = assertThrows(IllegalStateException.class,
+                () -> WordService.testWordService());
 
     }
 }
