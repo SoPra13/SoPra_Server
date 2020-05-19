@@ -101,7 +101,7 @@ public class UserService {
         User repoUser = userRepository.findByUsername(user.getUsername());
 
         String baseErrorMessage = "Login unsuccessful.";
-        if (repoUser == null) {
+        if (repoUser == null || repoUser.getStatus().equals(UserStatus.ONLINE)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, baseErrorMessage);
         }
         else {

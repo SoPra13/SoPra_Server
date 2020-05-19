@@ -266,7 +266,10 @@ public class User implements Serializable {
     }
 
     public void addTotalScore(Integer score) {
-        this.totalScore += score;
+
+        totalScore += score;
+        System.out.println("A" + totalScore);
+        System.out.println(this.totalScore);
     }
 
     @JsonIgnore

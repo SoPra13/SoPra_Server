@@ -29,7 +29,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class BotService {
-    private static final int BOT_AVATARS = 7;
+    private static final int BOT_AVATARS = 3;
 
     private final Logger log = LoggerFactory.getLogger(BotService.class);
 
@@ -61,7 +61,7 @@ public class BotService {
         msg = "bot name found: " + bot.getBotName();
         log.info(msg);
         Difficulty actualDifficulty = Difficulty.valueOf(difficulty);
-        bot.setAvatar(new Random().nextInt(BOT_AVATARS));
+        bot.setAvatar(BOT_AVATARS);
         bot.setDifficulty(actualDifficulty);
 
         // saves the given entity but data is only persisted in the database once flush() is called

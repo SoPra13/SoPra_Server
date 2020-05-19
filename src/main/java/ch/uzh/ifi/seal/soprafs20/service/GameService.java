@@ -185,7 +185,6 @@ public class GameService {
         game.removePlayer(user);
         userService.leaveGame(user);
 
-
         if (game.getPlayerList().isEmpty()) {
             lobby.setLobbyState(LobbyStatus.OPEN);
             for (Bot bot : game.getBotList()) {
@@ -193,8 +192,6 @@ public class GameService {
             }
             gameRepository.delete(game);
         }
-
-
     }
 
     //add clue given by player
@@ -298,7 +295,6 @@ public class GameService {
         game.setBotsClueGiven(false);
         game.setBotsVoted(false);
 
-
         for (User user : game.getPlayerList()) {
             user.setUnityReady(false);
             user.setVoted(false);
@@ -348,6 +344,11 @@ public class GameService {
             msg = game.getClueList().toString();
             log.info(msg);
         }
+    }
+
+    public void addScore(String userToken, Integer score){
+        User user =userService.getUserFromToken(userToken);
+        user.addTotalScore(score);
     }
 //  this function (numberOfCluesGiven()) was not used but can
 //  be fetch from following commit: 81a7cd97dfaa31a4c50e7ccb42a535b80c3fb941

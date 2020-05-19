@@ -122,4 +122,12 @@ public class GameController {
     }
 
 
+    @PutMapping(value = "/game/score", params = {"userToken", "score"})
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void addScore(@RequestParam String userToken, @RequestParam Integer score) {
+
+        gameService.addScore(userToken,score);
+
+    }
 }

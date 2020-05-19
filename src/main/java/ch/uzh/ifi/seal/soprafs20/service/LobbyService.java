@@ -133,6 +133,11 @@ public class LobbyService {
         lobbyToRemove.setNumberOfPlayers(lobbyToRemove.getPlayerList().size() + lobbyToRemove.getBotList().size());
 
         if (lobbyToRemove.getPlayerList().isEmpty()) {
+            for(int i = 0; i < lobbyToRemove.getBotList().size();i++){
+                Bot bot = lobbyToRemove.getBotList().get(i);
+                lobbyToRemove.removeBot(bot);
+                botService.deleteBot(bot.getToken());
+            }
             lobbyRepository.delete(lobbyToRemove);
         }
     }
