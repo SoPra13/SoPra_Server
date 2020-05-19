@@ -26,6 +26,8 @@ public class GameController {
         //fetch game and return it as DTO
         Game game = gameService.getGameFromToken(token);
 
+        gameService.checkAllPlayersAreConnected(token);
+
         return DTOMapper.INSTANCE.convertEntityToGameGetDTO(game);
     }
 

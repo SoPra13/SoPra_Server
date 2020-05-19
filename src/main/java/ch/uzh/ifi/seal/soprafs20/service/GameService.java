@@ -176,6 +176,19 @@ public class GameService {
         return game;
     }
 
+    public void checkAllPlayersAreConnected(String gameToken) {
+        System.out.println("is checking0");
+        Game game = gameRepository.findByToken(gameToken);
+        if (game != null) {
+            for (User user : game.getPlayerList()) {
+                if (!user.isInGameTab()) {
+                    userService.logoutUser(user.getToken());
+                    endGame(user.getToken(), gameToken);
+                }
+            }
+        }
+    }
+
     //remove user during game
     public void removeUser(String userToken, String gameToken) {
 
