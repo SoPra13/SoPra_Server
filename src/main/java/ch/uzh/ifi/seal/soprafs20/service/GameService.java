@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs20.service;
 
 import ch.uzh.ifi.seal.soprafs20.constant.LobbyStatus;
+import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.Bot;
 import ch.uzh.ifi.seal.soprafs20.entity.Game;
 import ch.uzh.ifi.seal.soprafs20.entity.Lobby;
@@ -178,12 +179,16 @@ public class GameService {
 
     public void checkAllPlayersAreConnected(String gameToken) {
         System.out.println("is checking0");
-        Game game = gameRepository.findByToken(gameToken);
+        Game game = getGameFromToken(gameToken);
+        Lobby lobby = lobbyService.getLobbyFromToken(gameToken);
         if (game != null) {
-            for (User user : game.getPlayerList()) {
+            for (int i = 0; i<game.getPlayerList().size();i++) {
+                User user = game.getPlayerList().get(i);
                 if (!user.isInGameTab()) {
-                    userService.logoutUser(user.getToken());
-                    endGame(user.getToken(), gameToken);
+                    removeUser(user.getToken(), gameToken);
+                    lobby.removePlayer(user);
+                    userService.leaveLobby(user);
+                    user.setStatus(UserStatus.OFFLINE);
                 }
             }
         }
@@ -197,6 +202,7 @@ public class GameService {
         Lobby lobby = lobbyService.getLobbyFromToken(gameToken);
         game.removePlayer(user);
         userService.leaveGame(user);
+
 
         if (game.getPlayerList().isEmpty()) {
             lobby.setLobbyState(LobbyStatus.OPEN);

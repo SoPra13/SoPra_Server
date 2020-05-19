@@ -54,6 +54,8 @@ public class LobbyController {
         //get Lobby with token
         Lobby lobby = lobbyService.getLobbyFromToken(lobbyToken);
 
+        lobbyService.checkAllPlayersAreConnected(lobbyToken);
+
         // convert internal representation of Lobby back to API
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby);
     }

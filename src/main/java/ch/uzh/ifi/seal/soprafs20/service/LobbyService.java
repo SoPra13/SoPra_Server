@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs20.service;
 
 import ch.uzh.ifi.seal.soprafs20.constant.LobbyStatus;
+import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.Bot;
 import ch.uzh.ifi.seal.soprafs20.entity.Lobby;
 import ch.uzh.ifi.seal.soprafs20.entity.User;
@@ -79,6 +80,7 @@ public class LobbyService {
 
         ArrayList<User> userList = new ArrayList<>();
         User user = userService.getUserFromToken(userToken);
+        user.setInGameTab(true);
         userList.add(user);
         newLobby.setLobbyToken(UUID.randomUUID().toString());
         newLobby.setNumberOfPlayers(1);
@@ -109,6 +111,7 @@ public class LobbyService {
 
         //get lobby & user
         User userToAdd = userService.getUserFromToken(uToken);
+        userToAdd.setInGameTab(true);
 
         // add user to lobby
         lobbyToAdd.getPlayerList().add(userToAdd);
@@ -254,5 +257,20 @@ public class LobbyService {
             token += 1000;
         }
         return String.valueOf(token);
+    }
+
+    public void checkAllPlayersAreConnected(String gameToken) {
+        System.out.println("is checking0");
+        Lobby lobby = getLobbyFromToken(gameToken);
+        if (lobby != null) {
+            for (int i = 0; i<lobby.getPlayerList().size();i++) {
+                User user = lobby.getPlayerList().get(i);
+                if (!user.isInGameTab()) {
+                    lobby.removePlayer(user);
+                    userService.leaveLobby(user);
+                    user.setStatus(UserStatus.OFFLINE);
+                }
+            }
+        }
     }
 }
