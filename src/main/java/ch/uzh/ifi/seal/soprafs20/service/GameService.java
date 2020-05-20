@@ -185,6 +185,7 @@ public class GameService {
             for (int i = 0; i<game.getPlayerList().size();i++) {
                 User user = game.getPlayerList().get(i);
                 if (!user.isInGameTab()) {
+                    System.out.println(user.getUsername() + "left detected");
                     removeUser(user.getToken(), gameToken);
                     lobby.removePlayer(user);
                     userService.leaveLobby(user);

@@ -106,6 +106,8 @@ public class UserService {
         }
         else {
             repoUser.setStatus(UserStatus.ONLINE);
+            leaveGame(repoUser);
+            leaveLobby(repoUser);
             return repoUser.getToken();
         }
     }
@@ -177,7 +179,7 @@ public class UserService {
         long finalCurrentCycle = currentCycle;
         new Thread(() -> {
             try {
-                Thread.sleep(3000);
+                Thread.sleep(15000);
                 if (finalCurrentCycle >= getUserCurrentTabCycle(userToken)) setUserInGameTab(userToken, false);
             }
             catch (InterruptedException e) {
