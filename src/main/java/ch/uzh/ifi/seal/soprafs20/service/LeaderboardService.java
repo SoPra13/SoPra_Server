@@ -68,15 +68,15 @@ public class LeaderboardService {
             case GAMESPLAYED:
                 return user.getGamesPlayed();
             case GUESSESMADE:
-                return user.getGuessesMade();
+                return user.getGuessesMadeLife();
             case TOTALCLUES:
-                return user.getTotalClues();
+                return user.getTotalCluesLife();
             case INVALIDCLUES:
-                return user.getInvalidClues();
+                return user.getInvalidCluesLife();
             case DUPLICATECLUES:
-                return user.getDuplicateClues();
+                return user.getDuplicateCluesLife();
             case GUESSESCORRECT:
-                return user.getGuessesCorrect();
+                return user.getGuessesCorrectLife();
             default:
                 throw new IllegalStateException("Unexpected value: " + by);
         }
