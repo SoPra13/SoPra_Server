@@ -74,12 +74,10 @@ class GameServiceTest {
         testUser.setGame(testGame);
         testUser.setVoted(false);
         testUser.setTotalClues(0);
-        testUser.setDuplicateClues(0);
         testUser.setTotalScore(0);
         testUser.setGuessesCorrect(0);
         testUser.setGuessesMade(0);
         testUser.setInvalidClues(0);
-        testUser.setDuplicateCluesLife(0);
         testUser.setGuessesMadeLife(0);
         testUser.setTotalCluesLife(0);
         testUser.setInvalidCluesLife(0);

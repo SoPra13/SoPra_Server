@@ -67,9 +67,6 @@ public class User implements Serializable {
     private Integer totalClues;
 
     @Column
-    private Integer duplicateClues;
-
-    @Column
     private Integer guessesMadeLife;
 
     @Column
@@ -81,8 +78,6 @@ public class User implements Serializable {
     @Column
     private Integer totalCluesLife;
 
-    @Column
-    private Integer duplicateCluesLife;
 
     @Column
     private Integer totalScore;
@@ -260,19 +255,6 @@ public class User implements Serializable {
         invalidClues += 1;
     }
 
-    public Integer getDuplicateClues() {
-        return duplicateClues;
-    }
-
-    public void setDuplicateClues(Integer duplicateClues) {
-        this.duplicateClues = duplicateClues;
-    }
-
-    public void addDuplicateClues() {
-        duplicateClues += 1;
-    }
-
-
 
 
 
@@ -324,17 +306,6 @@ public class User implements Serializable {
         invalidCluesLife += 1;
     }
 
-    public Integer getDuplicateCluesLife() {
-        return duplicateCluesLife;
-    }
-
-    public void setDuplicateCluesLife(Integer duplicateClues) {
-        this.duplicateCluesLife = duplicateClues;
-    }
-
-    public void addDuplicateCluesLife() {
-        duplicateCluesLife += 1;
-    }
 
 
 

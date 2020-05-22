@@ -49,12 +49,15 @@ public class UserService {
         newUser.setTotalClues(0);
         newUser.setInvalidClues(0);
         newUser.setGuessesMade(0);
-        newUser.setDuplicateClues(0);
         newUser.setTotalScore(Arrays.asList(new String[]{"Simon", "Thanh", "Chris", "Marc", "Ivan"})
                 .contains(newUser.getUsername()) ? 500 : 0);
         newUser.setGuessesCorrect(0);
         newUser.setGamesPlayed(0);
         newUser.setGaveClue(false);
+        newUser.setGuessesMadeLife(0);
+        newUser.setGuessesCorrectLife(0);
+        newUser.setTotalCluesLife(0);
+        newUser.setInvalidCluesLife(0);
         checkIfUserExists(newUser);
 
         // saves the given entity but data is only persisted in the database once flush() is called
@@ -148,18 +151,10 @@ public class UserService {
         user.setUnityReady(false);
         user.setGaveClue(false);
         user.setVoted(false);
-        user.setDuplicateClues(0);
-        user.setDuplicateCluesLife(0);
         user.setTotalClues(0);
-        user.setTotalCluesLife(0);
         user.setInvalidClues(0);
-        user.setInvalidCluesLife(0);
         user.setGuessesCorrect(0);
-        user.setGuessesCorrectLife(0);
         user.setGuessesMade(0);
-        user.setGuessesMadeLife(0);
-        user.setDuplicateClues(0);
-        user.setDuplicateCluesLife(0);
         user.setLobbyReady(false);
     }
 

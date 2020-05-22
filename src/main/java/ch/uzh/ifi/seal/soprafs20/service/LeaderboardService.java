@@ -52,8 +52,6 @@ public class LeaderboardService {
                 return Comparator.comparing(User::getTotalCluesLife);
             case INVALIDCLUES:
                 return Comparator.comparing(User::getInvalidCluesLife);
-            case DUPLICATECLUES:
-                return Comparator.comparing(User::getDuplicateCluesLife);
             case GUESSESCORRECT:
                 return Comparator.comparing(User::getGuessesCorrectLife);
             default:
@@ -73,8 +71,6 @@ public class LeaderboardService {
                 return user.getTotalCluesLife();
             case INVALIDCLUES:
                 return user.getInvalidCluesLife();
-            case DUPLICATECLUES:
-                return user.getDuplicateCluesLife();
             case GUESSESCORRECT:
                 return user.getGuessesCorrectLife();
             default:
