@@ -42,7 +42,7 @@ class GameControllerTest {
     }
 
     @Test
-     void get_getGame_correct() throws Exception {
+    void get_getGame_correct() throws Exception {
         Game game = newTestGame();
 
         given(gameService.getGameFromToken("Token_Aa0Bb1")).willReturn(game);
@@ -58,7 +58,7 @@ class GameControllerTest {
     }
 
     @Test
-     void get_getGame_invalid_GameToken() throws Exception {
+    void get_getGame_invalid_GameToken() throws Exception {
 
         given(gameService.getGameFromToken("INVALID_Token_Aa0Bb1"))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "No matching Game found"));
@@ -70,9 +70,8 @@ class GameControllerTest {
     }
 
     @Test
-     void put_ready_correct() throws Exception {
+    void put_ready_correct() throws Exception {
         Game game = newTestGame();
-
 
         given(gameService.getGameFromToken("Token_Aa0Bb1")).willReturn(game);
 
@@ -89,7 +88,7 @@ class GameControllerTest {
     }
 
     @Test
-     void put_ready_invalid_UserToken() throws Exception {
+    void put_ready_invalid_UserToken() throws Exception {
 
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no User with requested Token"))
                 .when(gameService).setPlayerReady("Token_Aa0Bb1", "INVALID_UserToken");
@@ -103,7 +102,7 @@ class GameControllerTest {
     }
 
     @Test
-     void put_ready_invalid_GameToken() throws Exception {
+    void put_ready_invalid_GameToken() throws Exception {
 
         given(gameService.getGameFromToken("INVALID_Token_Aa0Bb1"))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "No matching Game found"));
@@ -117,7 +116,7 @@ class GameControllerTest {
     }
 
     @Test
-     void put_vote_correct() throws Exception {
+    void put_vote_correct() throws Exception {
         Game game = newTestGame();
 
         given(gameService.addVote("Token_Aa0Bb1", "Token_User", 1)).willReturn(game);
@@ -135,7 +134,7 @@ class GameControllerTest {
     }
 
     @Test
-     void put_vote_invalid_userToken() throws Exception {
+    void put_vote_invalid_userToken() throws Exception {
 
         given(gameService.addVote("Token_Aa0Bb1", "INVALID_Token_User", 0))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "\"There is no User with requested Token\""));
@@ -148,7 +147,7 @@ class GameControllerTest {
     }
 
     @Test
-     void put_vote_invalid_token() throws Exception {
+    void put_vote_invalid_token() throws Exception {
 
         given(gameService.addVote("INVALID_Token_Aa0Bb1", "Token_User", 3))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "No matching Game found"));
@@ -161,7 +160,7 @@ class GameControllerTest {
     }
 
     @Test
-     void put_topic_success() throws Exception {
+    void put_topic_success() throws Exception {
         Game game = newTestGame();
 
         given(gameService.setTopic("Token_Aa0Bb1", "Topic"))
@@ -179,7 +178,7 @@ class GameControllerTest {
     }
 
     @Test
-     void put_topic_invalid_token() throws Exception {
+    void put_topic_invalid_token() throws Exception {
 
         given(gameService.setTopic("INVALID_Token_Aa0Bb1", "Topic"))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "No matching Game found"));
@@ -192,7 +191,7 @@ class GameControllerTest {
     }
 
     @Test
-     void put_removePlayer_success() throws Exception {
+    void put_removePlayer_success() throws Exception {
 
         Mockito.doNothing().when(gameService).removeUser(Mockito.anyString(), Mockito.anyString());
 
@@ -204,7 +203,7 @@ class GameControllerTest {
     }
 
     @Test
-     void put_addClue_success() throws Exception {
+    void put_addClue_success() throws Exception {
         Game game = newTestGame();
 
         given(gameService.addClue("USER_TOKEN", "Token_Aa0Bb1", "Clue"))
@@ -222,7 +221,7 @@ class GameControllerTest {
     }
 
     @Test
-     void put_makeGuess_success() throws Exception {
+    void put_makeGuess_success() throws Exception {
         Game game = newTestGame();
 
         given(gameService.makeGuess("Token_Aa0Bb1", "USER_TOKEN", "Guess"))
@@ -240,7 +239,7 @@ class GameControllerTest {
     }
 
     @Test
-     void put_nextRound_success() throws Exception {
+    void put_nextRound_success() throws Exception {
         Game game = newTestGame();
 
         given(gameService.nextRound("Token_Aa0Bb1"))
@@ -258,7 +257,7 @@ class GameControllerTest {
     }
 
     @Test
-     void put_endGame() throws Exception {
+    void put_endGame() throws Exception {
         Mockito.doNothing().when(gameService).endGame(anyString(), anyString());
 
         MockHttpServletRequestBuilder putRequest =
