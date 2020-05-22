@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * This tests if the UserController works.
  */
 @WebMvcTest(UserController.class)
-public class UserControllerTest {
+ class UserControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -48,7 +48,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void post_register_correct() throws Exception {
+     void post_register_correct() throws Exception {
         User user = dummyUser();
 
         UserPostDTO userPostDTO = new UserPostDTO();
@@ -67,7 +67,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void post_register_failed() throws Exception {
+     void post_register_failed() throws Exception {
         UserPostDTO userPostDTO = new UserPostDTO();
         userPostDTO.setUsername("test");
         userPostDTO.setPassword("test");
@@ -82,7 +82,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void get_user_correct() throws Exception {
+     void get_user_correct() throws Exception {
         User user = dummyUser();
 
         given(userService.getUserFromToken("testtoken")).willReturn(user);
@@ -97,7 +97,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void get_user_failed() throws Exception {
+     void get_user_failed() throws Exception {
         given(userService.getUserFromToken("testtoken"))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no User with requested Token"));
 
@@ -108,7 +108,7 @@ public class UserControllerTest {
 
 
     @Test
-    public void put_login_correct() throws Exception {
+     void put_login_correct() throws Exception {
         UserPostDTO userPostDTO = new UserPostDTO();
         userPostDTO.setUsername("testusername");
         userPostDTO.setPassword("testpassword");
@@ -122,7 +122,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void put_login_failed() throws Exception {
+     void put_login_failed() throws Exception {
         UserPostDTO userPostDTO = new UserPostDTO();
         userPostDTO.setUsername("test");
         userPostDTO.setPassword("test");
@@ -136,13 +136,13 @@ public class UserControllerTest {
 
 
     @Test
-    public void put_logout_correct() throws Exception {
+     void put_logout_correct() throws Exception {
         MockHttpServletRequestBuilder getRequest = put("/logout?token=testtoken").contentType(MediaType.APPLICATION_JSON);
         mockMvc.perform(getRequest).andExpect(status().isOk());
     }
 
     @Test
-    public void put_logout_failed() throws Exception {
+     void put_logout_failed() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "logout unsuccessful.")).when(userService).logoutUser("testtoken");
 
         MockHttpServletRequestBuilder getRequest = put("/logout?token=testtoken").contentType(MediaType.APPLICATION_JSON);

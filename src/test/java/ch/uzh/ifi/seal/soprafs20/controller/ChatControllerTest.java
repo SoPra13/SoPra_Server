@@ -23,6 +23,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -72,12 +73,25 @@ class ChatControllerTest {
     }
 
     @Test
-    void toggleChat() throws Exception {
+    void toggleChat_on() throws Exception {
 
-        MockHttpServletRequestBuilder postRequest = post("/chat/toggle?lobbyToken=LToken&userToken=UToken")
+        when(chatService.isChatActive("LToken")).thenReturn(false);
+
+        MockHttpServletRequestBuilder postRequest = post("/chat/toggle?lobbyToken=LToken")
                 .contentType(MediaType.APPLICATION_JSON);
         mockMvc.perform(postRequest).andExpect(status().isAccepted());
-        Mockito.verify(chatService, times(1)).setChatActivity(any(), any());
+        Mockito.verify(chatService, times(1)).setChatActivity("LToken", true);
+    }
+
+    @Test
+    void toggleChat_off() throws Exception {
+
+        when(chatService.isChatActive("LToken")).thenReturn(true);
+
+        MockHttpServletRequestBuilder postRequest = post("/chat/toggle?lobbyToken=LToken")
+                .contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(postRequest).andExpect(status().isAccepted());
+        Mockito.verify(chatService, times(1)).setChatActivity("LToken", false);
     }
 
     private String asJsonString(final Object object) {

@@ -40,7 +40,7 @@ class BotRepositoryTest {
 
 
     @Test
-    public void findByBotName_success() {
+     void findByBotName_success() {
         // when
         Bot found = botRepository.findByBotName(bot.getBotName());
 
@@ -52,7 +52,7 @@ class BotRepositoryTest {
     }
 
     @Test
-    public void findByBotName_failed() {
+     void findByBotName_failed() {
         // when
         Bot found = botRepository.findByBotName("invalid");
 
@@ -61,7 +61,7 @@ class BotRepositoryTest {
     }
 
     @Test
-    public void findByToken_success() {
+     void findByToken_success() {
         // when
         Bot found = botRepository.findByToken(bot.getToken());
 
@@ -73,7 +73,7 @@ class BotRepositoryTest {
     }
 
     @Test
-    public void findByToken_failed() {
+     void findByToken_failed() {
         // when
         Bot found = botRepository.findByToken("invalid");
 

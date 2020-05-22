@@ -41,7 +41,7 @@ class LobbyRepositoryTest {
     }
 
     @Test
-    public void findByToken_success() {
+     void findByToken_success() {
         // when
         Lobby found = lobbyRepository.findByLobbyToken(lobby.getLobbyToken());
 
@@ -56,7 +56,7 @@ class LobbyRepositoryTest {
     }
 
     @Test
-    public void findByToken_failed() {
+     void findByToken_failed() {
         // when
         Lobby found = lobbyRepository.findByLobbyToken("invalid");
 

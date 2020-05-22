@@ -96,13 +96,14 @@ class ChatServiceIntegrationTest {
         Chat newChat = chatRepository.findByLobbyToken(testLobby.getLobbyToken());
 
         assertNotNull(newChat);
+        assertTrue(newChat.isActive());
+        assertEquals(testLobby.getLobbyToken(), testChat.getLobbyToken());
     }
 
     @Test
     void addMessageToChat_success() {
 
         chatService.addMessageToChat(testLobby.getLobbyToken(), testUser.getToken(), msg);
-
 
         assertTrue(testChat.getMessages().contains(msg));
         assertEquals(testUser.getUsername(), msg.getUsername());

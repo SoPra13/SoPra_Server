@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @WebAppConfiguration
 @SpringBootTest
 @Transactional
-public class BotServiceIntegrationTest {
+ class BotServiceIntegrationTest {
 
     @Qualifier("botRepository")
     @Autowired
@@ -117,7 +117,7 @@ public class BotServiceIntegrationTest {
     }
 
     @Test
-    public void getAvatar() {
+     void getAvatar() {
 
         int avatar = testBot.getAvatar();
 
