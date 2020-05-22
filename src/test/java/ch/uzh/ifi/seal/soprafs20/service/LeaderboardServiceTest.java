@@ -69,6 +69,7 @@ class LeaderboardServiceTest {
     void getScore() {
         for (LeaderboardBy by : LeaderboardBy.values()) {
             if (by.equals(LeaderboardBy.INVALID_TESTING)) continue;
+            System.out.println(by);
             assertNotNull(leaderboardService.getScore(testUser, by));
         }
         Exception exception = assertThrows(IllegalStateException.class,

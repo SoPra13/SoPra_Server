@@ -67,7 +67,17 @@ public class User implements Serializable {
     private Integer totalClues;
 
     @Column
-    private Integer duplicateClues;
+    private Integer guessesMadeLife;
+
+    @Column
+    private Integer guessesCorrectLife;
+
+    @Column
+    private Integer invalidCluesLife;
+
+    @Column
+    private Integer totalCluesLife;
+
 
     @Column
     private Integer totalScore;
@@ -245,17 +255,62 @@ public class User implements Serializable {
         invalidClues += 1;
     }
 
-    public Integer getDuplicateClues() {
-        return duplicateClues;
+
+
+
+    public Integer getTotalCluesLife() {
+        return totalCluesLife;
     }
 
-    public void setDuplicateClues(Integer duplicateClues) {
-        this.duplicateClues = duplicateClues;
+    public void setTotalCluesLife(Integer totalClues) {
+        this.totalCluesLife = totalClues;
     }
 
-    public void addDuplicateClues() {
-        duplicateClues += 1;
+    public void addTotalCluesLife() {
+        totalCluesLife += 1;
     }
+
+    public Integer getGuessesMadeLife() {
+        return guessesMadeLife;
+    }
+
+    public void setGuessesMadeLife(Integer guessesMade) {
+        this.guessesMadeLife = guessesMade;
+    }
+
+    public void addGuessesMadeLife() {
+        guessesMadeLife += 1;
+    }
+
+    public Integer getGuessesCorrectLife() {
+        return guessesCorrectLife;
+    }
+
+    public void setGuessesCorrectLife(Integer guessesCorrect) {
+        this.guessesCorrectLife = guessesCorrect;
+    }
+
+    public void addGuessesCorrectLife() {
+        guessesCorrectLife += 1;
+    }
+
+    public Integer getInvalidCluesLife() {
+        return invalidCluesLife;
+    }
+
+    public void setInvalidCluesLife(Integer invalidClues) {
+        this.invalidCluesLife = invalidClues;
+    }
+
+    public void addInvalidCluesLife() {
+        invalidCluesLife += 1;
+    }
+
+
+
+
+
+
 
     public Integer getTotalScore() {
         return totalScore;
