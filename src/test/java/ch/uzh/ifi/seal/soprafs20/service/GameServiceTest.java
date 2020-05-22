@@ -54,6 +54,7 @@ class GameServiceTest {
         testGame = new Game();
         testUser = new User();
 
+
         testGame.setId(1L);
         testGame.setVersion(0);
         testGame.setToken("Token_Aa0Bb1");
@@ -65,12 +66,11 @@ class GameServiceTest {
         testGame.setBotsVoted(false);
         testGame.setVoteList(new ArrayList<>(Collections.nCopies(5, 0)));
 
-
         testUser.setUsername("UserName");
         testUser.setPassword("PassWord");
         testUser.setStatus(UserStatus.OFFLINE);
         testUser.setToken("UserToken");
-        testUser.setId(1L);
+        testUser.setId(2L);
         testUser.setGame(testGame);
         testUser.setVoted(false);
         testUser.setTotalClues(0);
@@ -85,12 +85,10 @@ class GameServiceTest {
         Mockito.when(gameRepository.findByToken(testGame.getToken())).thenReturn(testGame);
         Mockito.when(gameRepository.findByToken("INVALID_TOKEN")).thenReturn(null);
         Mockito.when(userService.getUserFromToken(testUser.getToken())).thenReturn(testUser);
-        Mockito.when(botService.botClue(Mockito.any(), Mockito.anyString())).thenReturn("BOT_CLUE");
+        Mockito.when(botService.botClue(Difficulty.NEUTRAL, testGame.getTopic())).thenReturn("BOT_CLUE");
 
         Mockito.doCallRealMethod().when(userService).leaveGame(testUser);
         Mockito.doCallRealMethod().when(userService).leaveLobby(testUser);
-
-
     }
 
 
@@ -254,7 +252,6 @@ class GameServiceTest {
     @Test
     void addVote_success() {
 
-        Mockito.when(gameRepository.findByToken(testGame.getToken())).thenReturn(testGame);
 
         gameService.addVote(testGame.getToken(), testUser.getToken(), 0);
         gameService.addVote(testGame.getToken(), testUser.getToken(), 0);
@@ -270,8 +267,6 @@ class GameServiceTest {
         Bot testBot = new Bot();
         testGame.getBotList().add(testBot);
 
-        Mockito.when(gameRepository.findByToken(testGame.getToken())).thenReturn(testGame);
-
         gameService.addVote(testGame.getToken(), testUser.getToken(), 0);
         gameService.addVote(testGame.getToken(), testUser.getToken(), 0);
         gameService.addVote(testGame.getToken(), testUser.getToken(), 4);
@@ -284,8 +279,6 @@ class GameServiceTest {
 
     @Test
     void addVote_invalid_game_token() {
-
-//        Mockito.when(gameRepository.findByToken("INVALID_TOKEN")).thenReturn(testGame);
 
         Exception exception = Assertions.assertThrows(ResponseStatusException.class,
                 () -> gameService.addVote("INVALID_TOKEN", testUser.getToken(), 1));
@@ -414,7 +407,6 @@ class GameServiceTest {
         Bot testBot = new Bot();
         testBot.setDifficulty(Difficulty.NEUTRAL);
         testGame.getBotList().add(testBot);
-        Mockito.when(botService.botClue(Mockito.any(), Mockito.anyString())).thenReturn("BOT_CLUE");
 
         Game newGame = gameService.addClue(testUser.getToken(), testGame.getToken(), clue);
 

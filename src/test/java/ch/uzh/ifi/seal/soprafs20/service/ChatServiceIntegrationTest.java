@@ -11,6 +11,7 @@ import ch.uzh.ifi.seal.soprafs20.repository.ChatRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.LobbyRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.MessageRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.UserRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,11 +61,6 @@ class ChatServiceIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        userRepository.deleteAll();
-        messageRepository.deleteAll();
-        chatRepository.deleteAll();
-        lobbyRepository.deleteAll();
-
         testUser = new User();
         testUser.setUsername("userName");
         testUser.setPassword("userPwd");
@@ -87,6 +83,14 @@ class ChatServiceIntegrationTest {
         lobbyService.createLobby(testLobby, testUser.getToken());
         chatService.createChat(testLobby.getLobbyToken());
         testChat = chatRepository.findByLobbyToken(testLobby.getLobbyToken());
+    }
+
+    @AfterEach
+    void reset(){
+        userRepository.deleteAll();
+        messageRepository.deleteAll();
+        chatRepository.deleteAll();
+        lobbyRepository.deleteAll();
     }
 
     @Test

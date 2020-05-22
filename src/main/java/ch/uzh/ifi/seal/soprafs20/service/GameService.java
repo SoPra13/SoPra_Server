@@ -166,7 +166,6 @@ public class GameService {
         }
         user.setVoted(true);
         return game;
-
     }
 
     //set Topic of game after Voting
