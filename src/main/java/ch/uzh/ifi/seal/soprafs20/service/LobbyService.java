@@ -5,6 +5,7 @@ import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.Bot;
 import ch.uzh.ifi.seal.soprafs20.entity.Lobby;
 import ch.uzh.ifi.seal.soprafs20.entity.User;
+import ch.uzh.ifi.seal.soprafs20.repository.BotRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.LobbyRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,14 +35,16 @@ public class LobbyService {
     private final ChatService chatService;
     private final Logger log = LoggerFactory.getLogger(LobbyService.class);
     private final LobbyRepository lobbyRepository;
+    private final BotRepository botRepository;
 
 
     @Autowired
-    public LobbyService(UserService userService, BotService botService, ChatService chatService, @Qualifier("lobbyRepository") LobbyRepository lobbyRepository) {
+    public LobbyService(UserService userService, BotRepository botRepository, BotService botService, ChatService chatService, @Qualifier("lobbyRepository") LobbyRepository lobbyRepository) {
         this.userService = userService;
         this.botService = botService;
         this.chatService = chatService;
         this.lobbyRepository = lobbyRepository;
+        this.botRepository =  botRepository;
     }
 
     //get all Lobbies
@@ -139,7 +142,7 @@ public class LobbyService {
             for(int i = 0; i < lobbyToRemove.getBotList().size();i++){
                 Bot bot = lobbyToRemove.getBotList().get(i);
                 lobbyToRemove.removeBot(bot);
-                botService.deleteBot(bot.getToken());
+                botRepository.delete(bot);
             }
             lobbyRepository.delete(lobbyToRemove);
         }
