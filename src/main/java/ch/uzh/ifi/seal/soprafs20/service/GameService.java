@@ -235,6 +235,7 @@ public class GameService {
 
         if (Boolean.FALSE.equals(user.getGaveClue())) {
             user.addTotalClues();
+            user.addTotalCluesLife();
             if (valid && !(clue.equalsIgnoreCase(game.getTopic()) || clue.equals("empty"))) {
                 log.info("valid");
                 checklist.add(clue);
@@ -243,6 +244,7 @@ public class GameService {
             }
             else {
                 checklist.add(CENSORED);
+                user.addInvalidCluesLife();
                 user.addInvalidClues();
             }
         }
@@ -268,9 +270,11 @@ public class GameService {
         game.setGuess(guess);
         if (!guess.equals("null")) {
             user.addGuessesMade();
+            user.addGuessesMadeLife();
             if (game.getTopic().equalsIgnoreCase(guess)) {
                 game.setGuessCorrect(true);
                 user.addGuessesCorrect();
+                user.addGuessesCorrectLife();
                 msg = guess + " was a correct guess.";
                 log.info(msg);
             }

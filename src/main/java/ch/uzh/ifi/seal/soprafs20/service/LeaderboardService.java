@@ -47,15 +47,15 @@ public class LeaderboardService {
             case GAMESPLAYED:
                 return Comparator.comparing(User::getGamesPlayed);
             case GUESSESMADE:
-                return Comparator.comparing(User::getGuessesMade);
-            case TOTOALCLUES:
-                return Comparator.comparing(User::getTotalClues);
+                return Comparator.comparing(User::getGuessesMadeLife);
+            case TOTALCLUES:
+                return Comparator.comparing(User::getTotalCluesLife);
             case INVALIDCLUES:
-                return Comparator.comparing(User::getInvalidClues);
+                return Comparator.comparing(User::getInvalidCluesLife);
             case DUPLICATECLUES:
-                return Comparator.comparing(User::getDuplicateClues);
+                return Comparator.comparing(User::getDuplicateCluesLife);
             case GUESSESCORRECT:
-                return Comparator.comparing(User::getGuessesCorrect);
+                return Comparator.comparing(User::getGuessesCorrectLife);
             default:
                 throw new IllegalStateException("Unexpected value: " + by);
         }
@@ -69,7 +69,7 @@ public class LeaderboardService {
                 return user.getGamesPlayed();
             case GUESSESMADE:
                 return user.getGuessesMade();
-            case TOTOALCLUES:
+            case TOTALCLUES:
                 return user.getTotalClues();
             case INVALIDCLUES:
                 return user.getInvalidClues();

@@ -70,6 +70,21 @@ public class User implements Serializable {
     private Integer duplicateClues;
 
     @Column
+    private Integer guessesMadeLife;
+
+    @Column
+    private Integer guessesCorrectLife;
+
+    @Column
+    private Integer invalidCluesLife;
+
+    @Column
+    private Integer totalCluesLife;
+
+    @Column
+    private Integer duplicateCluesLife;
+
+    @Column
     private Integer totalScore;
 
     @Column
@@ -256,6 +271,75 @@ public class User implements Serializable {
     public void addDuplicateClues() {
         duplicateClues += 1;
     }
+
+
+
+
+
+    public Integer getTotalCluesLife() {
+        return totalCluesLife;
+    }
+
+    public void setTotalCluesLife(Integer totalClues) {
+        this.totalCluesLife = totalClues;
+    }
+
+    public void addTotalCluesLife() {
+        totalCluesLife += 1;
+    }
+
+    public Integer getGuessesMadeLife() {
+        return guessesMadeLife;
+    }
+
+    public void setGuessesMadeLife(Integer guessesMade) {
+        this.guessesMadeLife = guessesMade;
+    }
+
+    public void addGuessesMadeLife() {
+        guessesMadeLife += 1;
+    }
+
+    public Integer getGuessesCorrectLife() {
+        return guessesCorrectLife;
+    }
+
+    public void setGuessesCorrectLife(Integer guessesCorrect) {
+        this.guessesCorrectLife = guessesCorrect;
+    }
+
+    public void addGuessesCorrectLife() {
+        guessesCorrectLife += 1;
+    }
+
+    public Integer getInvalidCluesLife() {
+        return invalidCluesLife;
+    }
+
+    public void setInvalidCluesLife(Integer invalidClues) {
+        this.invalidCluesLife = invalidClues;
+    }
+
+    public void addInvalidCluesLife() {
+        invalidCluesLife += 1;
+    }
+
+    public Integer getDuplicateCluesLife() {
+        return duplicateCluesLife;
+    }
+
+    public void setDuplicateCluesLife(Integer duplicateClues) {
+        this.duplicateCluesLife = duplicateClues;
+    }
+
+    public void addDuplicateCluesLife() {
+        duplicateCluesLife += 1;
+    }
+
+
+
+
+
 
     public Integer getTotalScore() {
         return totalScore;

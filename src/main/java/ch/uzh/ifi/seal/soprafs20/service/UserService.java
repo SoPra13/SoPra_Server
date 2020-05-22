@@ -149,11 +149,17 @@ public class UserService {
         user.setGaveClue(false);
         user.setVoted(false);
         user.setDuplicateClues(0);
+        user.setDuplicateCluesLife(0);
         user.setTotalClues(0);
+        user.setTotalCluesLife(0);
         user.setInvalidClues(0);
+        user.setInvalidCluesLife(0);
         user.setGuessesCorrect(0);
+        user.setGuessesCorrectLife(0);
         user.setGuessesMade(0);
+        user.setGuessesMadeLife(0);
         user.setDuplicateClues(0);
+        user.setDuplicateCluesLife(0);
         user.setLobbyReady(false);
     }
 
