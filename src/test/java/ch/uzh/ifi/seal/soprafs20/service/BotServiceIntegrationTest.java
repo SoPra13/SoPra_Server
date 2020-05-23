@@ -47,11 +47,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
     @Test
     void createBot_success() {
-        Bot neutralBot = botService.createBot("NEUTRAL");
+//        Bot neutralBot = botService.createBot("NEUTRAL");
         Bot friendBot = botService.createBot("FRIEND");
         Bot hostileBot = botService.createBot("HOSTILE");
 
-        assertEquals(Difficulty.NEUTRAL, neutralBot.getDifficulty());
+//        assertEquals(Difficulty.NEUTRAL, neutralBot.getDifficulty());
         assertEquals(Difficulty.FRIEND, friendBot.getDifficulty());
         assertEquals(Difficulty.HOSTILE, hostileBot.getDifficulty());
     }

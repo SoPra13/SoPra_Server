@@ -263,12 +263,13 @@ public class LobbyService {
     }
 
     public void checkAllPlayersAreConnected(String gameToken) {
-        System.out.println("is checking0");
+        log.info("is checking all players connection");
         Lobby lobby = getLobbyFromToken(gameToken);
         if (lobby != null) {
             for (int i = 0; i<lobby.getPlayerList().size();i++) {
                 User user = lobby.getPlayerList().get(i);
                 if (!user.isInGameTab()) {
+                    log.info(user.getUsername(), "disconnected");
                     lobby.removePlayer(user);
                     userService.leaveLobby(user);
                     user.setStatus(UserStatus.OFFLINE);

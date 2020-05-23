@@ -7,6 +7,7 @@ import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.Bot;
 import ch.uzh.ifi.seal.soprafs20.entity.Lobby;
 import ch.uzh.ifi.seal.soprafs20.entity.User;
+import ch.uzh.ifi.seal.soprafs20.repository.BotRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.LobbyRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
@@ -23,13 +24,17 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doCallRealMethod;
+import static org.mockito.Mockito.times;
 
- class LobbyServiceTest {
+class LobbyServiceTest {
 
     @Mock
     private LobbyRepository lobbyRepository;
     @Mock
     private UserRepository userRepository;
+    @Mock
+    private BotRepository botRepository;
     @Mock
     private UserService userService;
     @Mock
@@ -54,6 +59,7 @@ import static org.junit.jupiter.api.Assertions.*;
         testAdmin.setPassword("12345;P");
         testAdmin.setToken("ADMIN_TOKEN");
         testAdmin.setStatus(UserStatus.ONLINE);
+        testAdmin.setInGameTab(true);
 
         testLobby = new Lobby();
         testLobby.setId(1L);
@@ -289,12 +295,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
     @Test
     void leaveLobby_lastUser() {
+        Bot botToRemove = new Bot();
+        testLobby.getBotList().add(botToRemove);
 
         Mockito.when(userService.getUserFromToken("ADMIN_TOKEN")).thenReturn(testAdmin);
         Mockito.when(lobbyRepository.findByLobbyToken(testLobby.getLobbyToken())).thenReturn(testLobby);
 
         lobbyService.leaveLobby(testLobby.getLobbyToken(), "ADMIN_TOKEN");
 
+        assertFalse(testLobby.getBotList().contains(botToRemove));
+        Mockito.verify(botRepository, times(1)).delete(botToRemove);
         Mockito.verify(lobbyRepository, Mockito.times(1)).delete(testLobby);
     }
 
@@ -486,6 +496,23 @@ import static org.junit.jupiter.api.Assertions.*;
         lobbyService.deleteLobby(testLobby);
 
         Mockito.verify(lobbyRepository, Mockito.times(1)).delete(testLobby);
+    }
+
+    @Test
+    void checkAllPlayerAreConnected_willRemovePlayer(){
+        User inactiveUser = new User();
+        inactiveUser.setUsername("inactiveUser");
+        inactiveUser.setInGameTab(false);
+        testLobby.getPlayerList().add(inactiveUser);
+
+        doCallRealMethod().when(userService).leaveLobby(inactiveUser);
+
+        lobbyService.checkAllPlayersAreConnected(testLobby.getLobbyToken());
+
+        assertFalse(testLobby.getPlayerList().contains(inactiveUser));
+        assertFalse(inactiveUser.isLobbyReady());
+        assertNull(inactiveUser.getLobby());
+        assertEquals(UserStatus.OFFLINE, inactiveUser.getStatus());
     }
 }
 

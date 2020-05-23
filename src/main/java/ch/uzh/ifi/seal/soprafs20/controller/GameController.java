@@ -124,7 +124,7 @@ public class GameController {
     }
 
 
-    @PutMapping(value = "/game/score", params = {"userToken", "score"})
+    @PutMapping(value = "/game/score", params = {"score", "score"})
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void addScore(@RequestParam String userToken, @RequestParam Integer score) {
