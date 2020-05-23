@@ -49,8 +49,9 @@ public class UserService {
         newUser.setTotalClues(0);
         newUser.setInvalidClues(0);
         newUser.setGuessesMade(0);
-        newUser.setTotalScore(Arrays.asList(new String[]{"Simon", "Thanh", "Chris", "Marc", "Ivan"})
-                .contains(newUser.getUsername()) ? 1000 : 0);
+//        newUser.setTotalScore(Arrays.asList(new String[]{"Simon", "Thanh", "Chris", "Marc", "Ivan"})
+//                .contains(newUser.getUsername()) ? 1000 : 0);
+        newUser.setTotalScore(0);
         newUser.setGuessesCorrect(0);
         newUser.setGamesPlayed(0);
         newUser.setGaveClue(false);
