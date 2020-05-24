@@ -7,6 +7,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -34,7 +35,7 @@ public final class WordFileHandler {
             return clues;
         }
         List<Integer> cards = new ArrayList<>();
-        while (cards.size() < 13) cards.add(new Random().nextInt(fileLines.size() / 6));
+        while (cards.size() < 13) cards.add(new SecureRandom().nextInt(fileLines.size() / 6));
         for (int i : cards) {
             for (int j = i * 6; j <= i * 6 + 4; j++) clues.add(fileLines.get(j));
         }

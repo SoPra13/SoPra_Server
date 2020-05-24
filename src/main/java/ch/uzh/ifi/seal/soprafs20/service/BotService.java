@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.SecureRandom;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -57,7 +58,7 @@ public class BotService {
 
         var bot = new Bot();
         bot.setToken(UUID.randomUUID().toString());
-        bot.setBotName(String.valueOf(names.get(new Random().nextInt(names.size()))));
+        bot.setBotName(String.valueOf(names.get(new SecureRandom().nextInt(names.size()))));
         msg = "bot name found: " + bot.getBotName();
         log.info(msg);
         Difficulty actualDifficulty;
@@ -105,7 +106,7 @@ public class BotService {
         log.info(msg);
         log.info("type");
         String clue;
-        if (difficulty == Difficulty.FRIEND || (difficulty == Difficulty.NEUTRAL && new Random().nextBoolean())) {
+        if (difficulty == Difficulty.FRIEND || (difficulty == Difficulty.NEUTRAL && new SecureRandom().nextBoolean())) {
             clue = WordService.getGoodWord(topic);
             msg = "good clue: " + clue;
             log.debug("test");

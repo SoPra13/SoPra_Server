@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -256,7 +257,7 @@ public class LobbyService {
 //      setting the token of first lobby allows to test the while loop and only affect the first lobby created
         int token = 1729;
         while (lobbyRepository.findByJoinToken(String.valueOf(token)) != null) {
-            token = new Random().nextInt(8999);
+            token = new SecureRandom().nextInt(8999);
             token += 1000;
         }
         return String.valueOf(token);

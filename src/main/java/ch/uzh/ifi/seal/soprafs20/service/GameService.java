@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -115,7 +116,7 @@ public class GameService {
         newGame.getChecklist().clear();
         newGame.setGuessGiven(null);
         newGame.setGuessCorrect(null);
-        newGame.setGuesser(new Random().nextInt(newGame.getPlayerList().size()));
+        newGame.setGuesser(new SecureRandom().nextInt(newGame.getPlayerList().size()));
         newGame.setMysteryWords(WordFileHandler.getMysteryWords());
 
         // saves the given entity but data is only persisted in the database once flush() is called
@@ -156,7 +157,7 @@ public class GameService {
         if (Boolean.FALSE.equals(game.getBotsVoted())) {
             game.setBotsVoted(true);
             for (int i = 0; i < game.getBotList().size(); i++) {
-                int botVote = new Random().nextInt(4);
+                int botVote = new SecureRandom().nextInt(4);
                 game.getVoteList().set(botVote, game.getVoteList().get(botVote) + 1);
             }
         }
