@@ -13,12 +13,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.web.server.ResponseStatusException;
 
+import static java.lang.Thread.sleep;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -75,6 +79,15 @@ class UserControllerIntegrationTest {
     }
 
     @Test
+    void get_getAllUsers_empty() throws Exception {
+        userRepository.deleteAll();
+
+        MockHttpServletRequestBuilder getRequest = get("/users").contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(getRequest).andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()", is(0)));
+    }
+
+    @Test
     void put_updateInGame() throws Exception {
 
 
@@ -84,6 +97,18 @@ class UserControllerIntegrationTest {
 
         testUser = userRepository.findByToken(testUser.getToken());
         assertEquals(1L, testUser.getIsInGameTabCycle());
+    }
+
+    @Test
+    void put_updateInGame_invalid_userToken() throws Exception {
+
+
+        MockHttpServletRequestBuilder putRequest = put("/user/updateingametab?userToken=INVALID_TOKEN")
+                .contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(putRequest).andExpect(status().isNotFound());
+
+        testUser = userRepository.findByToken(testUser.getToken());
+        assertEquals(0L, testUser.getIsInGameTabCycle());
     }
 
     @Test
@@ -101,14 +126,21 @@ class UserControllerIntegrationTest {
         assertEquals("newUsername", testUser.getUsername());
     }
 
-//    @Test
-//    void addScore() throws Exception {
-//        System.out.println(testUser.getToken());
-//        MockHttpServletRequestBuilder putRequest = put("/user/score?userToken=" +
-//                testUser.getToken() + "&score=100").contentType(MediaType.APPLICATION_JSON);
-//        mockMvc.perform(putRequest).andExpect(status().isOk());
-//
-//        testUser = userRepository.findByToken(testUser.getToken());
-//        assertEquals(100, testUser.getTotalScore());
-//    }
+    @Test
+    void put_updateUser_invalid_userToekn() throws Exception {
+        UserPostDTO userPostDTO = new UserPostDTO();
+        userPostDTO.setUsername("newUsername");
+        String userPostDTOString = new ObjectMapper().writeValueAsString(userPostDTO);
+
+        MockHttpServletRequestBuilder putRequest = put("/user?token=INVALIDTOKEN")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(userPostDTOString);
+        mockMvc.perform(putRequest).andExpect(status().isNotFound());
+
+        testUser = userRepository.findByToken(testUser.getToken());
+        assertEquals("User", testUser.getUsername());
+    }
+
+// Tests of addScore PutMapping was not used so its been removed. can be recoverd form
+// commit: c2a8a1429036ed822e4709c873f1ed141d4cc3d0
 }
