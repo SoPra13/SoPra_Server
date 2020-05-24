@@ -15,7 +15,11 @@ public class Application {
     public static void main(String[] args) {
         String[] sanetized = new String[args.length];
         for(int i = 0; i < args.length; i++) sanetized[i] = args[i].replaceAll(SANITIZER, "_");
+<<<<<<< HEAD
         SpringApplication.run(Application.class, sanetized);
+=======
+        SpringApplication.run(Application.class, args);
+>>>>>>> master
     }
 
     @Bean
