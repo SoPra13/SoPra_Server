@@ -129,7 +129,7 @@ public class GameController {
     @ResponseBody
     public void addScore(@RequestParam String userToken, @RequestParam Integer score) {
 
-        gameService.addScore(userToken,score);
+        gameService.addScore(userToken, score);
 
     }
 }

@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @WebAppConfiguration
 @SpringBootTest
 @Transactional
- class UserServiceIntegrationTest {
+class UserServiceIntegrationTest {
 
     @Qualifier("userRepository")
     @Autowired
@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.*;
     private User testUser;
 
     @BeforeEach
-     void setup() {
+    void setup() {
         testUser = new User();
         testUser.setPassword("testPassword");
         testUser.setUsername("testUsername");
@@ -46,12 +46,12 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @AfterEach
-     void clear() {
+    void clear() {
         userRepository.deleteAll();
     }
 
     @Test
-     void createUser_validInputs_success() {
+    void createUser_validInputs_success() {
         userRepository.deleteAll();
         // given
         assertNull(userRepository.findByUsername("testUsername"));
@@ -72,7 +72,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-     void getAll() {
+    void getAll() {
         List<User> all = userService.getUsers();
 
         assertNotNull(all);
@@ -80,7 +80,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-     void createUser_duplicateUsername_throwsException() {
+    void createUser_duplicateUsername_throwsException() {
 
         // attempt to create second user with same username
         User testUser2 = new User();
@@ -94,7 +94,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-     void loginUser_success() {
+    void loginUser_success() {
 
         userService.loginUser(testUser);
 
@@ -102,14 +102,14 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-     void loginUser_failed() {
+    void loginUser_failed() {
 
         User testUser = new User();
         assertThrows(ResponseStatusException.class, () -> userService.loginUser(testUser));
     }
 
     @Test
-     void logoutUser_success() {
+    void logoutUser_success() {
 
         userService.logoutUser(testUser.getToken());
 
@@ -117,13 +117,13 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-     void logoutUser_failed() {
+    void logoutUser_failed() {
 
         assertThrows(ResponseStatusException.class, () -> userService.logoutUser("wrongToken"));
     }
 
     @Test
-     void updateUser_success() {
+    void updateUser_success() {
         testUser.setUsername("newUserName");
 
         userService.updateUser(testUser);
@@ -132,7 +132,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-     void updateUser_failed() {
+    void updateUser_failed() {
         testUser.setToken("wrongToken");
 
         User testUser = new User();
@@ -140,7 +140,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-     void leaveLobby_success() {
+    void leaveLobby_success() {
 
         userService.leaveLobby(testUser);
 
@@ -149,7 +149,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-     void setUserInGameTab_success() {
+    void setUserInGameTab_success() {
 
         userService.setUserInGameTab(testUser.getToken(), true);
 
@@ -157,7 +157,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-     void updateIsInGameTab_success() {
+    void updateIsInGameTab_success() {
 
         userService.updateIsInGameTab(testUser.getToken());
 
@@ -165,7 +165,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-     void updateIsInGameTab_failed() {
+    void updateIsInGameTab_failed() {
         testUser.setIsInGameTabCycle(2L);
         userService.updateIsInGameTab(testUser.getToken());
         testUser.setIsInGameTabCycle(0L);

@@ -13,7 +13,6 @@ import java.net.http.HttpResponse;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.regex.Pattern;
 
 public class WordService {
@@ -142,7 +141,8 @@ from the last functional commit: 81a7cd97dfaa31a4c50e7ccb42a535b80c3fb941
 
         wordList = removeMultiWords(wordList);
         String wordGet = wordList.get(new SecureRandom().nextInt(wordList.size())).get("word");
-        while (isSimilar(word, wordGet)) wordGet = wordList.get(new SecureRandom().nextInt(wordList.size())).get("word");
+        while (isSimilar(word, wordGet))
+            wordGet = wordList.get(new SecureRandom().nextInt(wordList.size())).get("word");
 
 
         return wordGet;

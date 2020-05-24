@@ -13,7 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
- class UserServiceTest {
+class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
     private User testUser;
 
     @BeforeEach
-     void setup() {
+    void setup() {
         MockitoAnnotations.initMocks(this);
 
         // given
@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-     void createUser_validInputs_success() {
+    void createUser_validInputs_success() {
         // when -> any object is being save in the userRepository -> return the dummy testUser
         User createdUser = userService.createUser(testUser);
 
@@ -54,7 +54,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
     @Test
-     void createUser_duplicateInputs_throwsException() {
+    void createUser_duplicateInputs_throwsException() {
         // given -> a first user has already been created
         userService.createUser(testUser);
 
@@ -67,7 +67,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-     void resetUser() {
+    void resetUser() {
 
         userService.resetUser(testUser);
 

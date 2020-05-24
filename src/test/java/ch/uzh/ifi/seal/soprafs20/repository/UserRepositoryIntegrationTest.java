@@ -12,7 +12,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
- class UserRepositoryIntegrationTest {
+class UserRepositoryIntegrationTest {
 
     @Autowired
     private TestEntityManager entityManager;
@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-     void findByName_success() {
+    void findByName_success() {
         // when
         User found = userRepository.findByUsername(user.getUsername());
 
@@ -50,7 +50,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-     void findByName_failed() {
+    void findByName_failed() {
         // when
         User found = userRepository.findByUsername("invalid");
 
@@ -59,7 +59,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-     void findByPasswprd_success() {
+    void findByPasswprd_success() {
         // when
         User found = userRepository.findByPassword(user.getPassword());
 
@@ -72,7 +72,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-     void findByPasswprd_failed() {
+    void findByPasswprd_failed() {
         // when
         User found = userRepository.findByPassword("invalid");
 
@@ -81,7 +81,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-     void findByToken_success() {
+    void findByToken_success() {
         // when
         User found = userRepository.findByToken(user.getToken());
 
@@ -94,7 +94,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-     void findByToken_failed() {
+    void findByToken_failed() {
         // when
         User found = userRepository.findByToken("invalid");
 

@@ -54,30 +54,23 @@ class LobbyControllerIntegrationTest {
     @Qualifier("botRepository")
     @Autowired
     BotRepository botRepository;
-
-    @Autowired
-    private MockMvc mockMvc;
-
     @Autowired
     GameService gameService;
-
     @Autowired
     UserService userService;
-
     @Autowired
     BotService botService;
-
     @Autowired
     LobbyService lobbyService;
-
-
+    @Autowired
+    private MockMvc mockMvc;
     private User testUser;
     private Bot testBot;
     private Game testGame;
     private Lobby testLobby;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         botRepository.deleteAll();
         userRepository.deleteAll();
         lobbyRepository.deleteAll();

@@ -10,7 +10,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RestController
 @SpringBootApplication
 public class Application {
-    private static final String SANITIZER = "[\n|\r|\t]";
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

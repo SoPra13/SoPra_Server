@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * This tests if the LobbyController works.
  */
 @WebMvcTest(LobbyController.class)
- class LobbyControllerTest {
+class LobbyControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -71,7 +71,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     }
 
     @Test
-     void post_create_lobby_success() throws Exception {
+    void post_create_lobby_success() throws Exception {
         Lobby lobby = dummyLobby();
         User user = dummyUser();
         lobby.setAdminToken(user.getToken());
@@ -95,7 +95,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     }
 
     @Test
-     void post_create_lobby_failed() throws Exception {
+    void post_create_lobby_failed() throws Exception {
         User user = dummyUser();
 
         LobbyPostDTO lobbyPostDTO = new LobbyPostDTO();
@@ -112,7 +112,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     }
 
     @Test
-     void get_lobbies_success() throws Exception {
+    void get_lobbies_success() throws Exception {
         Lobby lobby1 = dummyLobby();
         Lobby lobby2 = dummyLobby();
         lobby2.setId(7L);
@@ -135,7 +135,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     }
 
     @Test
-     void get_lobbies_empty_success() throws Exception {
+    void get_lobbies_empty_success() throws Exception {
         Lobby lobby1 = dummyLobby();
         List<Lobby> lobbies = new ArrayList<>();
         lobby1.setLobbyType(LobbyType.PRIVATE);
@@ -149,7 +149,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     }
 
     @Test
-     void get_lobbies_failed() throws Exception {
+    void get_lobbies_failed() throws Exception {
 
         given(lobbyService.getLobbies()).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,
                 "No  Lobbies Found"));
@@ -181,7 +181,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 //    }
 
     @Test
-     void get_lobbyByToken_failed() throws Exception {
+    void get_lobbyByToken_failed() throws Exception {
         Lobby lobby = dummyLobby();
 
         given(lobbyService.getLobbyFromToken(Mockito.any())).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,
@@ -193,7 +193,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     }
 
     @Test
-     void put_joinLobby_success() throws Exception {
+    void put_joinLobby_success() throws Exception {
         Lobby lobby = dummyLobby();
         User user = dummyUser();
         lobby.getPlayerList().add(user);
@@ -210,7 +210,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     }
 
     @Test
-     void put_joinLobby_overfull() throws Exception {
+    void put_joinLobby_overfull() throws Exception {
         Lobby lobby = dummyLobby();
         User user = dummyUser();
         lobby.setNumberOfPlayers(7);
@@ -224,7 +224,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     }
 
     @Test
-     void put_joinLobby_duplicate() throws Exception {
+    void put_joinLobby_duplicate() throws Exception {
         Lobby lobby = dummyLobby();
         User user = dummyUser();
         lobby.getPlayerList().add(user);
@@ -239,7 +239,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     }
 
     @Test
-     void put_joinLobby_invalidToken() throws Exception {
+    void put_joinLobby_invalidToken() throws Exception {
         Lobby lobby = dummyLobby();
         User user = dummyUser();
 
@@ -252,7 +252,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     }
 
     @Test
-     void delete_removePlayer_success() throws Exception {
+    void delete_removePlayer_success() throws Exception {
         Lobby lobby = dummyLobby();
         User user = dummyUser();
         lobby.getPlayerList().add(user);
@@ -265,7 +265,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
     @Test
-     void delete_removePlayer_invalidLobby() throws Exception {
+    void delete_removePlayer_invalidLobby() throws Exception {
         Lobby lobby = dummyLobby();
         User user = dummyUser();
         lobby.getPlayerList().add(user);
@@ -280,7 +280,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     }
 
     @Test
-     void delete_removePlayer_invalidPlayer() throws Exception {
+    void delete_removePlayer_invalidPlayer() throws Exception {
         Lobby lobby = dummyLobby();
         User user = dummyUser();
         lobby.getPlayerList().add(user);

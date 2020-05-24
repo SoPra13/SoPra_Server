@@ -505,7 +505,7 @@ class LobbyServiceTest {
     }
 
     @Test
-    void checkAllPlayerAreConnected_willRemovePlayer(){
+    void checkAllPlayerAreConnected_willRemovePlayer() {
         User inactiveUser = new User();
         inactiveUser.setUsername("inactiveUser");
         inactiveUser.setInGameTab(false);

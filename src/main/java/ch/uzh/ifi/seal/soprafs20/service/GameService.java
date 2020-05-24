@@ -22,7 +22,6 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 /**
  * User Service
@@ -182,7 +181,7 @@ public class GameService {
         Game game = getGameFromToken(gameToken);
         Lobby lobby = lobbyService.getLobbyFromToken(gameToken);
         if (game != null) {
-            for (int i = 0; i<game.getPlayerList().size();i++) {
+            for (int i = 0; i < game.getPlayerList().size(); i++) {
                 User user = game.getPlayerList().get(i);
                 if (!user.isInGameTab()) {
                     log.info("Found: {} has disconnected.", user.getUsername());
@@ -371,8 +370,8 @@ public class GameService {
         }
     }
 
-    public void addScore(String userToken, Integer score){
-        User user =userService.getUserFromToken(userToken);
+    public void addScore(String userToken, Integer score) {
+        User user = userService.getUserFromToken(userToken);
         user.addTotalScore(score);
     }
 //  this function (numberOfCluesGiven()) was not used but can

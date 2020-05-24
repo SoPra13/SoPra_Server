@@ -19,7 +19,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -45,7 +44,7 @@ public class LobbyService {
         this.botService = botService;
         this.chatService = chatService;
         this.lobbyRepository = lobbyRepository;
-        this.botRepository =  botRepository;
+        this.botRepository = botRepository;
     }
 
     //get all Lobbies
@@ -140,7 +139,7 @@ public class LobbyService {
         lobbyToRemove.setNumberOfPlayers(lobbyToRemove.getPlayerList().size() + lobbyToRemove.getBotList().size());
 
         if (lobbyToRemove.getPlayerList().isEmpty()) {
-            for(int i = 0; i < lobbyToRemove.getBotList().size();i++){
+            for (int i = 0; i < lobbyToRemove.getBotList().size(); i++) {
                 Bot bot = lobbyToRemove.getBotList().get(i);
                 lobbyToRemove.removeBot(bot);
                 botRepository.delete(bot);
@@ -267,7 +266,7 @@ public class LobbyService {
         log.info("is checking all players connection");
         Lobby lobby = getLobbyFromToken(gameToken);
         if (lobby != null) {
-            for (int i = 0; i<lobby.getPlayerList().size();i++) {
+            for (int i = 0; i < lobby.getPlayerList().size(); i++) {
                 User user = lobby.getPlayerList().get(i);
                 if (!user.isInGameTab()) {
                     log.info(user.getUsername(), "disconnected");

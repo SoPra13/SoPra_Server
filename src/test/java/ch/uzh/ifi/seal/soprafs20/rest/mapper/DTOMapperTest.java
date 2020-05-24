@@ -20,9 +20,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * DTOMapperTest
  * Tests if the mapping between the internal and the external/API representation works.
  */
- class DTOMapperTest {
+class DTOMapperTest {
     @Test
-     void testGetChat_fromMessage_toChatGetDTO() {
+    void testGetChat_fromMessage_toChatGetDTO() {
         // create Message
         Message message = new Message();
         message.setUsername("username");
@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
     }
 
     @Test
-     void testMessage_fromChatPostDTO_toMessage() {
+    void testMessage_fromChatPostDTO_toMessage() {
         // create ChatPostDTO
         ChatPostDTO chat = new ChatPostDTO();
         chat.setMessage("message");
@@ -53,7 +53,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
     @Test
-     void testCreateUser_fromUserPostDTO_toUser_success() {
+    void testCreateUser_fromUserPostDTO_toUser_success() {
         // create UserPostDTO
         UserPostDTO userPostDTO = new UserPostDTO();
         userPostDTO.setPassword("password");
@@ -68,7 +68,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
     }
 
     @Test
-     void testCreateUser_fromUserPutDTO_toUser_success() {
+    void testCreateUser_fromUserPutDTO_toUser_success() {
         // create UserPostDTO
         UserPutDTO userPutDTO = new UserPutDTO();
         userPutDTO.setPassword("password");
@@ -83,7 +83,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
     }
 
     @Test
-     void testGetUser_fromUser_toUserGetDTO_success() {
+    void testGetUser_fromUser_toUserGetDTO_success() {
         // create User
         User user = new User();
         user.setPassword("Firstname Lastname");
@@ -105,7 +105,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
     }
 
     @Test
-     void testCreateLobby_fromLobbyPostDTO_toLobby_success() {
+    void testCreateLobby_fromLobbyPostDTO_toLobby_success() {
         // create LobbyPostDTO
         LobbyPostDTO lobbyPostDTO = new LobbyPostDTO();
         lobbyPostDTO.setLobbyName("lobbyname");
@@ -118,7 +118,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
     }
 
     @Test
-     void testGetLobby_fromLobby_toLobbyGetDTO_success() {
+    void testGetLobby_fromLobby_toLobbyGetDTO_success() {
         // create Lobby and User
         User testAdmin = new User();
         testAdmin.setToken("ADMIN_TOKEN");
@@ -147,7 +147,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
     }
 
     @Test
-     void testGetGame_fromGame_toGameGetDTO_success() {
+    void testGetGame_fromGame_toGameGetDTO_success() {
 
         Game game = new Game();
         game.setId(0L);

@@ -5,6 +5,7 @@ import ch.uzh.ifi.seal.soprafs20.entity.User;
 import ch.uzh.ifi.seal.soprafs20.repository.UserRepository;
 import ch.uzh.ifi.seal.soprafs20.service.GameService;
 import ch.uzh.ifi.seal.soprafs20.service.UserService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -35,43 +36,10 @@ class GameControllerIntegrationTest {
     @Autowired
     private GameService gameService;
 
-    // most test are covered by Unit test written at the beginning
-    // here are only functions tested written after the main testing has been done.
-/*    @Test
-    void getGame() {
+    @AfterEach
+    void reset() {
+        userRepository.deleteAll();
     }
-
-    @Test
-    void setPlayerUnityReady() {
-    }
-
-    @Test
-    void voteForTopic() {
-    }
-
-    @Test
-    void setTopic() {
-    }
-
-    @Test
-    void removePlayer() {
-    }
-
-    @Test
-    void addClue() {
-    }
-
-    @Test
-    void makeGuess() {
-    }
-
-    @Test
-    void nextRound() {
-    }
-
-    @Test
-    void endGame() {
-    }*/
 
     @Test
     void put_addScore() throws Exception {
@@ -90,5 +58,24 @@ class GameControllerIntegrationTest {
         mockMvc.perform(putRequest).andExpect(status().isOk());
 
         assertEquals(100, userRepository.findByUsername("User").getTotalScore());
+    }
+
+    @Test
+    void put_addScore_invalid_userToken() throws Exception {
+        User testUser = new User();
+        testUser.setUsername("User");
+        testUser.setPassword("PWD");
+        testUser.setToken("USER_TOKEN");
+        testUser.setStatus(UserStatus.ONLINE);
+        userService.createUser(testUser);
+        testUser = userRepository.findByUsername("User");
+        String userToken = testUser.getToken();
+
+        MockHttpServletRequestBuilder putRequest =
+                put("/game/score?userToken=INVALID_TOKEN&score=100")
+                        .contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(putRequest).andExpect(status().isNotFound());
+
+        assertEquals(0, userRepository.findByUsername("User").getTotalScore());
     }
 }

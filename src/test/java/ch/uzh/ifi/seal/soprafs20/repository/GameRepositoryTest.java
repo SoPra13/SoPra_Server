@@ -36,7 +36,7 @@ class GameRepositoryTest {
     }
 
     @Test
-     void findByToken_success() {
+    void findByToken_success() {
         // when
         Game found = gameRepository.findByToken(game.getToken());
 
@@ -49,7 +49,7 @@ class GameRepositoryTest {
     }
 
     @Test
-     void findByToken_failed() {
+    void findByToken_failed() {
         // when
         Game found = gameRepository.findByToken("invalid");
 

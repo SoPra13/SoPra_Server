@@ -10,7 +10,6 @@ import java.nio.file.Paths;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public final class WordFileHandler {
     static final Logger log = LoggerFactory.getLogger(WordFileHandler.class);

@@ -29,7 +29,7 @@ class LeaderboardControllerTest {
     @MockBean
     private LeaderboardService leaderboardService;
 
-    private String dummyLeaderboard(){
+    private String dummyLeaderboard() {
         ArrayList<TreeMap<String, String>> leaderboard = new ArrayList<>();
         TreeMap<String, String> jsonUser = new TreeMap<>();
         jsonUser.put("rank", Integer.toString(1));

@@ -86,7 +86,7 @@ class ChatServiceIntegrationTest {
     }
 
     @AfterEach
-    void reset(){
+    void reset() {
         userRepository.deleteAll();
         messageRepository.deleteAll();
         chatRepository.deleteAll();
