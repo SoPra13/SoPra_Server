@@ -210,9 +210,10 @@ class LobbyServiceTest {
 
         Lobby givenLobby = lobbyService.joinLobby(testLobby.getJoinToken(), newUser.getToken());
 
-
+        String lobbyToken = givenLobby.getJoinToken();
+        String userToken = newUser.getToken();
         Exception exception = Assertions.assertThrows(ResponseStatusException.class,
-                () -> lobbyService.joinLobby(givenLobby.getJoinToken(), newUser.getToken()));
+                () -> lobbyService.joinLobby(lobbyToken, userToken));
 
         assertEquals("403 FORBIDDEN \"User is already in Lobby\"", exception.getMessage());
 
@@ -229,8 +230,9 @@ class LobbyServiceTest {
                 .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no User with requested Token"));
         Mockito.when(lobbyRepository.findByLobbyToken(testLobby.getLobbyToken())).thenReturn(testLobby);
 
+        String lobbyToken = testLobby.getJoinToken();
         Exception exception = Assertions.assertThrows(ResponseStatusException.class,
-                () -> lobbyService.joinLobby(testLobby.getJoinToken(), "INVALID_NEW_TOKEN"));
+                () -> lobbyService.joinLobby(lobbyToken, "INVALID_NEW_TOKEN"));
 
         assertEquals("404 NOT_FOUND \"There is no User with requested Token\"", exception.getMessage());
 
@@ -285,9 +287,9 @@ class LobbyServiceTest {
         Mockito.when(userService.getUserFromToken("INVALID_NEW_TOKEN"))
                 .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no User with requested Token"));
 
-
+        String lobbyToken = testLobby.getLobbyToken();
         Exception exception = Assertions.assertThrows(ResponseStatusException.class,
-                () -> lobbyService.leaveLobby(testLobby.getLobbyToken(), "INVALID_NEW_TOKEN"));
+                () -> lobbyService.leaveLobby(lobbyToken, "INVALID_NEW_TOKEN"));
 
         assertEquals("404 NOT_FOUND \"There is no User with requested Token\"", exception.getMessage());
         assertTrue(givenLobby.getPlayerList().contains(newUser));
@@ -348,8 +350,9 @@ class LobbyServiceTest {
         Mockito.when(lobbyRepository.findByLobbyToken(testLobby.getLobbyToken())).thenReturn(testLobby);
         Mockito.when(botService.createBot(testBot.getDifficulty().toString())).thenReturn(testBot);
 
+        String lobbyToken = testLobby.getLobbyToken();
         Exception exception = Assertions.assertThrows(ResponseStatusException.class,
-                () -> lobbyService.addBot(testLobby.getLobbyToken(), "NEUTRAL"));
+                () -> lobbyService.addBot(lobbyToken, "NEUTRAL"));
 
 
         assertEquals("403 FORBIDDEN \"Lobby is full\"", exception.getMessage());
@@ -366,8 +369,9 @@ class LobbyServiceTest {
         Mockito.when(botService.createBot("INVALID_DIFFICULTY"))
                 .thenThrow(new IllegalArgumentException("ILLEGAL VALUE ENCOUNTERED"));
 
+        String lobbyToken = testLobby.getLobbyToken();
         Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () ->
-                lobbyService.addBot(testLobby.getLobbyToken(), "INVALID_DIFFICULTY"));
+                lobbyService.addBot(lobbyToken, "INVALID_DIFFICULTY"));
 
 
         assertEquals("ILLEGAL VALUE ENCOUNTERED", exception.getMessage());
@@ -402,9 +406,9 @@ class LobbyServiceTest {
         Mockito.when(botService.getBotFromToken(testBot.getToken())).thenReturn(testBot);
         lobbyService.addBot(testLobby.getLobbyToken(), testBot.getDifficulty().toString());
 
-
+        String botToken = testBot.getToken();
         Exception exception = Assertions.assertThrows(ResponseStatusException.class,
-                () -> lobbyService.removeBot("INVALID_TOKEN", testBot.getToken()));
+                () -> lobbyService.removeBot("INVALID_TOKEN", botToken));
 
 
         assertEquals("404 NOT_FOUND \"Lobby not found\"", exception.getMessage());
@@ -423,9 +427,9 @@ class LobbyServiceTest {
                 .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no Bot with requested Token"));
         lobbyService.addBot(testLobby.getLobbyToken(), testBot.getDifficulty().toString());
 
-
+        String lobbyToken = testLobby.getLobbyToken();
         Exception exception = Assertions.assertThrows(ResponseStatusException.class,
-                () -> lobbyService.removeBot(testLobby.getLobbyToken(), "INVALID_BOT_TOKEN"));
+                () -> lobbyService.removeBot(lobbyToken, "INVALID_BOT_TOKEN"));
 
 
         assertEquals("404 NOT_FOUND \"There is no Bot with requested Token\"", exception.getMessage());
@@ -470,8 +474,9 @@ class LobbyServiceTest {
         testAdmin.setLobbyReady(false);
         Mockito.when(userService.getUserFromToken(testAdmin.getToken())).thenReturn(testAdmin);
 
+        String adminToken = testAdmin.getToken();
         Exception exception = Assertions.assertThrows(ResponseStatusException.class,
-                () -> lobbyService.setPlayerReady("INVALID_LOBBY_TOKEN", testAdmin.getToken()));
+                () -> lobbyService.setPlayerReady("INVALID_LOBBY_TOKEN", adminToken));
 
         assertEquals("404 NOT_FOUND \"Could not set player ready\"", exception.getMessage());
         assertFalse(testAdmin.isLobbyReady());
@@ -483,8 +488,9 @@ class LobbyServiceTest {
         Mockito.when(userService.getUserFromToken("INVALID_BOT_TOKEN"))
                 .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no User with requested Token"));
 
+        String lobbyToken = testLobby.getLobbyToken();
         Exception exception = Assertions.assertThrows(ResponseStatusException.class,
-                () -> lobbyService.setPlayerReady(testLobby.getLobbyToken(), "INVALID_BOT_TOKEN"));
+                () -> lobbyService.setPlayerReady(lobbyToken, "INVALID_BOT_TOKEN"));
 
         assertEquals("404 NOT_FOUND \"There is no User with requested Token\"", exception.getMessage());
         assertFalse(testAdmin.isLobbyReady());
