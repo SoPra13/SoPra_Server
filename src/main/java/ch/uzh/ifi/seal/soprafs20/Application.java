@@ -13,10 +13,7 @@ public class Application {
     private static final String SANITIZER = "[\n|\r|\t]";
 
     public static void main(String[] args) {
-        String[] sanetized = new String[args.length];
-        for(int i = 0; i < args.length; i++) sanetized[i] = args[i].replaceAll(SANITIZER, "_");
-        SpringApplication.run(Application.class, sanetized);
-
+        SpringApplication.run(Application.class, args);
     }
 
     @Bean
@@ -26,7 +23,7 @@ public class Application {
             public void addCorsMappings(CorsRegistry registry) {
                 registry
                         .addMapping("/**")
-                        .allowedOrigins("http://localhost:8080")
+                        .allowedOrigins("*")
                         .allowedMethods("*");
             }
         };
