@@ -97,8 +97,11 @@ Have a look here: https://www.baeldung.com/spring-boot-testing
 ## High-level components
 ### These are our main high-level components
 [WordService](src/test/java/ch/uzh/ifi/seal/soprafs20/service/WordServiceTest.java): Datamuse API connection to handle all NLP requierments used in this Project.
+
 [GameService](src/main/java/ch/uzh/ifi/seal/soprafs20/service/GameService.java): Responsible for handling parts of the gamelogic that is not handled in Unity(Frontend)
+
 [BotSericve](src/main/java/ch/uzh/ifi/seal/soprafs20/service/BotService.java): Respnsible for the logic of the bots
+
 [LobbyService](src/main/java/ch/uzh/ifi/seal/soprafs20/service/LobbyService.java): Responsible for handling the logic for the lobbies.
 
 ### Relation between High-level Components
