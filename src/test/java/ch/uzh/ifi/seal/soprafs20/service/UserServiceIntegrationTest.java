@@ -104,7 +104,8 @@ import static org.junit.jupiter.api.Assertions.*;
     @Test
      void loginUser_failed() {
 
-        assertThrows(ResponseStatusException.class, () -> userService.loginUser(new User()));
+        User testUser = new User();
+        assertThrows(ResponseStatusException.class, () -> userService.loginUser(testUser));
     }
 
     @Test
@@ -134,7 +135,8 @@ import static org.junit.jupiter.api.Assertions.*;
      void updateUser_failed() {
         testUser.setToken("wrongToken");
 
-        assertThrows(ResponseStatusException.class, () -> userService.updateUser(new User()));
+        User testUser = new User();
+        assertThrows(ResponseStatusException.class, () -> userService.updateUser(testUser));
     }
 
     @Test
