@@ -158,27 +158,20 @@ class LobbyControllerTest {
         mockMvc.perform(getRequest).andExpect(status().isNotFound());
     }
 
-//    @Test
-//     void get_lobbyByToken_correct() throws Exception {
-//        Lobby lobby = dummyLobby();
-////        User user = dummyUser();
-////        lobby.setAdminToken(user.getToken());
-//
-////        LobbyPostDTO lobbyPostDTO = new LobbyPostDTO();
-////        lobbyPostDTO.setAdminToken(user.getToken());
-//
-//        given(lobbyService.getLobbyFromToken("testtoken")).willReturn(lobby);
-//
-//
-//        MockHttpServletRequestBuilder getRequest = get("/lobby?lobbyToken=testtoken")
-//                .contentType(MediaType.APPLICATION_JSON);
-//        mockMvc.perform(getRequest).andExpect(status().isOk())
-//                .andExpect(jsonPath("$.lobbyname", is(lobby.getLobbyname())))
-//                .andExpect(jsonPath("$.id", is(lobby.getId().intValue())))
-////                .andExpect(jsonPath("$.password", is(lobby.getPassword())))
-////                .andExpect(jsonPath("$.token", is(lobby.getToken())))
-//                .andExpect(jsonPath("$.lobbyStatus", is(lobby.getLobbyState().toString())));
-//    }
+    @Test
+     void get_lobbyByToken_correct() throws Exception {
+        Lobby lobby = dummyLobby();
+
+        given(lobbyService.getLobbyFromToken("testtoken")).willReturn(lobby);
+
+
+        MockHttpServletRequestBuilder getRequest = get("/lobby?lobbyToken=testtoken")
+                .contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(getRequest).andExpect(status().isOk())
+                .andExpect(jsonPath("$.lobbyName", is(lobby.getLobbyName())))
+                .andExpect(jsonPath("$.id", is(lobby.getId().intValue())))
+                .andExpect(jsonPath("$.lobbyState", is(lobby.getLobbyState().toString())));
+    }
 
     @Test
     void get_lobbyByToken_failed() throws Exception {

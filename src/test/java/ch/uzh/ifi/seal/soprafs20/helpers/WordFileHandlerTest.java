@@ -24,7 +24,9 @@ class WordFileHandlerTest {
         assertEquals(65, wordList.size());
     }
 
-//  This test runs perfectly normal on local system. only during deployment when testing on SonarQube it fails
+
+//  This test runs perfectly normal on local system. only during deployment when testing on SonarQube it fails. it was
+//  part of the 100 project.
    /* @Test
     void getMysteryWords_wrongPath() throws IOException {
         Path original = Paths.get("src/Cards_serious_words-EN.txt");

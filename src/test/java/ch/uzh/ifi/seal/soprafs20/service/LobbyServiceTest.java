@@ -453,7 +453,6 @@ class LobbyServiceTest {
 
         lobbyService.removeBot(testLobby.getLobbyToken(), otherBot.getToken());
 
-//        assertEquals("404 NOT_FOUND \"There is no Bot with requested Token in the lobby\"", exception.getMessage());
         assertFalse(testLobby.getBotList().contains(otherBot));
         assertEquals(2, testLobby.getNumberOfPlayers());
         assertNotNull(testBot.getLobby());
