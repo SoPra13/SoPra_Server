@@ -132,8 +132,9 @@ class GameServiceTest {
     @Test
     void setPlayerReady_invalid_game_token() {
 
+        String userToken = testUser.getToken();
         Exception exception = Assertions.assertThrows(ResponseStatusException.class,
-                () -> gameService.setPlayerReady("INVALID_TOKEN", testUser.getToken()));
+                () -> gameService.setPlayerReady("INVALID_TOKEN", userToken));
 
         assertEquals("404 NOT_FOUND \"Could not set player ready\"", exception.getMessage());
     }
@@ -143,8 +144,9 @@ class GameServiceTest {
         when(userService.getUserFromToken("INVALID_USER_TOKEN"))
                 .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no User with requested Token"));
 
+        String gameToken = testGame.getToken();
         Exception exception = Assertions.assertThrows(ResponseStatusException.class,
-                () -> gameService.setPlayerReady(testGame.getToken(), "INVALID_USER_TOKEN"));
+                () -> gameService.setPlayerReady(gameToken, "INVALID_USER_TOKEN"));
 
         assertEquals("404 NOT_FOUND \"There is no User with requested Token\"", exception.getMessage());
     }
@@ -155,8 +157,9 @@ class GameServiceTest {
         otherGame.setToken("OTHER_TOKEN");
         testUser.setGame(otherGame);
 
+        String gameToken = testGame.getToken();
         Exception exception = Assertions.assertThrows(ResponseStatusException.class,
-                () -> gameService.setPlayerReady(testGame.getToken(), testUser.getToken()));
+                () -> gameService.setPlayerReady(gameToken, testUser.getToken()));
 
         assertEquals("404 NOT_FOUND \"Could not set player ready\"", exception.getMessage());
     }
@@ -283,8 +286,9 @@ class GameServiceTest {
     @Test
     void addVote_invalid_game_token() {
 
+        String userToken = testUser.getToken();
         Exception exception = Assertions.assertThrows(ResponseStatusException.class,
-                () -> gameService.addVote("INVALID_TOKEN", testUser.getToken(), 1));
+                () -> gameService.addVote("INVALID_TOKEN", userToken, 1));
 
         assertEquals("404 NOT_FOUND \"No matching Game found\"", exception.getMessage());
         assertEquals(0, testGame.getVoteList().get(0));
@@ -298,8 +302,9 @@ class GameServiceTest {
         when(userService.getUserFromToken("INVALID_USER_TOKEN"))
                 .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no User with requested Token"));
 
+        String gameToken = testGame.getToken();
         Exception exception = Assertions.assertThrows(ResponseStatusException.class,
-                () -> gameService.addVote(testGame.getToken(), "INVALID_USER_TOKEN", 0));
+                () -> gameService.addVote(gameToken, "INVALID_USER_TOKEN", 0));
 
         assertEquals("404 NOT_FOUND \"There is no User with requested Token\"", exception.getMessage());
         assertEquals(0, testGame.getVoteList().get(0));
@@ -312,8 +317,11 @@ class GameServiceTest {
         when(gameRepository.findByToken(testGame.getToken())).thenReturn(testGame);
 
         int invalid_index = -1;
+
+        String gameToken = testGame.getToken();
+        String userToken = testUser.getToken();
         Exception exception = Assertions.assertThrows(IndexOutOfBoundsException.class,
-                () -> gameService.addVote(testGame.getToken(), testUser.getToken(), invalid_index));
+                () -> gameService.addVote(gameToken, userToken, invalid_index));
 
         assertEquals(String.format("Index %d out of bounds for length 5", invalid_index), exception.getMessage());
         assertEquals(0, testGame.getVoteList().get(0));
@@ -470,8 +478,10 @@ class GameServiceTest {
         guesser.setGaveClue(false);
         testGame.getPlayerList().add(guesser);
 
+        String gameToken = testGame.getToken();
+        String userToken = testUser.getToken();
         Exception exception = Assertions.assertThrows(ResponseStatusException.class,
-                () -> gameService.addClue(testUser.getToken(), testGame.getToken(), clue));
+                () -> gameService.addClue(userToken, gameToken, clue));
 
         assertTrue(testUser.getGaveClue());
         assertFalse(testGame.getChecklist().contains(clue));
