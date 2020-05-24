@@ -48,8 +48,8 @@ public class UserService {
         newUser.setTotalClues(0);
         newUser.setInvalidClues(0);
         newUser.setGuessesMade(0);
-//        newUser.setTotalScore(Arrays.asList(new String[]{"Simon", "Thanh", "Chris", "Marc", "Ivan"})
-//                .contains(newUser.getUsername()) ? 1000 : 0);
+// if one want to run in dev mode set this code in total score Arrays.asList(new String[]{"Simon", "Thanh", "Chris",
+// "Marc", "Ivan"}).contains(newUser.getUsername()) ? 1000 : 0 to start with some points inited
         newUser.setTotalScore(0);
         newUser.setGuessesCorrect(0);
         newUser.setGamesPlayed(0);

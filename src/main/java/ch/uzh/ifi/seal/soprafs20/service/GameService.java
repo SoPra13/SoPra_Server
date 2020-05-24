@@ -177,14 +177,14 @@ public class GameService {
     }
 
     public void checkAllPlayersAreConnected(String gameToken) {
-        System.out.println("is checking0");
+        log.info("is checking if all players are connected.");
         Game game = getGameFromToken(gameToken);
         Lobby lobby = lobbyService.getLobbyFromToken(gameToken);
         if (game != null) {
             for (int i = 0; i<game.getPlayerList().size();i++) {
                 User user = game.getPlayerList().get(i);
                 if (!user.isInGameTab()) {
-                    System.out.println(user.getUsername() + "left detected");
+                    log.info("Found: " + user.getUsername() + " has disconnected.");
                     removeUser(user.getToken(), gameToken);
                     lobby.removePlayer(user);
                     userService.leaveLobby(user);
