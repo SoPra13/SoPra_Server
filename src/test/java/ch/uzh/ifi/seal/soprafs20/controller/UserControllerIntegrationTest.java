@@ -112,6 +112,28 @@ class UserControllerIntegrationTest {
     }
 
     @Test
+    void put_updateInGame_user_disconnected() throws Exception {
+        new Thread(() -> {
+            try {
+                sleep(10000);
+                testUser.setIsInGameTabCycle(0L);
+                userRepository.save(testUser);
+            }
+            catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }).start();
+
+        MockHttpServletRequestBuilder putRequest = put("/user/updateingametab?userToken=" +
+                testUser.getToken()).contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(putRequest).andExpect(status().isOk());
+
+        sleep(15000);
+        testUser = userRepository.findByToken(testUser.getToken());
+        assertFalse(testUser.isInGameTab());
+    }
+
+    @Test
     void put_updateUser() throws Exception {
         UserPostDTO userPostDTO = new UserPostDTO();
         userPostDTO.setUsername("newUsername");
