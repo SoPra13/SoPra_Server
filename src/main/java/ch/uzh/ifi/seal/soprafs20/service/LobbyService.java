@@ -39,7 +39,7 @@ public class LobbyService {
 
 
     @Autowired
-    public LobbyService(UserService userService, BotRepository botRepository, BotService botService, ChatService chatService, @Qualifier("lobbyRepository") LobbyRepository lobbyRepository) {
+    public LobbyService(UserService userService, @Qualifier("botRepository") BotRepository botRepository, BotService botService, ChatService chatService, @Qualifier("lobbyRepository") LobbyRepository lobbyRepository) {
         this.userService = userService;
         this.botService = botService;
         this.chatService = chatService;

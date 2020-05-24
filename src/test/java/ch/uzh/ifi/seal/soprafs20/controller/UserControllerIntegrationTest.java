@@ -59,7 +59,7 @@ class UserControllerIntegrationTest {
     }
 
     @Test
-    void getAllUsers() throws Exception {
+    void get_getAllUsers() throws Exception {
         User testUser2 = new User();
         testUser2.setUsername("testUser2");
         testUser2.setPassword("PWD2");
@@ -75,7 +75,7 @@ class UserControllerIntegrationTest {
     }
 
     @Test
-    void updateInGame() throws Exception {
+    void put_updateInGame() throws Exception {
 
 
         MockHttpServletRequestBuilder putRequest = put("/user/updateingametab?userToken=" +
@@ -87,7 +87,7 @@ class UserControllerIntegrationTest {
     }
 
     @Test
-    void updateUser() throws Exception {
+    void put_updateUser() throws Exception {
         UserPostDTO userPostDTO = new UserPostDTO();
         userPostDTO.setUsername("newUsername");
         String userPostDTOString = new ObjectMapper().writeValueAsString(userPostDTO);
