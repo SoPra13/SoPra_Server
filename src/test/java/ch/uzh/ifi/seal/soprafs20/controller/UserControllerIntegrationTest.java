@@ -19,6 +19,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.server.ResponseStatusException;
 
+
+import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
+
 import static java.lang.Thread.sleep;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -115,7 +119,7 @@ class UserControllerIntegrationTest {
     void put_updateInGame_user_disconnected() throws Exception {
         new Thread(() -> {
             try {
-                sleep(10000);
+                TimeUnit.SECONDS.sleep(5);
                 testUser.setIsInGameTabCycle(0L);
                 userRepository.save(testUser);
             }
@@ -128,7 +132,8 @@ class UserControllerIntegrationTest {
                 testUser.getToken()).contentType(MediaType.APPLICATION_JSON);
         mockMvc.perform(putRequest).andExpect(status().isOk());
 
-        sleep(15000);
+        TimeUnit.SECONDS.sleep(15);
+
         testUser = userRepository.findByToken(testUser.getToken());
         assertFalse(testUser.isInGameTab());
     }
@@ -165,4 +170,5 @@ class UserControllerIntegrationTest {
 
 // Tests of addScore PutMapping was not used so its been removed. can be recoverd form
 // commit: c2a8a1429036ed822e4709c873f1ed141d4cc3d0
+
 }
