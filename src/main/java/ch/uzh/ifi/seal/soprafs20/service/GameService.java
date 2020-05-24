@@ -177,20 +177,21 @@ public class GameService {
     }
 
     public void checkAllPlayersAreConnected(String gameToken) {
-        log.info("is checking if all players are connected.");
+        log.info("Checking if all players are connected:");
         Game game = getGameFromToken(gameToken);
         Lobby lobby = lobbyService.getLobbyFromToken(gameToken);
         if (game != null) {
             for (int i = 0; i<game.getPlayerList().size();i++) {
                 User user = game.getPlayerList().get(i);
                 if (!user.isInGameTab()) {
-                    log.info("Found: " + user.getUsername() + " has disconnected.");
+                    log.info("Found: {} has disconnected.", user.getUsername());
                     removeUser(user.getToken(), gameToken);
                     lobby.removePlayer(user);
                     userService.leaveLobby(user);
                     user.setStatus(UserStatus.OFFLINE);
                 }
             }
+            log.info("All players checked.");
         }
     }
 

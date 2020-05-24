@@ -69,7 +69,7 @@ class GameServiceTest {
 
         testUser.setUsername("UserName");
         testUser.setPassword("PassWord");
-        testUser.setStatus(UserStatus.OFFLINE);
+        testUser.setStatus(UserStatus.ONLINE);
         testUser.setToken("UserToken");
         testUser.setId(2L);
         testUser.setGame(testGame);
@@ -158,8 +158,9 @@ class GameServiceTest {
         testUser.setGame(otherGame);
 
         String gameToken = testGame.getToken();
+        String userToken = testUser.getToken();
         Exception exception = Assertions.assertThrows(ResponseStatusException.class,
-                () -> gameService.setPlayerReady(gameToken, testUser.getToken()));
+                () -> gameService.setPlayerReady(gameToken, userToken));
 
         assertEquals("404 NOT_FOUND \"Could not set player ready\"", exception.getMessage());
     }
@@ -348,6 +349,20 @@ class GameServiceTest {
 
     @Test
     void checkAllPlayersAreConnected() {
+        testGame.getPlayerList().get(0).setInGameTab(true);
+        Lobby testLobby = new Lobby();
+        testLobby.getPlayerList().add(testUser);
+
+        when(lobbyService.getLobbyFromToken(testGame.getToken())).thenReturn(testLobby);
+
+        gameService.checkAllPlayersAreConnected(testGame.getToken());
+
+        assertEquals(UserStatus.ONLINE, testUser.getStatus());
+        assertTrue(testLobby.getPlayerList().contains(testUser));
+    }
+
+    @Test
+    void checkAllPlayersAreConnected_with_diconnected_player() {
         testGame.getPlayerList().get(0).setInGameTab(false);
         Lobby testLobby = new Lobby();
         testLobby.getPlayerList().add(testUser);

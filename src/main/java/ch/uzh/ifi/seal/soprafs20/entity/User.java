@@ -1,8 +1,11 @@
 package ch.uzh.ifi.seal.soprafs20.entity;
 
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
+import ch.uzh.ifi.seal.soprafs20.service.UserService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -255,9 +258,6 @@ public class User implements Serializable {
         invalidClues += 1;
     }
 
-
-
-
     public Integer getTotalCluesLife() {
         return totalCluesLife;
     }
@@ -306,12 +306,6 @@ public class User implements Serializable {
         invalidCluesLife += 1;
     }
 
-
-
-
-
-
-
     public Integer getTotalScore() {
         return totalScore;
     }
@@ -321,10 +315,7 @@ public class User implements Serializable {
     }
 
     public void addTotalScore(Integer score) {
-
         totalScore += score;
-        System.out.println("A " + totalScore);
-        System.out.println(this.totalScore);
     }
 
     @JsonIgnore

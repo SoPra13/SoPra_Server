@@ -41,7 +41,7 @@ class LobbyRepositoryTest {
     }
 
     @Test
-     void findByToken_success() {
+    void findByToken_success() {
         // when
         Lobby found = lobbyRepository.findByLobbyToken(lobby.getLobbyToken());
 
@@ -56,9 +56,33 @@ class LobbyRepositoryTest {
     }
 
     @Test
-     void findByToken_failed() {
+    void findByToken_failed() {
         // when
         Lobby found = lobbyRepository.findByLobbyToken("invalid");
+
+        // then
+        assertNull(found);
+    }
+
+    @Test
+    void findByJoinToken_success() {
+        // when
+        Lobby found = lobbyRepository.findByJoinToken(lobby.getJoinToken());
+
+        // then
+        assertNotNull(found.getId());
+        assertEquals(found.getLobbyName(), lobby.getLobbyName());
+        assertEquals(found.getLobbyToken(), lobby.getLobbyToken());
+        assertEquals(found.getLobbyState(), lobby.getLobbyState());
+        assertEquals(found.getNumberOfPlayers(), lobby.getNumberOfPlayers());
+        assertEquals(found.getAdminToken(), lobby.getAdminToken());
+        assertEquals(found.getLobbyType(), lobby.getLobbyType());
+    }
+
+    @Test
+    void findByJoinToken_failed() {
+        // when
+        Lobby found = lobbyRepository.findByJoinToken("invalid");
 
         // then
         assertNull(found);
