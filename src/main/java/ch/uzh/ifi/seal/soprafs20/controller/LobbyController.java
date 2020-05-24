@@ -135,7 +135,6 @@ public class LobbyController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public LobbyGetDTO removeBot(@RequestParam String lobbyToken, @RequestParam String botToken) {
-
         //add user to lobby
         Lobby lobby = lobbyService.removeBot(lobbyToken, botToken);
 

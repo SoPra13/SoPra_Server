@@ -1,17 +1,20 @@
 package ch.uzh.ifi.seal.soprafs20.controller;
 
+import ch.uzh.ifi.seal.soprafs20.constant.LobbyStatus;
+import ch.uzh.ifi.seal.soprafs20.constant.LobbyType;
 import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
+import ch.uzh.ifi.seal.soprafs20.entity.Bot;
 import ch.uzh.ifi.seal.soprafs20.entity.Game;
 import ch.uzh.ifi.seal.soprafs20.entity.Lobby;
 import ch.uzh.ifi.seal.soprafs20.entity.User;
+import ch.uzh.ifi.seal.soprafs20.repository.BotRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.LobbyRepository;
 import ch.uzh.ifi.seal.soprafs20.repository.UserRepository;
-import ch.uzh.ifi.seal.soprafs20.rest.dto.UserPostDTO;
+import ch.uzh.ifi.seal.soprafs20.service.BotService;
 import ch.uzh.ifi.seal.soprafs20.service.GameService;
 import ch.uzh.ifi.seal.soprafs20.service.LobbyService;
 import ch.uzh.ifi.seal.soprafs20.service.UserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,20 +26,17 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import javax.transaction.Transactional;
 
-import javax.persistence.Lob;
-
-import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 class LobbyControllerIntegrationTest {
 
     @Qualifier("lobbyRepository")
@@ -51,6 +51,13 @@ class LobbyControllerIntegrationTest {
     @Autowired
     UserRepository userRepository;
 
+    @Qualifier("botRepository")
+    @Autowired
+    BotRepository botRepository;
+
+    @Autowired
+    private MockMvc mockMvc;
+
     @Autowired
     GameService gameService;
 
@@ -58,26 +65,101 @@ class LobbyControllerIntegrationTest {
     UserService userService;
 
     @Autowired
+    BotService botService;
+
+    @Autowired
     LobbyService lobbyService;
 
 
     private User testUser;
+    private Bot testBot;
     private Game testGame;
     private Lobby testLobby;
 
-    @Test
-    void startGame() {
+    @BeforeEach
+    void setup(){
+        botRepository.deleteAll();
+        userRepository.deleteAll();
+        lobbyRepository.deleteAll();
+        gameRepository.deleteAll();
+
+        testBot = botService.createBot("FRIEND");
+        testUser = new User();
+        testLobby = new Lobby();
+        testGame = new Game();
+
+        testUser.setUsername("User");
+        testUser.setPassword("PWD");
+        testUser.setToken("ADMIN_TOKEN");       // this will be reset ramdom when created in repository
+        testUser.setStatus(UserStatus.ONLINE);
+        userService.createUser(testUser);
+        testUser = userRepository.findByUsername("User");
+
+        testLobby.setLobbyName("testLobby");
+        testLobby.setLobbyToken("LOBBY_TOKEN");
+        testLobby.setJoinToken("1729");
+        testLobby.setLobbyState(LobbyStatus.OPEN);
+        testLobby.setNumberOfPlayers(1);
+        testLobby.setAdminToken(testUser.getToken());
+        testLobby.setLobbyType(LobbyType.PUBLIC);
+        testLobby = lobbyService.createLobby(testLobby, testUser.getToken());
+    }
+
+    @AfterEach
+    void reset() {
+        botRepository.deleteAll();
+        userRepository.deleteAll();
+        lobbyRepository.deleteAll();
+        gameRepository.deleteAll();
     }
 
     @Test
-    void addBot() {
+    void put_startGame() throws Exception {
+
+
+        MockHttpServletRequestBuilder putRequest = put("/lobby/" + testLobby.getLobbyToken() + "/game")
+                .contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(putRequest).andExpect(status().isCreated());
+
+        assertTrue(gameRepository.findByToken(testLobby.getLobbyToken()).getPlayerList().contains(testUser));
     }
 
     @Test
-    void removeBot() {
+    void put_addBot() throws Exception {
+
+
+        MockHttpServletRequestBuilder putRequest = put("/lobby?lobbyToken=" + testLobby.getLobbyToken() +
+                "&difficulty=FRIEND").contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(putRequest).andExpect(status().isCreated());
+
+        assertFalse(lobbyRepository.findByLobbyToken(testLobby.getLobbyToken()).getBotList().isEmpty());
     }
 
     @Test
-    void setPlayerLobbyReady() {
+    void put_removeBot() throws Exception {
+
+        MockHttpServletRequestBuilder putRequest = put("/lobby?lobbyToken=" + testLobby.getLobbyToken() +
+                "&difficulty=FRIEND").contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(putRequest).andExpect(status().isCreated());
+        testBot = lobbyRepository.findByLobbyToken(testLobby.getLobbyToken()).getBotList().get(0);
+        MockHttpServletRequestBuilder delRequest = delete("/lobby?lobbyToken=" + testLobby.getLobbyToken() +
+                "&botToken=" + testBot.getToken()).contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(delRequest).andExpect(status().isOk());
+
+        assertTrue(lobbyRepository.findByLobbyToken(testLobby.getLobbyToken()).getBotList().isEmpty());
+    }
+
+    @Test
+    void put_setPlayerLobbyReady() throws Exception {
+        MockHttpServletRequestBuilder putGame = put("/lobby/" + testLobby.getLobbyToken() + "/game")
+                .contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(putGame).andExpect(status().isCreated());
+
+        MockHttpServletRequestBuilder putRequest = put("/lobby/ready?userToken=" + testUser.getToken() +
+                "&lobbyToken=" + testLobby.getLobbyToken())
+                .contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(putRequest).andExpect(status().isOk());
+
+        assertTrue(testUser.isUnityReady());
     }
 }
