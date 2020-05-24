@@ -23,6 +23,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 
 class GameServiceTest {
@@ -83,11 +84,11 @@ class GameServiceTest {
         testUser.setInvalidCluesLife(0);
         testUser.setGuessesCorrectLife(0);
 
-        Mockito.when(gameRepository.save(Mockito.any())).thenReturn(testGame);
-        Mockito.when(gameRepository.findByToken(testGame.getToken())).thenReturn(testGame);
-        Mockito.when(gameRepository.findByToken("INVALID_TOKEN")).thenReturn(null);
-        Mockito.when(userService.getUserFromToken(testUser.getToken())).thenReturn(testUser);
-        Mockito.when(botService.botClue(Difficulty.NEUTRAL, testGame.getTopic())).thenReturn("BOT_CLUE");
+        when(gameRepository.save(Mockito.any())).thenReturn(testGame);
+        when(gameRepository.findByToken(testGame.getToken())).thenReturn(testGame);
+        when(gameRepository.findByToken("INVALID_TOKEN")).thenReturn(null);
+        when(userService.getUserFromToken(testUser.getToken())).thenReturn(testUser);
+        when(botService.botClue(Difficulty.NEUTRAL, testGame.getTopic())).thenReturn("BOT_CLUE");
 
         Mockito.doCallRealMethod().when(userService).leaveGame(testUser);
         Mockito.doCallRealMethod().when(userService).leaveLobby(testUser);
@@ -139,7 +140,7 @@ class GameServiceTest {
 
     @Test
     void setPlayerReady_invalid_user_token() {
-        Mockito.when(userService.getUserFromToken("INVALID_USER_TOKEN"))
+        when(userService.getUserFromToken("INVALID_USER_TOKEN"))
                 .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no User with requested Token"));
 
         Exception exception = Assertions.assertThrows(ResponseStatusException.class,
@@ -197,7 +198,7 @@ class GameServiceTest {
         testLobby.getPlayerList().add(testUser);
         testLobby.getBotList().add(testBot);
         Game dummyGame = createGame_helper(testLobby); // Mockito.mock(Game.class);
-        Mockito.when(gameRepository.save(Mockito.any())).thenReturn(dummyGame);
+        when(gameRepository.save(Mockito.any())).thenReturn(dummyGame);
 
 
         Game newGame = gameService.createGame(testLobby);
@@ -220,7 +221,7 @@ class GameServiceTest {
         testLobby.setLobbyToken("LOBBY_TOKEN");
         testLobby.getPlayerList().add(testUser);
         Game dummyGame = createGame_helper(testLobby); //new Game(); // Mockito.mock(Game.class);
-        Mockito.when(gameRepository.save(Mockito.any())).thenReturn(dummyGame);
+        when(gameRepository.save(Mockito.any())).thenReturn(dummyGame);
 
 
         Game newGame = gameService.createGame(testLobby);
@@ -242,7 +243,7 @@ class GameServiceTest {
         Lobby testLobby = new Lobby();
         testLobby.setLobbyToken("LOBBY_TOKEN");
         testLobby.getBotList().add(testBot);
-        Mockito.when(gameRepository.save(Mockito.any())).thenReturn(dummyGame);
+        when(gameRepository.save(Mockito.any())).thenReturn(dummyGame);
 
         Exception exception = Assertions.assertThrows(IllegalArgumentException.class,
                 () -> gameService.createGame(testLobby));
@@ -293,8 +294,8 @@ class GameServiceTest {
     @Test
     void addVote_invalid_user_token() {
 
-        Mockito.when(gameRepository.findByToken(testGame.getToken())).thenReturn(testGame);
-        Mockito.when(userService.getUserFromToken("INVALID_USER_TOKEN"))
+        when(gameRepository.findByToken(testGame.getToken())).thenReturn(testGame);
+        when(userService.getUserFromToken("INVALID_USER_TOKEN"))
                 .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no User with requested Token"));
 
         Exception exception = Assertions.assertThrows(ResponseStatusException.class,
@@ -308,7 +309,7 @@ class GameServiceTest {
     @Test
     void addVote_invalid_vote() {
 
-        Mockito.when(gameRepository.findByToken(testGame.getToken())).thenReturn(testGame);
+        when(gameRepository.findByToken(testGame.getToken())).thenReturn(testGame);
 
         int invalid_index = -1;
         Exception exception = Assertions.assertThrows(IndexOutOfBoundsException.class,
@@ -338,6 +339,20 @@ class GameServiceTest {
     }
 
     @Test
+    void checkAllPlayersAreConnected() {
+        testGame.getPlayerList().get(0).setInGameTab(false);
+        Lobby testLobby = new Lobby();
+        testLobby.getPlayerList().add(testUser);
+
+        when(lobbyService.getLobbyFromToken(testGame.getToken())).thenReturn(testLobby);
+
+        gameService.checkAllPlayersAreConnected(testGame.getToken());
+
+        assertEquals(UserStatus.OFFLINE, testUser.getStatus());
+        assertFalse(testLobby.getPlayerList().contains(testUser));
+    }
+
+    @Test
     void removeUser_success() {
         Lobby testLobby = new Lobby();
         User userToKick = new User();
@@ -349,8 +364,8 @@ class GameServiceTest {
         testGame.getPlayerList().add(userToKick);
 
 
-        Mockito.when(userService.getUserFromToken(userToKick.getToken())).thenReturn(userToKick);
-        Mockito.when(lobbyService.getLobbyFromToken(testLobby.getLobbyToken())).thenReturn(testLobby);
+        when(userService.getUserFromToken(userToKick.getToken())).thenReturn(userToKick);
+        when(lobbyService.getLobbyFromToken(testLobby.getLobbyToken())).thenReturn(testLobby);
         Mockito.doNothing().when(chatService).leaveChat(testGame.getToken(), userToKick.getToken());
 
         Mockito.doCallRealMethod().when(userService).leaveGame(userToKick);
@@ -367,7 +382,7 @@ class GameServiceTest {
         testGame.getBotList().add(testBot);
         testLobby.setLobbyToken(testGame.getToken());       // in createGame game token is defined same as lobby token
 
-        Mockito.when(lobbyService.getLobbyFromToken(testLobby.getLobbyToken())).thenReturn(testLobby);
+        when(lobbyService.getLobbyFromToken(testLobby.getLobbyToken())).thenReturn(testLobby);
 
         gameService.removeUser(testUser.getToken(), testGame.getToken());
 
@@ -493,7 +508,7 @@ class GameServiceTest {
         User guesser = new User();      // guesser is needed to make sure w dont eval clue to early
         guesser.setGaveClue(false);
         testGame.getPlayerList().add(guesser);
-        Mockito.when(userService.getUserFromToken(otherUser.getToken())).thenReturn(otherUser);
+        when(userService.getUserFromToken(otherUser.getToken())).thenReturn(otherUser);
 
         gameService.addClue(otherUser.getToken(), testGame.getToken(), clue);
         gameService.addClue(testUser.getToken(), testGame.getToken(), clue);
@@ -515,6 +530,13 @@ class GameServiceTest {
         gameService.makeGuess(testGame.getToken(), testUser.getToken(), "other_topic");
 
         assertFalse(testGame.getGuessCorrect());
+    }
+
+    @Test
+    void makeGuess_skipped_guessing() {
+        gameService.makeGuess(testGame.getToken(), testUser.getToken(), "null");
+
+        assertEquals("no guess given", testGame.getGuess());
     }
 
     @Test
@@ -585,7 +607,7 @@ class GameServiceTest {
         Lobby testLobby = new Lobby();
         testLobby.setLobbyState(LobbyStatus.INGAME);
         testUser.setGamesPlayed(0);
-        Mockito.when(lobbyService.getLobbyFromToken(testGame.getToken())).thenReturn(testLobby);
+        when(lobbyService.getLobbyFromToken(testGame.getToken())).thenReturn(testLobby);
         Mockito.doNothing().when(botRepository).delete(testBot);
 
         gameService.endGame(testGame.getToken(), testUser.getToken());
