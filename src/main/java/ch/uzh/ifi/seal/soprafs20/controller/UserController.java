@@ -95,15 +95,6 @@ public class UserController {
         userService.updateUser(newUser);
     }
 
-
-//    @PutMapping(value = "/user/score", params = {"userToken", "score"})
-//    @ResponseStatus(HttpStatus.OK)
-//    @ResponseBody
-//    public void addScore(@RequestParam String userToken, @RequestParam Integer score) {
-//
-//        User user = userService.getUserFromToken(userToken);
-//        System.out.println(user.getToken());
-//        user.addTotalScore(score);
-//        System.out.println(user.getTotalScore());
-//    }
+// addScore PutMapping was not used so its been removed. can be recoverd form
+// commit: c2a8a1429036ed822e4709c873f1ed141d4cc3d0
 }
