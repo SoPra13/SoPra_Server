@@ -125,6 +125,15 @@ class LobbyControllerIntegrationTest {
     }
 
     @Test
+    void put_startGame_invalid_lobbyToken_path() throws Exception {
+
+
+        MockHttpServletRequestBuilder putRequest = put("/lobby/INVALID_TOKEN/game")
+                .contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(putRequest).andExpect(status().isNotFound());
+    }
+
+    @Test
     void put_addBot() throws Exception {
 
 
@@ -133,6 +142,39 @@ class LobbyControllerIntegrationTest {
         mockMvc.perform(putRequest).andExpect(status().isCreated());
 
         assertFalse(lobbyRepository.findByLobbyToken(testLobby.getLobbyToken()).getBotList().isEmpty());
+    }
+
+    @Test
+    void put_addBot_invalid_lobbyToken() throws Exception {
+
+
+        MockHttpServletRequestBuilder putRequest = put("/lobby?lobbyToken=INVALID_TOKEN" +
+                "&difficulty=FRIEND").contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(putRequest).andExpect(status().isNotFound());
+
+        assertTrue(lobbyRepository.findByLobbyToken(testLobby.getLobbyToken()).getBotList().isEmpty());
+    }
+
+    @Test
+    void put_addBot_lobby_full() throws Exception {
+        testLobby.setNumberOfPlayers(7);
+
+        MockHttpServletRequestBuilder putRequest = put("/lobby?lobbyToken=" + testLobby.getLobbyToken() +
+                "&difficulty=FRIEND").contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(putRequest).andExpect(status().isForbidden());
+
+        assertTrue(lobbyRepository.findByLobbyToken(testLobby.getLobbyToken()).getBotList().isEmpty());
+    }
+
+    @Test
+    void put_addBot_invalid_difficulty() throws Exception {
+
+
+        MockHttpServletRequestBuilder putRequest = put("/lobby?lobbyToken=" + testLobby.getLobbyToken() +
+                "&difficulty=INVALID_DIFFICULTY").contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(putRequest).andExpect(status().isNotFound());
+
+        assertTrue(lobbyRepository.findByLobbyToken(testLobby.getLobbyToken()).getBotList().isEmpty());
     }
 
     @Test
@@ -150,6 +192,34 @@ class LobbyControllerIntegrationTest {
     }
 
     @Test
+    void put_removeBot_invalid_lobbyToken() throws Exception {
+
+        MockHttpServletRequestBuilder putRequest = put("/lobby?lobbyToken=" + testLobby.getLobbyToken() +
+                "&difficulty=FRIEND").contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(putRequest).andExpect(status().isCreated());
+        testBot = lobbyRepository.findByLobbyToken(testLobby.getLobbyToken()).getBotList().get(0);
+        MockHttpServletRequestBuilder delRequest = delete("/lobby?lobbyToken=INVALID_TOKEN" +
+                "&botToken=" + testBot.getToken()).contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(delRequest).andExpect(status().isNotFound());
+
+        assertFalse(lobbyRepository.findByLobbyToken(testLobby.getLobbyToken()).getBotList().isEmpty());
+    }
+
+    @Test
+    void put_removeBot_invalid_botToken() throws Exception {
+
+        MockHttpServletRequestBuilder putRequest = put("/lobby?lobbyToken=" + testLobby.getLobbyToken() +
+                "&difficulty=FRIEND").contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(putRequest).andExpect(status().isCreated());
+        testBot = lobbyRepository.findByLobbyToken(testLobby.getLobbyToken()).getBotList().get(0);
+        MockHttpServletRequestBuilder delRequest = delete("/lobby?lobbyToken=" + testLobby.getLobbyToken() +
+                "&botToken=INVALID_TOKEN").contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(delRequest).andExpect(status().isNotFound());
+
+        assertFalse(lobbyRepository.findByLobbyToken(testLobby.getLobbyToken()).getBotList().isEmpty());
+    }
+
+    @Test
     void put_setPlayerLobbyReady() throws Exception {
         MockHttpServletRequestBuilder putGame = put("/lobby/" + testLobby.getLobbyToken() + "/game")
                 .contentType(MediaType.APPLICATION_JSON);
@@ -161,5 +231,29 @@ class LobbyControllerIntegrationTest {
         mockMvc.perform(putRequest).andExpect(status().isOk());
 
         assertTrue(testUser.isUnityReady());
+    }
+
+    @Test
+    void put_setPlayerLobbyReady_invalid_userToken() throws Exception {
+        MockHttpServletRequestBuilder putGame = put("/lobby/" + testLobby.getLobbyToken() + "/game")
+                .contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(putGame).andExpect(status().isCreated());
+
+        MockHttpServletRequestBuilder putRequest = put("/lobby/ready?userToken=INVALID_TOKEN" +
+                "&lobbyToken=" + testLobby.getLobbyToken())
+                .contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(putRequest).andExpect(status().isNotFound());
+    }
+
+    @Test
+    void put_setPlayerLobbyReady_invalid_gameToken() throws Exception {
+        MockHttpServletRequestBuilder putGame = put("/lobby/" + testLobby.getLobbyToken() + "/game")
+                .contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(putGame).andExpect(status().isCreated());
+
+        MockHttpServletRequestBuilder putRequest = put("/lobby/ready?userToken=" + testUser.getToken() +
+                "&lobbyToken=INVALID_TOKEN")
+                .contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(putRequest).andExpect(status().isNotFound());
     }
 }

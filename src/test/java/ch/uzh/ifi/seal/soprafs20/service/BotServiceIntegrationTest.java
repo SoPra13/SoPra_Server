@@ -58,13 +58,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
     @Test
     void createBot_invalid_String_difficulty() {
-        Assertions.assertThrows(IllegalArgumentException.class, () ->
+        Assertions.assertThrows(ResponseStatusException.class, () ->
                 botService.createBot("INVALID_DIFFICULTY"));
     }
 
     @Test
     void createBot_invalid_partial_difficulty() {
-        Assertions.assertThrows(IllegalArgumentException.class, () ->
+        Assertions.assertThrows(ResponseStatusException.class, () ->
                 botService.createBot("HOST"));
     }
 

@@ -60,7 +60,15 @@ public class BotService {
         bot.setBotName(String.valueOf(names.get(new Random().nextInt(names.size()))));
         msg = "bot name found: " + bot.getBotName();
         log.info(msg);
-        Difficulty actualDifficulty = Difficulty.valueOf(difficulty);
+        Difficulty actualDifficulty;
+        try {
+            actualDifficulty = Difficulty.valueOf(difficulty);
+        }
+        catch (IllegalArgumentException e) {
+            msg = e.getMessage();
+            log.error(msg);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "difficulty not found");
+        }
         bot.setAvatar(BOT_AVATARS);
         bot.setDifficulty(actualDifficulty);
 
