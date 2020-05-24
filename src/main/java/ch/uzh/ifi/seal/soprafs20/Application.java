@@ -10,9 +10,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RestController
 @SpringBootApplication
 public class Application {
+    private static final String SANITIZER = "[\n|\r|\t]";
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        String[] sanetized = new String[args.length];
+        for(int i = 0; i < args.length; i++) sanetized[i] = args[i].replaceAll(SANITIZER, "_");
+        SpringApplication.run(Application.class, sanetized);
     }
 
     @Bean
@@ -22,7 +25,7 @@ public class Application {
             public void addCorsMappings(CorsRegistry registry) {
                 registry
                         .addMapping("/**")
-                        .allowedOrigins("*")
+                        .allowedOrigins("http://localhost:8080")
                         .allowedMethods("*");
             }
         };
